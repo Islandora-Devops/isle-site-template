@@ -217,7 +217,7 @@ If you do not need to build multi-platform images, you can then push to the
 remote repository using `docker compose`:
 
 ```bash
-docker compose push drupal
+docker compose --profile dev push drupal-dev
 ```
 
 If you do need produce multi-platform images, you'll need to setup a builder
