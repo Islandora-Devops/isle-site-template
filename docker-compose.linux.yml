@@ -1,0 +1,12 @@
+# Exposes the SSH-agent on the host inside of the container, so you can
+# authenticate against Github / use the Jetbrains for local development.
+# Platform specific for use on Linux hosts, and WSL.
+---
+version: "3.8"
+services:
+  ide:
+    environment:
+      SSH_AUTH_SOCK: ${SSH_AUTH_SOCK}
+    volumes:
+      # Mount SSH agent so we can authenticate against github inside of the IDE container.
+      - ${SSH_AUTH_SOCK}:${SSH_AUTH_SOCK}:Z

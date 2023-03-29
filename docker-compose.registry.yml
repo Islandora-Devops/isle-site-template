@@ -1,0 +1,34 @@
+# Creates the isle-registry network and setups a local Docker image registry for testing purposes.
+---
+version: "3.8"
+name: isle-registry
+
+# Common to all services
+x-common: &common
+  restart: "no"
+
+volumes:
+  registry-data: {}
+
+networks:
+  default:
+    name: isle-registry
+
+services:
+  registry:
+    <<: *common
+    image: registry:2.8.1
+    container_name: isle-registry
+    environment:
+      REGISTRY_HTTP_ADDR: "0.0.0.0:443"
+      REGISTRY_STORAGE_DELETE_ENABLED: "true"
+      REGISTRY_HTTP_TLS_CERTIFICATE: "/usr/local/share/ca-certificates/cert.pem"
+      REGISTRY_HTTP_TLS_KEY: "/usr/local/share/ca-certificates/privkey.pem"
+    volumes:
+      - registry-data:/var/lib/registry
+      - ./certs/cert.pem:/usr/local/share/ca-certificates/cert.pem:ro
+      - ./certs/privkey.pem:/usr/local/share/ca-certificates/privkey.pem:ro
+      - ./certs/rootCA.pem:/usr/local/share/ca-certificates/rootCA.pem:ro
+    networks:
+      default:
+        aliases: [ "islandora.io" ]
