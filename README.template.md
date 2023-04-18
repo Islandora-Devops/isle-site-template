@@ -150,29 +150,11 @@ x86 (Intel / AMD) CPUs.
 
 To test multi-platform builds locally requires setting up a local registry.
 
+This can be done with the assistance of [isle-builder] repository.
+
 > N.B. Alternatively you can push directly to a remote registry like
 > [DockerHub], though that can be slow as it needs to upload your image over the
 > network.
-
-You need to generate certificates for the local registry see
-[Development Certificates](#development-certificates) section for how to do
-this.
-
-A docker compose file is provided to setup a local registry:
-
-```bash
-docker compose -f docker-compose.registry.yml up -d
-```
-
-Once the registry is setup can create a builder:
-
-```bash
-docker buildx create \
-  --bootstrap \
-  --config buildkitd.toml \
-  --driver-opt "image=moby/buildkit:v0.11.1,network=isle-registry" \
-  --name "isle-builder"
-```
 
 Now you can perform the build locally by pushing to the local registry:
 
@@ -183,18 +165,6 @@ REPOSITORY=islandora.io docker buildx bake --builder isle-builder --push
 > N.B. If you **do not** override `REPOSITORY` environment variable, the value
 > provided by [.env] is used, which will typically be the remote registry you
 > intended to use.
-
-To remove the builder:
-
-```bash
-docker buildx rm isle-builder
-```
-
-To remove the local registry from:
-
-```bash
-docker compose -f docker-compose.registry.yml down -v
-```
 
 ### Remote Registry
 
@@ -226,6 +196,9 @@ which is covered under the [Local Registry](#local-registry) section.
 ```bash
 docker buildx bake --builder isle-builder --push
 ```
+
+> N.B. In this example `REPOSITORY` **is not** overridden, so the value provided
+> by [.env] is used.
 
 # Development
 
@@ -486,6 +459,7 @@ sudo chcon -R -t container_file_t secrets/*
 [generate-certs.sh]: ./generate-certs.sh
 [generate-secrets.sh]: ./generate-secrets.sh
 [IDE]: https://github.com/Islandora-Devops/isle-buildkit#ide
+[isle-builder]: https://github.com/Islandora-Devops/isle-builder
 [lets-encrypt]: https://letsencrypt.org/
 [mkcert]: https://github.com/FiloSottile/mkcert
 [PHPStorm]: https://github.com/Islandora-Devops/isle-buildkit#phpstorm
