@@ -62,6 +62,8 @@ volumes:
     drupal-root: {}
     drupal-solr-config: {}
     fcrepo-data: {}
+    jetbrains-cache: {}
+    jetbrains-config: {}
     mariadb-data: {}
     matomo-data: {}
     solr-data: {}
@@ -416,6 +418,13 @@ services:
             PHP_PROCESS_CONTROL_TIMEOUT: 600
             PHP_REQUEST_TERMINATE_TIMEOUT: 600
         volumes:
+              # Cache for when using jetbrains ssh connection feature.
+            - type: volume
+              source: jetbrains-cache
+              target: /var/lib/nginx/.cache/JetBrains
+            - type: volume
+              source: jetbrains-config
+              target: /var/lib/nginx/.config/JetBrains
             # Allow access to Docker cli via IDE.
             - /var/run/docker.sock:/var/run/docker.sock:z,rw
             # Mount and serve contents of Drupal site.
