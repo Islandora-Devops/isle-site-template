@@ -135,10 +135,16 @@ services:
             default:
                 aliases: # Allow access without using the `-dev` or `-prod` suffix.
                     - alpaca
+        depends_on:
+            activemq-dev:
+                condition: service_started
     alpaca-prod:
         <<: [*prod, *alpaca]
         secrets:
             - source: ALPACA_JMS_PASSWORD
+        depends_on:
+            activemq-prod:
+                condition: service_started
     crayfits:
         <<: [*common]
         image: ${ISLANDORA_REPOSITORY}/crayfits:${ISLANDORA_TAG}
@@ -484,6 +490,9 @@ services:
             default:
                 aliases: # Allow access without using the `-dev` or `-prod` suffix.
                     - fcrepo
+        depends_on:
+            activemq-dev:
+                condition: service_started
     fcrepo-prod:
         <<: [*prod, *fcrepo]
         environment:
@@ -499,6 +508,9 @@ services:
             - source: FCREPO_DB_PASSWORD
             - source: JWT_ADMIN_TOKEN
             - source: JWT_PUBLIC_KEY
+        depends_on:
+            activemq-prod:
+                condition: service_started
     matomo-dev: &matomo
         <<: [*dev, *common]
         image: ${ISLANDORA_REPOSITORY}/matomo:${ISLANDORA_TAG}
