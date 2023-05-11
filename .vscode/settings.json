@@ -36,6 +36,7 @@
     "replacepathregex",
     "rootfs",
     "SAPI",
+    "sestatus",
     "setaf",
     "shellcheck",
     "shfmt",

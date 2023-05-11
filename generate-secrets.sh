@@ -62,6 +62,10 @@ for secret in "${SECRETS[@]}"; do
 done
 
 # For SELinux if applicable.
-if command -v "chcon" >/dev/null; then
-  sudo chcon -R -t container_file_t "${PROGDIR}/secrets" || true
+if command -v "sestatus" >/dev/null; then
+  if sestatus | grep -q "SELinux status: *enabled"; then
+    if command -v "chcon" >/dev/null; then
+      sudo chcon -R -t container_file_t "${PROGDIR}/secrets" || true
+    fi
+  fi
 fi
