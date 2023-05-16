@@ -101,6 +101,42 @@ Use the `dev` profile when bring up your local/development environment:
 docker compose --profile dev up -d
 ```
 
+You must wait several minutes for the islandora site to install. When completed
+you can see the following in the output from the `drupal-dev` container, with
+the following command:
+
+```bash
+docker compose logs -f drupal-dev
+```
+
+```txt
+#####################
+# Install Completed #
+#####################
+```
+
+For all accounts in the development profile the username and password is set to
+the following:
+
+| Credentials | Value    |
+| :---------- | :------- |
+| Username    | admin    |
+| Password    | password |
+
+If you have the domain in your `.env` set to `islandora.dev` you can access all
+the services at the following URLs.
+
+| Service    | URL                                       |
+| :--------- | :---------------------------------------- |
+| Drupal     | https://islandora.dev                     |
+| IDE        | https://ide.islandora.dev                 |
+| ActiveMQ   | https://activemq.islandora.dev            |
+| Blazegraph | https://blazegraph.islandora.dev/bigdata/ |
+| Fedora     | https://fcrepo.islandora.dev/fcrepo/rest/ |
+| Matomo     | https://islandora.dev/matomo/index.php    |
+| Solr       | https://solr.islandora.dev                |
+| Traefik    | https://traefik.islandora.dev             |
+
 To stop your local/development environment:
 
 ```bash
