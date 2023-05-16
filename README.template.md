@@ -76,7 +76,7 @@ then be added to `docker-compose.override.yml`.
 You can build your locally using `docker compose`
 
 ```bash
-docker compose build --profile dev
+docker compose --profile dev build
 ```
 
 ## Pulling
