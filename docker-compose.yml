@@ -608,8 +608,10 @@ services:
             <<: [*traefik-enable, *traefik-https-redirect-middleware]
             traefik.http.routers.traefik_http.entrypoints: http
             traefik.http.routers.traefik_http.middlewares: *traefik-https-redirect
+            traefik.http.routers.traefik_http.rule: &traefik-host-traefik Host(`traefik.islandora.dev`)
             traefik.http.routers.traefik_http.service: traefik
             traefik.http.routers.traefik_https.entrypoints: https
+            traefik.http.routers.traefik_https.rule: *traefik-host-traefik
             traefik.http.routers.traefik_https.tls: true
             traefik.http.services.traefik.loadbalancer.server.port: 8080
         ports:
