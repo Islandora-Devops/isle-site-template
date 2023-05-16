@@ -246,7 +246,9 @@ EMAIL=postmaster@example.com
 Since this `README.md` is meant as a guide for creating your institution's
 Islandora installation, it is not useful after that point. Instead a template
 [README.template.md](./README.template.md) is provided from which you can then
-customize.
+customize. This template includes instructions on how to build and start up your
+containers, as well as how to customize your Islandora installation. Please read
+it after completing the steps in this `README.md`.
 
 1. Replace this README.md with the template:
 
