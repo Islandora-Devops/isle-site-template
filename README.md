@@ -188,7 +188,7 @@ git checkout drupal/rootfs/var/www/drupal/assets/patches/default_settings.txt
 
 ```bash
 git add .
-git commit -am "Second commit, added isle-starter-site."
+git commit -am "Second commit, added islandora-starter-site."
 ```
 
 4. Push your changes to your institution's repository:
