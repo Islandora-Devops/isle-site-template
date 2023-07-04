@@ -59,39 +59,42 @@ There are a number of `docker-compose.yml` files provided by this repository:
 
 ## Override
 
-This repository ignores `docker-compose.override.yml` which will be included in
-any `docker compose` commands you invoke by default.
+This git repository does not track `docker-compose.override.yml` which will 
+be included by default in all `docker compose` commands you invoke.
 
 Two platform dependent templates that allow for access to the hosts `SSH agent`
 are provided for `development` environments.
 
-Simply copy the appropriate `docker-compose.PLATFORM.yml` file into
+Simply copy the appropriate* `docker-compose.PLATFORM.yml` file into
 `docker-compose.override.yml`, on your development machine.
 
 Any additional changes that are for your local / development environment can
-then be added to `docker-compose.override.yml`.
+then be added to `docker-compose.override.yml`. Because they're not tracked...
 
 ## Building
 
-You can build your locally using `docker compose`
+You can build your development environment locally using `docker compose`
 
 ```bash
 docker compose --profile dev build
 ```
+This has the effect of...
 
-## Pulling
+## Pulling Docker Images
 
-The `docker compose` file provided require that you first pull the islandora
+The `docker compose` file provided requires that you first pull the islandora
 images with the following command:
 
 ```bash
 docker compose --profile dev --profile prod pull --ignore-buildable --ignore-pull-failures
 ```
 
+Both `dev` and `prod` are included so that...
+
 ## Running / Stoping / Destroying
 
-You must specify a profile either `dev` or `prod` to use `docker compose` files
-provided by this repository.
+You must specify a profile - either `dev` or `prod` - to use the `docker compose` files
+provided by this repository. Running/stopping/destroying for each profile is outlined below.
 
 ### Development Profile
 
@@ -101,9 +104,9 @@ Use the `dev` profile when bring up your local/development environment:
 docker compose --profile dev up -d
 ```
 
-You must wait several minutes for the islandora site to install. When completed
-you can see the following in the output from the `drupal-dev` container, with
-the following command:
+After all containers are "Started", you must wait several minutes for the Islandora
+site to install. When completed, you can see the following in the output from the
+`drupal-dev` container, with the following command:
 
 ```bash
 docker compose logs -f drupal-dev
@@ -115,7 +118,7 @@ docker compose logs -f drupal-dev
 #####################
 ```
 
-For all accounts in the development profile the username and password is set to
+For all accounts in the development profile the username and password are set to
 the following:
 
 | Credentials | Value    |
@@ -123,8 +126,8 @@ the following:
 | Username    | admin    |
 | Password    | password |
 
-If you have the domain in your `.env` set to `islandora.dev` you can access all
-the services at the following URLs.
+If you have the domain in your `.env` set to `islandora.dev` (default), you can
+access all the services at the following URLs.
 
 | Service    | URL                                       |
 | :--------- | :---------------------------------------- |
@@ -173,7 +176,7 @@ To **destroy all data** from your production environment:
 docker compose --profile prod down -v
 ```
 
-## Pushing
+## Pushing Docker Images
 
 Pushing requires setting up either a [Local Registry](#local-registry), or a
 [Remote Registry](#remote-registry). Though you may want to use both concurrently.
@@ -355,7 +358,11 @@ mkcert \
 
 ## Upgrading Isle Docker Images
 
-Edit [.env] and replace the following line, with your new targeted version:
+First, read the **release notes** for the versions between your current version
+and your target version, as manual steps beyond what is listed here will likely
+be required.
+
+Edit [.env] and replace the following line with the desired new version tag:
 
 ```bash
 # The version of the isle-buildkit images to use.
@@ -364,18 +371,14 @@ ISLANDORA_TAG=x.x.x
 
 Then you can [pull](#pulling) the latest images as described previously.
 
-Then read the **release notes** for the versions between your current version
-and your target version, as manual steps beyond what is listed here will likely
-be required.
-
 Of course **make backups** before deploying to production and test thoroughly.
 
 ## Drupal Development
 
 For local development via the [development profile], an [IDE] is provided which
-can also support the use of [PHPStorm].
+can also support (how?) the use of [PHPStorm].
 
-There are a number of bind mounted directories so changes made in the following
+There are a number of bind mounted directories and changes made in the following
 files & folders will persist in this Git repository.
 
 - /var/www/drupal/assets
@@ -386,8 +389,8 @@ files & folders will persist in this Git repository.
 - /var/www/drupal/web/themes/custom
 
 Other changes such as to the `vendor` folder or installed modules are **not**
-persisted, to disk. This is by design as these changes should be managed via
-`composer` and baked into the Drupal Docker image.
+persisted in Git. This is by design as these changes should be managed via
+`composer` and baked into the Drupal Docker image for production.
 
 Changes made to `composer.json` and `composer.lock` will require you to rebuild
 the Drupal Docker image, see [building](#building) for how.
@@ -400,13 +403,13 @@ the Drupal Docker image, see [building](#building) for how.
 # Production
 
 Running in production makes use of the [production profile], which requires
-either manually provided secrets, or generating secrets. As well as a properly
-configured DNS records as is described in the following sections.
+either manually provided secrets, or generating secrets. It also requires a
+properly configured DNS record as described in the following sections.
 
 ## Generate secrets
 
 To be able to run the production profile of the [docker-compose.yml] file the
-referenced secrets and JWT public/private key pair must be created. There is
+referenced secrets and JWT public/private key pair must be created. There are
 inline instructions for generating each secret in [docker-compose.yml].
 
 Alternatively you can use the [generate-secrets.sh] `bash` script to generate
@@ -417,7 +420,7 @@ them all quickly.
 
 ## Production Domain
 
-The [.env] has a variable `DOMAIN` which should be set to the production sites
+The [.env] has a variable `DOMAIN` which should be set to the production site's
 domain.
 
 ```bash
