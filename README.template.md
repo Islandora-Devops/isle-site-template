@@ -34,6 +34,8 @@
   - [Automated Certificate Generation](#automated-certificate-generation)
   - [Setup as a systemd Service](#setup-as-a-systemd-service)
   - [SELinux Considerations](#selinux-considerations)
+- [Troubleshooting](#troubleshooting)
+  - [Windows](#windows-3)
 
 # Introduction
 
@@ -489,6 +491,20 @@ into containers.
 ```bash
 sudo chcon -R -t container_file_t secrets/*
 ```
+
+# Troubleshooting
+
+## Windows
+
+There are many services, which can listen port `80` on windows.
+
+Luckily you can detect and stop them all running simple console command:
+
+`NET stop HTTP`
+
+Additionally you may wish to stop this service on startup, see the
+[windows documentation](https://learn.microsoft.com/en-us/previous-versions/tn-archive/dd277425(v=technet.10)?redirectedfrom=MSDN)
+for more details.
 
 [.env]: .env
 [acme]: https://doc.traefik.io/traefik/https/acme/
