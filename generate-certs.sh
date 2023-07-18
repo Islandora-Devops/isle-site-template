@@ -23,7 +23,7 @@ else
 fi
 readonly CAROOT
 
-"${MKCERT}" -install
+"${MKCERT}" -install || true # Ignore errors, as java key stores are sometimes not owned by the user in Windows.
 
 if [ ! -f "${PROGDIR}/certs/rootCA-key.pem" ]; then
   cp "${CAROOT}/rootCA-key.pem" "${PROGDIR}/certs/rootCA-key.pem"
