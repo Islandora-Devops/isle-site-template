@@ -122,7 +122,9 @@ function initialize_from_starter_site {
 }
 
 function create_docker_compose_override {
-  cp "docker-compose.${OS}.yml" docker-compose.override.yml
+  if [[ "${IS_WSL}" == "false" ]]; then
+    cp "docker-compose.${OS}.yml" docker-compose.override.yml
+  fi
 }
 
 function generate_certs {

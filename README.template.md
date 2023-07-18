@@ -71,6 +71,9 @@ Simply copy the appropriate `docker-compose.PLATFORM.yml` file into
 Any additional changes that are for your local / development environment can
 then be added to `docker-compose.override.yml`.
 
+Unfortunately getting OpenSSH working is complicated on Windows machines, so in that 
+cause it is left as an exercise to the reader.
+
 ## Building
 
 You can build your locally using `docker compose`
