@@ -75,6 +75,7 @@ See the [customizations](#customizations) steps afterwards about removing unwant
 - [Docker 20.10+](https://docs.docker.com/get-docker/) **This is the Docker Engine version, not Docker Desktop**.
 - [Docker Compose](https://docs.docker.com/compose/install/linux/) **Already included in OSX with Docker**
 - [mkcert 1.4+](https://github.com/FiloSottile/mkcert)
+- [wget](https://www.gnu.org/software/wget/)
 
 # Automatic Setup
 
@@ -89,7 +90,7 @@ for an automated setup. It is roughly equivalent to the
 You should now have a folder with the `SITE_NAME` you provided to the above
 script with the basics completed for you.
 
-On your platform of choice [GitHub], [GitLab], etc. Create a new Git repository
+On your platform of choice ([GitHub], [GitLab], etc), create a new Git repository
 for your new site. (Not necessary for a development instance unless you want to
 save changes to it.) 
 
@@ -97,7 +98,7 @@ In the following sections the [GitHub], [GitLab], etc; organization will be
 referred to as `INSTITUTION`, and the Git repository will be referred to as
 `SITE_NAME`.
 
-Push the automatically generate repository to your remote (*For example with [GitHub]*):
+Push the automatically generated repository to your remote (*For example with [GitHub]*):
 
 ```bash
 cd SITE-NAME
@@ -272,11 +273,10 @@ git commit -am "Replaced README.md from provided template."
 ```bash
 git push
 ```
-# Usage
+# Next Steps
 
-Instructions for the rest of the Islandora setup are in
-[README.template.md](./README.template.md), which after following the previous step
-is at README.md. 
+Follow the rest of the instructions for setting up Islandora in
+README.md (formerly README.template.md).
 
 [.env]: .env
 [DockerHub]: https://hub.docker.com/
