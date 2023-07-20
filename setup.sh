@@ -101,7 +101,7 @@ function initialize_from_site_template {
   local ref
   echo "Initializing from site template..."
   ref=$(choose_ref "${repo}")
-  wget -c "${repo}/archive/${ref}.tar.gz" -O - | tar -xz --strip-components=1
+  curl -L "${repo}/archive/${ref}.tar.gz" | tar -xz --strip-components=1
   rm -fr .github setup.sh
   git add .
   git commit -am "First commit, added isle-site-template."

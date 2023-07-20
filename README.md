@@ -131,7 +131,7 @@ At this point it should be an empty folder.
    the `main` branch).
 
 ```bash
-wget -c https://github.com/Islandora-Devops/isle-site-template/archive/refs/heads/main.tar.gz -O - | tar -xz --strip-components=1
+curl -L https://github.com/Islandora-Devops/isle-site-template/archive/refs/heads/main.tar.gz | tar -xz --strip-components=1
 ```
 
 3. Remove .github folder and setup.sh
@@ -163,8 +163,8 @@ will customize and manage your Islandora installation.
    branch (from the root of your repository).
 
 ```bash
-wget -c https://github.com/Islandora-Devops/islandora-starter-site/archive/refs/heads/main.tar.gz \
-     -O - | tar --strip-components=1 -C drupal/rootfs/var/www/drupal -xz
+curl -L https://github.com/Islandora-Devops/islandora-starter-site/archive/refs/heads/main.tar.gz \
+    | tar --strip-components=1 -C drupal/rootfs/var/www/drupal -xz
 ```
 
 This will place the contents in [drupal/rootfs/var/www/drupal].
