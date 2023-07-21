@@ -112,7 +112,7 @@ You can now continue on to [customizations](#customizations).
 ## Create a new repository
 
 On your platform of choice [GitHub], [GitLab], etc. Create a new Git repository
-for your new site. jHaving these files in Git will make future steps possible.
+for your new site. Having these files in Git will make future steps possible.
 
 In the following sections the [GitHub], [GitLab], etc; organization will be
 referred to as `INSTITUTION`, and the Git repository will be referred to as
