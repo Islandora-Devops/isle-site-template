@@ -60,7 +60,7 @@ There are a number of `docker-compose.yml` files provided by this repository:
 ## Override
 
 This git repository does not track `docker-compose.override.yml` which will 
-be included by default in all `docker compose` commands you invoke.
+be included in all `docker compose` commands you invoke.
 
 Two platform dependent templates that allow for access to the hosts `SSH agent`
 are provided for `development` environments.
@@ -73,23 +73,22 @@ then be added to `docker-compose.override.yml`. Because they're not tracked...
 
 ## Building
 
-You can build your development environment locally using `docker compose`
+You can build your development environment locally using `docker compose`:
 
 ```bash
 docker compose --profile dev build
 ```
-This has the effect of...
+
+This builds the Drupal image so that it contains the Starter Site files that you downloaded locally earlier.
 
 ## Pulling Docker Images
 
-The `docker compose` file provided requires that you first pull the islandora
+The Docker Compose file provided requires that you pull the non-buildable islandora
 images with the following command:
 
 ```bash
 docker compose --profile dev --profile prod pull --ignore-buildable --ignore-pull-failures
 ```
-
-Both `dev` and `prod` are included so that...
 
 ## Running / Stoping / Destroying
 
@@ -376,7 +375,7 @@ Of course **make backups** before deploying to production and test thoroughly.
 ## Drupal Development
 
 For local development via the [development profile], an [IDE] is provided which
-can also support (how?) the use of [PHPStorm].
+can also support the use of [PHPStorm].
 
 There are a number of bind mounted directories and changes made in the following
 files & folders will persist in this Git repository.

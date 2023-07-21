@@ -72,10 +72,9 @@ See the [customizations](#customizations) steps afterwards about removing unwant
 
 # Requirements
 
-- [Docker 20.10+](https://docs.docker.com/get-docker/) **This is the Docker Engine version, not Docker Desktop**.
+- [Docker 20.10+](https://docs.docker.com/get-docker/) **Referring to the Docker Engine version, not Docker Desktop**.
 - [Docker Compose](https://docs.docker.com/compose/install/linux/) **Already included in OSX with Docker**
 - [mkcert 1.4+](https://github.com/FiloSottile/mkcert)
-- [wget](https://www.gnu.org/software/wget/)
 
 # Automatic Setup
 
@@ -91,8 +90,8 @@ You should now have a folder with the `SITE_NAME` you provided to the above
 script with the basics completed for you.
 
 On your platform of choice ([GitHub], [GitLab], etc), create a new Git repository
-for your new site. (Not necessary for a development instance unless you want to
-save changes to it.) 
+for your new site. This step allows you to persist your customizations to this
+repository. It is not necessary for a throwaway development instance. 
 
 In the following sections the [GitHub], [GitLab], etc; organization will be
 referred to as `INSTITUTION`, and the Git repository will be referred to as
@@ -113,7 +112,7 @@ You can now continue on to [customizations](#customizations).
 ## Create a new repository
 
 On your platform of choice [GitHub], [GitLab], etc. Create a new Git repository
-for your new site.
+for your new site. jHaving these files in Git will make future steps possible.
 
 In the following sections the [GitHub], [GitLab], etc; organization will be
 referred to as `INSTITUTION`, and the Git repository will be referred to as
@@ -198,6 +197,13 @@ git commit -am "Second commit, added islandora-starter-site."
 git push
 ```
 
+5. For a development server, generate certs and secrets.
+
+```bash
+./generate-certs.sh
+./generate-secrets.sh
+```
+
 Continue on to [Customizations](#customizations).
 
 # Customizations
@@ -211,7 +217,7 @@ applicable to your institution's situation.
 ## Set environment properties
 
 Edit [.env] and replace the following line with a name derived from your site
-name:
+name. If you have multiple sites on the same host, these must be unique.
 
 ```bash
 COMPOSE_PROJECT_NAME=isle-site-template
