@@ -52,8 +52,8 @@ There are a number of `docker-compose.yml` files provided by this repository:
 | File                                                       | Description                                                                                      |
 | :--------------------------------------------------------- | :----------------------------------------------------------------------------------------------- |
 | [docker-compose.yml](docker-compose.yml)                   | Defines all development & production services.                                                   |
-| [docker-compose.darwin.yml](docker-compose.darwin.yml)     | Platform specific customizations to allow access to host `SSH_AGENT`. For development use only.  |
-| [docker-compose.linux.yml](docker-compose.linux.yml)       | Platform specific customizations to allow access to host `SSH_AGENT`. For development use only.  |
+| [docker-compose.darwin.yml](docker-compose.darwin.yml)     | MacOS platform specific customizations to allow access to host `SSH_AGENT`. For development use only.  |
+| [docker-compose.linux.yml](docker-compose.linux.yml)       | Linux platform specific customizations to allow access to host `SSH_AGENT`. For development use only.  |
 | [docker-compose.override.yml](docker-compose.override.yml) | Customizations for local development environment.                                                |
 | [docker-compose.registry.yml](docker-compose.registry.yml) | Used for creating a local registry for testing multi-arch builds, etc. Can typically be ignored. |
 
