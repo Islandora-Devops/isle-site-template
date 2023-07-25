@@ -31,29 +31,29 @@ installation from this template.
 ## Forking Warning
 
 This is not intended to be an upstream fork that your institution will be
-pulling changes from. Instead this repository acts as a template, where the
-intention is to make a new Git repository from it. By copying the contents of
-this repository into your institution's Git repository. For which your
-institution will then be responsible for.
+pulling changes from. Instead this repository acts as a template. The
+intention is to make a new Git repository from it by copying the contents of
+this repository into your institution's Git repository, for which your
+institution will then be responsible.
 
-This is for a few reasons. Namely, we can't guarantee forward compatibility with
-the changes made by your institution to a fork of this Git repository. Your
-institution must be responsible for it's own configuration, as changes to
+This is for a few reasons. Primarily, we can't guarantee forward compatibility
+with the changes made by your institution to a fork of this Git repository.
+Your institution must be responsible for it's own configuration, as changes to
 configuration **cannot** easily be shared across Drupal sites.
 
 ## Assumptions
 
-This template assumes you'll be using `docker compose` for running your site in
-production on a **single server**. If that is not your intention you may want to ask
-in the community slack about existing examples for your chosen infrastructure.
+This template assumes you'll be running your site in Docker
+on a **single server**. If that is not your intention you may want to ask
+in the Islandora Slack about existing examples for your chosen infrastructure.
 
-This template assumes a single site installation and isn't configured for a
+This template is set up for a single site installation and isn't configured for a
 [Drupal multisite](https://www.drupal.org/docs/multisite-drupal). It is possible
 to add the functionality for that later, but it is left to the implementer to do
 those additional changes.
 
 While Islandora can be setup to use a wide variety of databases, tools and
-configurations this template is limited to the following.
+configurations this template is set up for the following.
 
  - `blazegraph` is included by default.
  - `crayfish` services are included by default.
@@ -66,21 +66,20 @@ configurations this template is limited to the following.
 
 > N.B. Although alternate components and configurations are supported by
 > Islandora, for simplicities sake the most common use-case is shown. For
-> example `mariadb` is used rather than `postgresql` is provided by this
-> repository.
+> example `mariadb` is used rather than `postgresql`.
 
 See the [customizations](#customizations) steps afterwards about removing unwanted features.
 
 # Requirements
 
-- [Docker 20.10+](https://docs.docker.com/get-docker/)
+- [Docker 20.10+](https://docs.docker.com/get-docker/) **Referring to the Docker Engine version, not Docker Desktop**.
 - [Docker Compose](https://docs.docker.com/compose/install/linux/) **Already included in OSX with Docker**
 - [mkcert 1.4+](https://github.com/FiloSottile/mkcert)
 
 # Automatic Setup
 
 After installing the [requirements](#requirements), run the following command
-for an automated setup, it is roughly equivalent to the
+for an automated setup. It is roughly equivalent to the
 [Manual Setup](#manual-setup).
 
 ```bash
@@ -90,14 +89,15 @@ for an automated setup, it is roughly equivalent to the
 You should now have a folder with the `SITE_NAME` you provided to the above
 script with the basics completed for you.
 
-On your platform of choice [GitHub], [GitLab], etc. Create a new Git repository
-for your new site.
+On your platform of choice ([GitHub], [GitLab], etc), create a new Git repository
+for your new site. This step allows you to persist your customizations to this
+repository. It is not necessary for a throwaway development instance. 
 
 In the following sections the [GitHub], [GitLab], etc; organization will be
 referred to as `INSTITUTION`, and the Git repository will be referred to as
 `SITE_NAME`.
 
-Push the automatically generate repository to your remote (*For example with [GitHub]*):
+Push the automatically generated repository to your remote (*For example with [GitHub]*):
 
 ```bash
 cd SITE-NAME
@@ -112,7 +112,7 @@ You can now continue on to [customizations](#customizations).
 ## Create a new repository
 
 On your platform of choice [GitHub], [GitLab], etc. Create a new Git repository
-for your new site.
+for your new site. Having these files in Git will make future steps possible.
 
 In the following sections the [GitHub], [GitLab], etc; organization will be
 referred to as `INSTITUTION`, and the Git repository will be referred to as
@@ -157,7 +157,7 @@ git push
 
 Just as this repository is not intended to be an upstream fork, neither is the
 [islandora-starter-site]. It is a starting point from which your institution
-will customize and manage your Islandora installation.
+will customize and manage Drupal for your Islandora installation.
 
 1. Unpack the [islandora-starter-site] using the latest release, or the `main`
    branch (from the root of your repository).
@@ -197,6 +197,13 @@ git commit -am "Second commit, added islandora-starter-site."
 git push
 ```
 
+5. For a development server, generate certs and secrets.
+
+```bash
+./generate-certs.sh
+./generate-secrets.sh
+```
+
 Continue on to [Customizations](#customizations).
 
 # Customizations
@@ -205,19 +212,19 @@ The previous sections will have set you up with a Git repository to start from,
 but more customization is likely needed.
 
 Read through each following sections and follow the steps if you deem them
-applicable to your institutions situation.
+applicable to your institution's situation.
 
 ## Set environment properties
 
-Edit [.env] and replace the following line, with a name derived from your site
-name:
+Edit [.env] and replace the following line with a name derived from your site
+name. If you have multiple sites on the same host, these must be unique.
 
 ```bash
 COMPOSE_PROJECT_NAME=isle-site-template
 ```
 
-After setting up a remote Docker image registry like [DockerHub]. Set the
-following line to your use your image registry:
+If setting up your own images on a remote Docker image registry like [DockerHub],
+set the following line to your use your image registry:
 
 ```bash
 # The Docker image repository, to push/pull custom images from.
@@ -225,14 +232,14 @@ following line to your use your image registry:
 REPOSITORY=islandora.io
 ```
 
-After purchasing a domain name for your production site, set the following line
+If using a purchased a domain name for your production site, set the following line
 to your new domain:
 
 ```bash
 # The domain at which your production site is hosted.
 DOMAIN=islandora.dev
 ```
-Lastly update the default email to that of your sites administrator:
+Lastly update the default email to that of your site's administrator:
 
 ```bash
 # The email to use for admin users and Lets Encrypt.
@@ -272,6 +279,10 @@ git commit -am "Replaced README.md from provided template."
 ```bash
 git push
 ```
+# Next Steps
+
+Follow the rest of the instructions for setting up Islandora in
+README.md (formerly README.template.md).
 
 [.env]: .env
 [DockerHub]: https://hub.docker.com/
