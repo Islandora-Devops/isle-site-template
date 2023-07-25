@@ -43,7 +43,7 @@ This is the development and production infrastructure for INSTITUTION's SITE_NAM
 
 # Requirements
 
-- [Docker 20.10+](https://docs.docker.com/get-docker/)
+- [Docker 24.0+](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/linux/) **Already included in OSX with Docker**
 - [mkcert 1.4+](https://github.com/FiloSottile/mkcert) **Local Development only**
 
@@ -51,13 +51,13 @@ This is the development and production infrastructure for INSTITUTION's SITE_NAM
 
 There are a number of `docker-compose.yml` files provided by this repository:
 
-| File                                                       | Description                                                                                      |
-| :--------------------------------------------------------- | :----------------------------------------------------------------------------------------------- |
-| [docker-compose.yml](docker-compose.yml)                   | Defines all development & production services.                                                   |
-| [docker-compose.darwin.yml](docker-compose.darwin.yml)     | MacOS platform specific customizations to allow access to host `SSH_AGENT`. For development use only.  |
-| [docker-compose.linux.yml](docker-compose.linux.yml)       | Linux platform specific customizations to allow access to host `SSH_AGENT`. For development use only.  |
-| [docker-compose.override.yml](docker-compose.override.yml) | Customizations for local development environment.                                                |
-| [docker-compose.registry.yml](docker-compose.registry.yml) | Used for creating a local registry for testing multi-arch builds, etc. Can typically be ignored. |
+| File                                                       | Description                                                                                           |
+| :--------------------------------------------------------- | :---------------------------------------------------------------------------------------------------- |
+| [docker-compose.yml](docker-compose.yml)                   | Defines all development & production services.                                                        |
+| [docker-compose.darwin.yml](docker-compose.darwin.yml)     | MacOS platform specific customizations to allow access to host `SSH_AGENT`. For development use only. |
+| [docker-compose.linux.yml](docker-compose.linux.yml)       | Linux platform specific customizations to allow access to host `SSH_AGENT`. For development use only. |
+| [docker-compose.override.yml](docker-compose.override.yml) | Customizations for local development environment.                                                     |
+| [docker-compose.registry.yml](docker-compose.registry.yml) | Used for creating a local registry for testing multi-arch builds, etc. Can typically be ignored.      |
 
 ## Override
 

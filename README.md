@@ -13,6 +13,7 @@
 - [Customizations](#customizations)
   - [Set environment properties](#set-environment-properties)
   - [Replace README.md with Template](#replace-readmemd-with-template)
+- [Next Steps](#next-steps)
 
 # Introduction
 
@@ -72,7 +73,7 @@ See the [customizations](#customizations) steps afterwards about removing unwant
 
 # Requirements
 
-- [Docker 20.10+](https://docs.docker.com/get-docker/) **Referring to the Docker Engine version, not Docker Desktop**.
+- [Docker 24.0+](https://docs.docker.com/get-docker/) **Referring to the Docker Engine version, not Docker Desktop**.
 - [Docker Compose](https://docs.docker.com/compose/install/linux/) **Already included in OSX with Docker**
 - [mkcert 1.4+](https://github.com/FiloSottile/mkcert)
 
