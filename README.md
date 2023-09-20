@@ -21,7 +21,8 @@ Template for building and customizing your institution's Islandora installation,
 for use as both a development and production environment for your institution.
 
 After confirming that [assumptions](#assumptions) match your use case, and you
-have the appropriate [requirements](#requirements), follow the
+have the appropriate [requirements
+](#requirements), follow the
 [instructions](#instructions) to set up your institution's Islandora
 installation from this template.
 
@@ -76,6 +77,18 @@ See the [customizations](#customizations) steps afterwards about removing unwant
 - [Docker 24.0+](https://docs.docker.com/get-docker/) **Referring to the Docker Engine version, not Docker Desktop**.
 - [Docker Compose](https://docs.docker.com/compose/install/linux/) **Already included in OSX with Docker**
 - [mkcert 1.4+](https://github.com/FiloSottile/mkcert)
+## Java and macOS
+
+mkcert seems to have problems when running on Java installed via Homebrew. 
+This is resolved by installing OpenJDK from an installer such as [temurin](https://adoptium.net/temurin/releases/) from the Eclipse foundation.
+
+Be sure to set the JAVA_HOME environment variable to the correct
+ value, for version 20 of the temurin packaged installer linked above it is: 
+
+```
+/Library/Java/JavaVirtualMachines/temurin-20.jdk/Contents/Home
+```
+
 
 # Automatic Setup
 
