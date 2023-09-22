@@ -460,6 +460,16 @@ EMAIL=postmaster@example.com
 
 > N.B. This is required to property generate certificates automatically!
 
+## Using a Wildcard Certificate
+
+If your production Islandora site is using a wildcard certificate that is not provisioned by LetsEncrypt, your DNS entries for your subdomain `DOMAIN` may need to be at the same level as your wildcard's top level domain (TLD).
+
+For example if your wildcard cert is for `*.library.world.com` and your islandora site is at `islandora.library.world.com`, to have your `activemq`, `blazegraph`, `fcrepo`, and `solr` subdomains use the same TLS certificate, they will need to be children of `library.world.com`. To accomplish this, you can change the subdomain delimiter in your `.env` to use a dash (-) instead of a period (.).
+
+```bash
+SUBDOMAIN_DELIMITER=-
+```
+
 ## Setup as a systemd Service
 
 Most Linux distributions use `systemd` for process management, on your production
