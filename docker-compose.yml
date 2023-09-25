@@ -201,6 +201,8 @@ services:
             default:
                 aliases: # Allow access without using the `-dev` or `-prod` suffix.
                     - milliner
+        environment:
+            MILLINER_FEDORA6: ${FEDORA_6}
     milliner-prod:
         <<: [*prod, *milliner]
         secrets: *secrets-jwt-public
