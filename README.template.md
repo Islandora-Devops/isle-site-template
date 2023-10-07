@@ -139,6 +139,7 @@ access all the services at the following URLs.
 | IDE        | https://ide.islandora.dev                 |
 | ActiveMQ   | https://activemq.islandora.dev            |
 | Blazegraph | https://blazegraph.islandora.dev/bigdata/ |
+| Cantaloupe | https://islandora.dev/cantaloupe          |
 | Fedora     | https://fcrepo.islandora.dev/fcrepo/rest/ |
 | Matomo     | https://islandora.dev/matomo/index.php    |
 | Solr       | https://solr.islandora.dev                |
