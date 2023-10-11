@@ -469,6 +469,7 @@ services:
         environment: &fcrepo-environment
             FCREPO_ALLOW_EXTERNAL_DEFAULT: "http://default/"
             FCREPO_ALLOW_EXTERNAL_DRUPAL: "https://islandora.dev/"
+            FCREPO_PERSISTENCE_TYPE: "mysql"
         labels: &fcrepo-labels
             <<: [*traefik-enable, *traefik-https-redirect-middleware]
             # Due to weird logic in `fcrepo/static/js/common.js`, do not use https
