@@ -296,7 +296,7 @@ git push
 # Next Steps
 
 Follow the rest of the instructions for setting up Islandora in
-README.md (formerly README.template.md).
+[README.md](./README.template.md) (formerly README.template.md).
 
 [.env]: .env
 [DockerHub]: https://hub.docker.com/
