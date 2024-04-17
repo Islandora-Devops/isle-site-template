@@ -46,6 +46,7 @@ This is the development and production infrastructure for INSTITUTION's SITE_NAM
 - [Docker 24.0+](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/linux/) **Already included in OSX with Docker**
 - [mkcert 1.4+](https://github.com/FiloSottile/mkcert) **Local Development only**
+- `wget` and `git`
 
 # Docker Compose
 
