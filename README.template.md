@@ -92,7 +92,7 @@ The Docker Compose file provided requires that you pull the non-buildable island
 images with the following command:
 
 ```bash
-docker compose --profile dev --profile prod pull --ignore-buildable --ignore-pull-failures
+docker compose --profile dev pull --ignore-buildable --ignore-pull-failures
 ```
 
 ## Running / Stoping / Destroying
