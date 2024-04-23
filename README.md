@@ -77,6 +77,7 @@ See the [customizations](#customizations) steps afterwards about removing unwant
 - [Docker 24.0+](https://docs.docker.com/get-docker/) **Referring to the Docker Engine version, not Docker Desktop**.
 - [Docker Compose](https://docs.docker.com/compose/install/linux/) **Already included in OSX with Docker**
 - [mkcert 1.4+](https://github.com/FiloSottile/mkcert)
+- `wget` and `git`
 ## Java and macOS
 
 mkcert seems to have problems when running on Java installed via Homebrew. 
