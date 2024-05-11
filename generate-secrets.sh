@@ -6,7 +6,6 @@
 set -euf -o pipefail
 
 PROGDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROGDIR="."
 readonly PROGDIR
 
 # Get the tag for the base image.

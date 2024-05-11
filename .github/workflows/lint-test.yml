@@ -5,7 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - run: shellcheck *.sh
+
       - uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: drupal/Dockerfile
@@ -16,22 +18,18 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, macos-13]
     steps:
       - uses: actions/checkout@v4
 
-      - name: install mkcert (windows)
-        if: matrix.os == 'windows-latest'
-        shell: powershell
-        run: Invoke-WebRequest -Uri "https://dl.filippo.io/mkcert/latest?for=windows/amd64" -OutFile "C:\Windows\System32\mkcert.exe"
-
       - name: install mkcert (ubuntu or macos)
-        if: matrix.os != 'windows-latest'
         shell: bash
         run: |-
           ARCH="linux/amd64"
           if [ "${{ matrix.os }}" = "macos-latest" ]; then
             ARCH="darwin/arm64"
+          elif [ "${{ matrix.os }}" = "macos-13" ]; then
+            ARCH="darwin/amd64"
           fi
 
           curl -JLO "https://dl.filippo.io/mkcert/latest?for=$ARCH"
