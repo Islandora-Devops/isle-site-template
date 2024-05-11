@@ -1,0 +1,47 @@
+name: lint-test
+on: [push]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: shellcheck *.sh
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: drupal/Dockerfile
+          verbose: true
+
+  test:
+    needs: [lint]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install mkcert (windows)
+        if: matrix.os == 'windows-latest'
+        shell: powershell
+        run: Invoke-WebRequest -Uri "https://dl.filippo.io/mkcert/latest?for=windows/amd64" -OutFile "C:\Windows\System32\mkcert.exe"
+
+      - name: install mkcert (ubuntu or macos)
+        if: matrix.os != 'windows-latest'
+        shell: bash
+        run: |-
+          ARCH="linux/amd64"
+          if [ "${{ matrix.os }}" = "macos-latest" ]; then
+            ARCH="darwin/arm64"
+          fi
+
+          curl -JLO "https://dl.filippo.io/mkcert/latest?for=$ARCH"
+          chmod +x mkcert-v*
+          cp mkcert-v* /usr/local/bin/mkcert
+
+      - name: generate-certs
+        shell: bash
+        run: ./generate-certs.sh
+
+      - name: generate-secrets
+        shell: bash
+        run: ./generate-secrets.sh
