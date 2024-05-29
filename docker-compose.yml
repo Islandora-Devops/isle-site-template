@@ -627,7 +627,7 @@ services:
             - label=type:container_runtime_t # Required for selinux to access the docker socket.
         volumes:
             - ./certs:/etc/ssl/traefik:Z,ro
-            - ./tls.yml:/etc/traefik/tls.yml:Z,ro
+            - ./dev-tls.yml:/etc/traefik/tls.yml:Z,ro
             - /var/run/docker.sock:/var/run/docker.sock:z
         networks:
             default:
@@ -664,6 +664,7 @@ services:
             --entryPoints.http.address=:80
             --entryPoints.https.address=:443
             --entrypoints.https.http.tls.certResolver=resolver
+            --providers.file.filename=/etc/traefik/tls.yml
             --providers.docker
             --providers.docker.network=default
             --providers.docker.exposedByDefault=false
@@ -677,6 +678,7 @@ services:
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:z,rw
             - ./certs:/acme:Z
+            - ./prod-tls.yml:/etc/traefik/tls.yml:Z,ro
         networks:
             default:
                 aliases:
