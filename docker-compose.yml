@@ -360,6 +360,10 @@ services:
             DRUPAL_DEFAULT_MATOMO_URL: "https://${DOMAIN}/matomo/"
             DRUPAL_DEFAULT_SITE_URL: "${DOMAIN}"
             DRUPAL_DRUSH_URI: "https://${DOMAIN}"
+            NGINX_REAL_IP_RECURSIVE: ${REVERSE_PROXY}
+            NGINX_SET_REAL_IP_FROM: ${FRONTEND_IP_1}
+            NGINX_SET_REAL_IP_FROM2: ${FRONTEND_IP_2}
+            NGINX_SET_REAL_IP_FROM3: ${FRONTEND_IP_3}
         labels:
             <<: [*traefik-enable, *traefik-https-redirect-middleware, *traefik-drupal-labels]
             traefik.http.routers.drupal_http.rule: &traefik-host-drupal-prod Host(`${DOMAIN}`)
@@ -663,6 +667,8 @@ services:
             --api.debug=false
             --entryPoints.http.address=:80
             --entryPoints.https.address=:443
+            --entryPoints.http.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
+            --entryPoints.https.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
             --entrypoints.https.http.tls.certResolver=resolver
             --providers.file.filename=/etc/traefik/tls.yml
             --providers.docker
