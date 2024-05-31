@@ -1,0 +1,34 @@
+name: Run tests
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      buildkit-tag:
+        description: "The isle-buildkit tag to pull for the fleet of docker containers"
+        required: true
+        type: string
+        default: 'main'
+      starter-site-ref:
+        description: "The islandora-starter-site ref to checkout (heads/BRANCH-NAME or tags/TAG-NAME)"
+        required: true
+        type: string
+        default: 'heads/main'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ISLANDORA_TAG: "${{ github.event.inputs.buildkit-tag }}"
+      ISLANDORA_STARTER_REF: "${{ github.event.inputs.starter-site-ref }}"
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: shellcheck tests/*.sh
+
+      - name: install mkcert
+        run: |-
+          curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
+          chmod +x mkcert-v*-linux-amd64
+          sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
+
+      - name: start islandora-starter-site
+        run: ./tests/init-template-starter.sh

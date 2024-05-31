@@ -102,7 +102,7 @@ function initialize_from_site_template {
   echo "Initializing from site template..."
   ref=$(choose_ref "${repo}")
   curl -L "${repo}/archive/${ref}.tar.gz" | tar -xz --strip-components=1
-  rm -fr .github setup.sh
+  rm -fr .github setup.sh tests
   git add .
   git commit -am "First commit, added isle-site-template."
 }
