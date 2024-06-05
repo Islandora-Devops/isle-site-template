@@ -142,7 +142,6 @@ access all the services at the following URLs.
 | Blazegraph | https://blazegraph.islandora.dev/bigdata/ |
 | Cantaloupe | https://islandora.dev/cantaloupe          |
 | Fedora     | https://fcrepo.islandora.dev/fcrepo/rest/ |
-| Matomo     | https://islandora.dev/matomo/index.php    |
 | Solr       | https://solr.islandora.dev                |
 | Traefik    | https://traefik.islandora.dev             |
 

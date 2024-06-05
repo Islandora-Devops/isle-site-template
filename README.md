@@ -62,7 +62,6 @@ configurations this template is set up for the following.
  - `fcrepo` is included by default.
  - `fits` is included by default.
  - `mariadb` is used for the backend database (rather than `postgresql`).
- - `matomo` is included by default.
  - `solr` is included by default.
  - etc.
 
