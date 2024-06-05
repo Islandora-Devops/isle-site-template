@@ -142,8 +142,8 @@ cd SITE-NAME
 
 At this point it should be an empty folder.
 
-2. Unpack this repository into that empty folder (using the latest release, or
-   the `main` branch).
+2. Unpack this repository into that empty folder, using the `main` branch (or the latest
+   release, if you [alter what comes after `refs`](https://docs.github.com/en/repositories/working-with-files/using-files/downloading-source-code-archives#source-code-archive-urls)).
 
 ```bash
 curl -L https://github.com/Islandora-Devops/isle-site-template/archive/refs/heads/main.tar.gz | tar -xz --strip-components=1
@@ -174,8 +174,9 @@ Just as this repository is not intended to be an upstream fork, neither is the
 [islandora-starter-site]. It is a starting point from which your institution
 will customize and manage Drupal for your Islandora installation.
 
-1. Unpack the [islandora-starter-site] using the latest release, or the `main`
-   branch (from the root of your repository).
+1. Unpack the [islandora-starter-site] using the `main` branch (or the latest
+   release, if you alter what comes after `refs`).
+   Run this command from the root of your repository.
 
 ```bash
 curl -L https://github.com/Islandora-Devops/islandora-starter-site/archive/refs/heads/main.tar.gz \
