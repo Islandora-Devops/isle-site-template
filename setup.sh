@@ -112,9 +112,8 @@ function initialize_from_starter_site {
   local ref
   echo "Initializing from starter site..."
   ref=$(choose_ref "${repo}")
-  wget \
-    -c "${repo}/archive/${ref}.tar.gz" \
-    -O - | tar --strip-components=1 -C drupal/rootfs/var/www/drupal -xz
+  curl -L "${repo}/archive/${ref}.tar.gz" \
+    | tar --strip-components=1 -C drupal/rootfs/var/www/drupal -xz
   rm -fr drupal/rootfs/var/www/drupal/.github
   git checkout drupal/rootfs/var/www/drupal/assets/patches/default_settings.txt
   git add .
