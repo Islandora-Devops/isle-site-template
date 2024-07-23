@@ -238,7 +238,7 @@ name. If you have multiple sites on the same host, these must be unique.
 COMPOSE_PROJECT_NAME=isle-site-template
 ```
 
-ISLANDORA_TAG tells Docker what version of [Isle Buildkit](https://github.com/Islandora-Devops/isle-buildkit) 
+`ISLANDORA_TAG` tells Docker what version of [Isle Buildkit](https://github.com/Islandora-Devops/isle-buildkit) 
 to use for the images. You should set this to the most 
 [recent release](https://github.com/Islandora-Devops/isle-buildkit/releases) number, 
 unless you have a reason to use older images.
