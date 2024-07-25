@@ -553,7 +553,7 @@ services:
             - drupal-prod
     traefik-dev: &traefik
         <<: [*dev, *common]
-        image: traefik:v2.11.6
+        image: traefik:v3.1.0
         command: >-
             --api.insecure=true
             --api.dashboard=true
