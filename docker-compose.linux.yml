@@ -2,7 +2,6 @@
 # authenticate against Github / use the Jetbrains for local development.
 # Platform specific for use on Linux hosts, and WSL.
 ---
-version: "3.8"
 services:
   ide:
     environment:
