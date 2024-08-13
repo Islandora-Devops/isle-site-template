@@ -2,10 +2,7 @@
 
 set -eou pipefail
 
-# install workbench
-git clone https://github.com/mjordan/islandora_workbench
-cd islandora_workbench
-docker build -t workbench:latest .
+docker pull jcorall/islandora-workbench:latest
 
 # setup a sample ingest
 git clone https://github.com/DonRichards/islandora_workbench_demo_content
@@ -22,10 +19,22 @@ docker run \
   --network="host" \
   -v "$(pwd)":/workbench \
   --name wb \
-  workbench:latest \
+  jcorall/islandora-workbench:latest \
   bash -lc "python3 workbench --config /workbench/islandora_workbench_demo_content/example_content.yml"
 
 # Wait for derivatives to be created
 sleep 30
 
-docker exec "$DRUPAL_CONTAINER" drush sqlq "SELECT filemime, COUNT(*) FROM file_managed GROUP BY filemime ORDER BY COUNT(*) DESC"
+docker exec "$DRUPAL_CONTAINER" drush sqlq "SELECT filemime, COUNT(*) FROM file_managed GROUP BY filemime ORDER BY COUNT(*)"
+
+SERVICES=(
+  "alpaca"
+  "crayfits"
+  "houdini"
+  "homarus"
+  "hypercube"
+)
+for SERVICE in "${SERVICES[@]}"; do
+  CONTAINER=$(docker container ls --format "{{ .Names }}" | grep "$SERVICE")
+  docker logs "$CONTAINER"
+done
