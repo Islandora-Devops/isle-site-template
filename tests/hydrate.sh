@@ -38,20 +38,34 @@ docker run \
 echo "Wait 120s for derivatives to be created"
 sleep 120
 
-docker container ls
+SERVICES=(
+  "alpaca"
+  "crayfits"
+  "houdini"
+  "homarus"
+  "hypercube"
+)
+for SERVICE in "${SERVICES[@]}"; do
+  CONTAINER=$(docker container ls --format "{{ .Names }}" | grep "$SERVICE")
+  docker logs "$CONTAINER"
+done
+
 # print all the files in the system by mimetype
-docker exec "$DRUPAL_CONTAINER" drush sqlq "SELECT filemime, COUNT(*) FROM file_managed GROUP BY filemime ORDER BY COUNT(*) DESC"
+FILE_COUNT=$(docker exec "$DRUPAL_CONTAINER" drush sqlq "SELECT filemime, COUNT(*) FROM file_managed GROUP BY filemime ORDER BY COUNT(*) DESC")
+echo "$FILE_COUNT"
 
 # make sure 21 OCR files were created
-OCR_FILES=$(docker exec "$DRUPAL_CONTAINER" drush sqlq "SELECT filemime, COUNT(*) FROM file_managed GROUP BY filemime ORDER BY COUNT(*) DESC" | grep "text/plain")
+OCR_FILES=$(echo "$FILE_COUNT" | grep "text/plain")
 if [ "$OCR_FILES" != "21" ]; then
   echo "Should be 21 OCR files"
   exit 1
 fi
 
 # print all the media use in the system
-docker exec "$DRUPAL_CONTAINER" drush sqlq "SELECT t.name, COUNT(*) FROM media__field_media_use u INNER JOIN taxonomy_term_field_data t ON t.tid = field_media_use_target_id GROUP BY tid"
-THUMBNAIL_MEDIA=$(docker exec "$DRUPAL_CONTAINER" drush sqlq "SELECT t.name, COUNT(*) FROM media__field_media_use u INNER JOIN taxonomy_term_field_data t ON t.tid = field_media_use_target_id GROUP BY tid" | grep Thumbnail | awk '{print $3}')
+MEDIA_COUNT=$(docker exec "$DRUPAL_CONTAINER" drush sqlq "SELECT t.name, COUNT(*) FROM media__field_media_use u INNER JOIN taxonomy_term_field_data t ON t.tid = field_media_use_target_id GROUP BY tid")
+echo "$MEDIA_COUNT"
+
+THUMBNAIL_MEDIA=$(echo "$MEDIA_COUNT" | grep Thumbnail | awk '{print $3}')
 if [ "$THUMBNAIL_MEDIA" != "36" ]; then
   echo "Should be 36 thumbnail images"
   exit 1
