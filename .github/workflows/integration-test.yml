@@ -35,6 +35,9 @@ jobs:
       - name: start islandora-starter-site
         run: ./tests/init-template-starter.sh
 
+      - name: hydrate from workbench
+        run: ./tests/hydrate.sh
+
       - name: Notify Slack on nightly test failure
         if: failure() && github.event_name == 'schedule'
         run: |-
