@@ -40,10 +40,6 @@ sleep 120
 
 SERVICES=(
   "alpaca"
-  "crayfits"
-  "houdini"
-  "homarus"
-  "hypercube"
 )
 for SERVICE in "${SERVICES[@]}"; do
   CONTAINER=$(docker container ls --format "{{ .Names }}" | grep "$SERVICE")
