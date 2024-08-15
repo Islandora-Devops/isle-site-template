@@ -138,12 +138,25 @@ services:
         depends_on:
             activemq-prod:
                 condition: service_started
-    crayfits:
-        <<: [*common]
+    crayfits-dev: &crayfits
+        <<: [*dev, *common]
         image: ${ISLANDORA_REPOSITORY}/crayfits:${ISLANDORA_TAG}
-    fits:
-        <<: [*common]
+        networks:
+            default:
+                aliases: # Allow access without using the `-dev` or `-prod` suffix.
+                    - crayfits
+    crayfits-prod:
+        <<: [*prod, *crayfits]
+        secrets: *secrets-jwt-public
+    fits-dev: &fits
+        <<: [*dev, *common]
         image: ${ISLANDORA_REPOSITORY}/fits:${ISLANDORA_TAG}
+        networks:
+            default:
+                aliases: # Allow access without using the `-dev` or `-prod` suffix.
+                    - fits
+    fits-prod:
+        <<: [*prod, *fits]
     homarus-dev: &homarus
         <<: [*dev, *common]
         image: ${ISLANDORA_REPOSITORY}/homarus:${ISLANDORA_TAG}
