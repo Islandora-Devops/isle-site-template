@@ -361,7 +361,7 @@ services:
             <<: [*drupal-environment]
             DEVELOPMENT_ENVIRONMENT: false
             DRUPAL_DEFAULT_CANTALOUPE_URL: "https://${DOMAIN}/cantaloupe/iiif/2"
-            DRUPAL_DEFAULT_FCREPO_URL: "https://fcrepo.${DOMAIN}/fcrepo/rest/"
+            DRUPAL_DEFAULT_FCREPO_URL: "http://fcrepo:8080/fcrepo/rest/"
             DRUPAL_DEFAULT_SITE_URL: "${DOMAIN}"
             DRUPAL_DRUSH_URI: "https://${DOMAIN}"
             NGINX_REAL_IP_RECURSIVE: ${REVERSE_PROXY}
