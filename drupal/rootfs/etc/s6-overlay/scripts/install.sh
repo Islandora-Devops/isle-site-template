@@ -21,7 +21,7 @@ function configure {
 function install {
     wait_for_service "${SITE}" db
     create_database "${SITE}"
-    drush --root=/var/www/drupal --uri="${DRUPAL_DRUSH_URI}" si -y --existing-config minimal --account-pass '${DRUPAL_DEFAULT_ACCOUNT_PASSWORD}'
+    install_site "${SITE}"
     wait_for_service "${SITE}" broker
     wait_for_service "${SITE}" fcrepo
     wait_for_service "${SITE}" fits
