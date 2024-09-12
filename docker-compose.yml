@@ -191,7 +191,7 @@ services:
         <<: [*dev, *common]
         image: ${ISLANDORA_REPOSITORY}/mariadb:${ISLANDORA_TAG}
         volumes:
-            - mariadb-data:/var/lib/mysql:Z,rw
+            - mariadb-data:/var/lib/mysql:rw
         networks:
             default:
                 aliases: # Allow access without using the `-dev` or `-prod` suffix.
@@ -227,7 +227,7 @@ services:
             traefik.http.services.activemq.loadbalancer.server.port: 8161
             traefik.subdomain: activemq
         volumes:
-            - activemq-data:/opt/activemq/data:Z,rw
+            - activemq-data:/opt/activemq/data:rw
         networks:
             default:
                 aliases: # Allow access without using the `-dev` or `-prod` suffix.
@@ -256,7 +256,7 @@ services:
             traefik.http.routers.blazegraph_https.tls: true
             traefik.http.services.blazegraph.loadbalancer.server.port: 8080
         volumes:
-            - blazegraph-data:/data:Z,rw
+            - blazegraph-data:/data:rw
         networks:
             default:
                 aliases: # Allow access without using the `-dev` or `-prod` suffix.
@@ -286,7 +286,7 @@ services:
             traefik.http.routers.cantaloupe_https.tls: true
             traefik.http.services.cantaloupe.loadbalancer.server.port: 8182
         volumes:
-            - cantaloupe-data:/data:Z,rw
+            - cantaloupe-data:/data:rw
         networks:
             default:
                 aliases: # Allow access without using the `-dev` or `-prod` suffix.
@@ -498,7 +498,7 @@ services:
             traefik.http.routers.fcrepo_https.tls: true
             traefik.http.services.fcrepo.loadbalancer.server.port: 8080
         volumes:
-            - fcrepo-data:/data:Z,rw
+            - fcrepo-data:/data:rw
         networks:
             default:
                 aliases: # Allow access without using the `-dev` or `-prod` suffix.
@@ -538,7 +538,7 @@ services:
             traefik.http.routers.solr_https.tls: true
             traefik.http.services.solr.loadbalancer.server.port: 8983
         volumes:
-            - solr-data:/data:Z,rw
+            - solr-data:/data:rw
             - type: volume
               source: drupal-solr-config
               target: /opt/solr/server/solr/default
