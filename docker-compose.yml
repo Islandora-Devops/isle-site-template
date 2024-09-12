@@ -236,9 +236,6 @@ services:
         <<: [*prod, *activemq]
         labels:
             <<: [*traefik-disable, *activemq-labels]
-            traefik.http.routers.activemq_http.rule: &traefik-host-activemq-prod Host(`activemq.${DOMAIN}`)
-            traefik.http.routers.activemq_https.rule: *traefik-host-activemq-prod
-            traefik.http.routers.activemq_https.tls.certresolver: *traefik-certresolver
         secrets:
             - source: ACTIVEMQ_PASSWORD
             - source: ACTIVEMQ_WEB_ADMIN_PASSWORD
@@ -265,9 +262,6 @@ services:
         <<: [*prod, *blazegraph]
         labels:
             <<: [*traefik-disable, *blazegraph-labels]
-            traefik.http.routers.blazegraph_http.rule: &traefik-host-blazegraph-prod Host(`blazegraph.${DOMAIN}`)
-            traefik.http.routers.blazegraph_https.rule: *traefik-host-blazegraph-prod
-            traefik.http.routers.blazegraph_https.tls.certresolver: *traefik-certresolver
     cantaloupe-dev: &cantaloupe
         <<: [*dev, *common]
         image: ${ISLANDORA_REPOSITORY}/cantaloupe:${ISLANDORA_TAG}
@@ -556,9 +550,6 @@ services:
         <<: [*prod, *solr]
         labels:
             <<: [*traefik-disable, *solr-labels]
-            traefik.http.routers.solr_http.rule: &traefik-host-solr-prod Host(`solr.${DOMAIN}`)
-            traefik.http.routers.solr_https.rule: *traefik-host-solr-prod
-            traefik.http.routers.solr_https.tls.certresolver: *traefik-certresolver
         # Ensure drupal mounts the shared volumes first.
         depends_on:
             - drupal-prod
@@ -653,15 +644,9 @@ services:
                 aliases:
                     # Allow services to connect on the same name/port as the outside.
                     - "${DOMAIN}" # Drupal is at the root domain.
-                    - "activemq.${DOMAIN}"
-                    - "blazegraph.${DOMAIN}"
                     - "fcrepo.${DOMAIN}"
-                    - "solr.${DOMAIN}"
         depends_on:
             # Sometimes traefik doesn't pick up on new containers so make sure
             # they are started before traefik.
-            - activemq-prod
-            - blazegraph-prod
             - drupal-prod
             - fcrepo-prod
-            - solr-prod
