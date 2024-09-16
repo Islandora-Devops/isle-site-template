@@ -25,6 +25,8 @@ cp ./tests/solr.php drupal/rootfs/var/www/drupal/
 
 docker compose --profile dev up -d
 
+docker compose --profile=dev logs -f drupal-dev &
+
 ./tests/ping.sh
 
 docker compose --profile dev exec drupal-dev drush scr solr.php
