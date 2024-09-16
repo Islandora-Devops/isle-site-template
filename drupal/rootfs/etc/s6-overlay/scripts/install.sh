@@ -1,6 +1,6 @@
 #!/command/with-contenv bash
 # shellcheck shell=bash
-set -e
+set -ex
 
 # shellcheck disable=SC1091
 source /etc/islandora/utilities.sh
