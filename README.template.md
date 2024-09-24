@@ -443,10 +443,7 @@ This is configured to use a HTTP based challenge and requires that the following
 replaced with the production sites domain.
 
 - ${DOMAIN}
-- activemq.${DOMAIN}
-- blazegraph.${DOMAIN}
 - fcrepo.${DOMAIN}
-- solr.${DOMAIN}
 
 Each of the above values should be set to the IP address of your production
 server.
