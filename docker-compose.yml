@@ -562,6 +562,7 @@ services:
             --api.debug=true
             --entryPoints.http.address=:80
             --entryPoints.https.address=:443
+            --entryPoints.https.transport.respondingTimeouts.readTimeout=60
             --entryPoints.ssh.address=:22
             --providers.file.filename=/etc/traefik/tls.yml
             --providers.docker=true
