@@ -320,6 +320,9 @@ services:
             DRUPAL_DEFAULT_PROFILE: "minimal"
             DRUPAL_DEFAULT_SITE_URL: "islandora.dev"
             DRUPAL_DEFAULT_SOLR_CORE: "default"
+            DRUPAL_DEFAULT_DB_DRIVER: "mysql"
+            DRUPAL_DEFAULT_DB_HOST: "mariadb"
+            DRUPAL_DEFAULT_DB_PORT: 3306
             DRUPAL_DRUSH_URI: "https://islandora.dev" # Used by docker/drupal/rootfs/usr/local/share/custom/install.sh
         volumes:
             # Allow code-server to serve Drupal / override it.
