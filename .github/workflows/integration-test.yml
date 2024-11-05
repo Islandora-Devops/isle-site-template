@@ -26,14 +26,30 @@ jobs:
 
       - run: shellcheck tests/*.sh
 
-      - name: install mkcert
+      - name: Install mkcert
         run: |-
           curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
           chmod +x mkcert-v*-linux-amd64
           sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
 
-      - name: start islandora-starter-site
+      - name: Start islandora-starter-site
         run: ./tests/init-template-starter.sh
+
+      - name: Collect logs for each service
+        if: ${{ always() }}
+        run: |
+          mkdir -p logs
+          services=$(docker compose --profile dev config --services)
+          for service in $services; do
+            docker compose --profile dev logs $service > "logs/${service}.log"
+          done
+
+      - name: Upload logs as artifacts
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-logs
+          path: logs/*.log
 
       - name: Notify Slack on nightly test failure
         if: failure() && github.event_name == 'schedule'
