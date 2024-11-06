@@ -10,8 +10,8 @@ while true; do
   fi
 
   ((COUNTER++))
-  if [ "${COUNTER}" -eq 75 ]; then
-    echo "Failed to come online after 6m"
+  if [ "${COUNTER}" -eq 50 ]; then
+    echo "Failed to come online after 4m"
     exit 1
   fi
   sleep 5;

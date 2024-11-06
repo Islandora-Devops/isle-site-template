@@ -46,6 +46,7 @@ jobs:
           for service in $services; do
             docker compose --profile dev logs $service > "logs/${service}.log"
           done
+          docker compose --profile dev exec mariadb-dev mysqldump drupal_default > logs/drupal_default.sql
 
       - name: Upload logs as artifacts
         if: ${{ always() }}
