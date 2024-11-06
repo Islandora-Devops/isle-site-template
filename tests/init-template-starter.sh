@@ -22,8 +22,10 @@ cp ./tests/solr.php drupal/rootfs/var/www/drupal/
 
 # until https://github.com/Islandora-Devops/isle-site-template/issues/46 closes
 # hack this
-if [[ "$(uname)" == "Linux" && -z "$SSH_AUTH_SOCK" ]]; then
-  eval "$(ssh-agent -s)"
+if [[ "$(uname)" == "Linux" ]]; then
+  if [ ! -v SSH_AUTH_SOCK ] || [ "$SSH_AUTH_SOCK" = "" ]; then
+    eval "$(ssh-agent -s)"
+  fi
 fi
 
 ./generate-certs.sh

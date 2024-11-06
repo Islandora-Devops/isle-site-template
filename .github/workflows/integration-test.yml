@@ -17,7 +17,10 @@ on:
     - cron: '15 11 * * *'
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04]
     env:
       ISLANDORA_TAG: "${{ github.event.inputs.buildkit-tag }}"
       ISLANDORA_STARTER_REF: "${{ github.event.inputs.starter-site-ref }}"
