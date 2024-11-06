@@ -10,11 +10,8 @@ while true; do
   fi
 
   ((COUNTER++))
-  if [ "${COUNTER}" -eq 25 ]; then
-    docker compose --profile dev restart drupal-dev
-  fi
-  if [ "${COUNTER}" -eq 50 ]; then
-    echo "Failed to come online after 4m"
+  if [ "${COUNTER}" -eq 75 ]; then
+    echo "Failed to come online after 6m"
     exit 1
   fi
   sleep 5;
