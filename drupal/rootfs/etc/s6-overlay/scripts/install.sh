@@ -20,13 +20,13 @@ function configure {
 
 function install {
     wait_for_service "${SITE}" db
-    create_database "${SITE}"
-    install_site "${SITE}"
     wait_for_service "${SITE}" broker
     wait_for_service "${SITE}" fcrepo
     wait_for_service "${SITE}" fits
     wait_for_service "${SITE}" solr
     wait_for_service "${SITE}" triplestore
+    create_database "${SITE}"
+    install_site "${SITE}"
     create_blazegraph_namespace_with_default_properties "${SITE}"
     if [[ "${DRUPAL_DEFAULT_FCREPO_URL}" == https* ]]; then
       # Certificates might need to be generated which can take a minute or more.
