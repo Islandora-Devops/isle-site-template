@@ -20,7 +20,7 @@ SALT_FILE="${PROGDIR}/secrets/DRUPAL_DEFAULT_SALT"
 readonly SALT_FILE
 if [ ! -f "${SALT_FILE}" ]; then
   echo "Creating: ${SALT_FILE}" >&2
-  (grep -ao '[A-Za-z0-9_-]' </dev/urandom || true) | head -74 | tr -d '\n' >"${SALT_FILE}"
+  docker run --rm -i --entrypoint bash "${BASE_IMAGE}" -c "(grep -ao '[A-Za-z0-9_-]' </dev/urandom || true) | head -74 | tr -d '\n'" >"${SALT_FILE}"
 fi
 
 # Use openssl to generate certificates.
@@ -57,7 +57,7 @@ done < \
 for secret in "${SECRETS[@]}"; do
   if [ ! -f "${secret}" ]; then
     echo "Creating: ${secret}" >&2
-    (grep -ao "${CHARACTERS}" </dev/urandom || true) | head "-${LENGTH}" | tr -d '\n' >"${secret}"
+    docker run --rm -i --entrypoint bash "${BASE_IMAGE}" -c "(grep -ao '${CHARACTERS}' </dev/urandom || true) | head '-${LENGTH}' | tr -d '\n'" >"${secret}"
   fi
 done
 
