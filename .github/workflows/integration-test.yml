@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: docker-logs
-          path: logs/*.log
+          path: logs/*.(sql|log)
 
       - name: Notify Slack on nightly test failure
         if: failure() && github.event_name == 'schedule'
