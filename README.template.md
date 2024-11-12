@@ -28,6 +28,7 @@
       - [OSX and Linux](#osx-and-linux-2)
   - [Upgrading Isle Docker Images](#upgrading-isle-docker-images)
   - [Drupal Development](#drupal-development)
+    - [Pushing code changes](#pushing-code-changes)
 - [Production](#production)
   - [Generate secrets](#generate-secrets)
   - [Production Domain](#production-domain)
@@ -404,6 +405,21 @@ the Drupal Docker image, see [building](#building) for how.
 > development in a production environment is not supported. The production site
 > should be fairly locked down, and only permit changes to content and not
 > configuration.
+
+### Pushing code changes
+
+The [IDE] configured for local development receives its identity from the host system using `ssh-agent`. This is how you are able to `git push` from within the IDE container to a remote git origin (e.g. GitHub). Depending on whether the host is [Mac OS or Linux the docker compose overrides](#override) can be seen in the respective override file on how the host identity is propagated into the IDE container.
+
+> [!WARNING]
+> If ssh-agent is not configured properly on your host, code changes made in the IDE may be lost
+>
+> For linux host systems such as Debian or Ubuntu 24+ an environment variable `SSH_AUTH_SOCK` (set by `ssh-agent`) needs to be available in order to pass the host system's SSH identity into the IDE container. If this environment variable is not set (which can be checked on the host by seeing if `echo $SSH_AUTH_SOCK` prints output) it will need to be configured on your host system in order to allow the IDE to `git push` code changes to remote git origins. One possible solution to set this is to add this to your shell's login profile. e.g.
+>
+>```
+>echo 'eval $(ssh-agent -s)' >> ~/.bashrc
+>```
+
+After ensuring `SSH_AUTH_SOCK` is set properly, you will need to restart the codeserver service to pickup the changes. Then you should be able to push changes made in your IDE to a remote git origin.
 
 # Production
 
