@@ -408,7 +408,7 @@ the Drupal Docker image, see [building](#building) for how.
 
 ### Pushing code changes
 
-The [IDE] configured for local development receives its identity from the host system using `ssh-agent`. This is how you are able to `git push` from within the IDE container to a remote git origin (e.g. GitHub). Depending on whether the host is [Mac OS or Linux the docker compose overrides](##docker-compose) can be seen in the respective override file on how the host identity is propagated into the IDE container.
+The [IDE] configured for local development receives its identity from the host system using `ssh-agent`. This is how you are able to `git push` from within the IDE container to a remote git origin (e.g. GitHub). Depending on whether the host is [Mac OS or Linux the docker compose overrides](#docker-compose) can be seen in the respective override file on how the host identity is propagated into the IDE container.
 
 > [!WARNING]
 > If ssh-agent is not configured properly on your host, code changes made in the IDE may be lost
