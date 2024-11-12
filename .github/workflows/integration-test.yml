@@ -17,7 +17,10 @@ on:
     - cron: '15 11 * * *'
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04]
     env:
       ISLANDORA_TAG: "${{ github.event.inputs.buildkit-tag }}"
       ISLANDORA_STARTER_REF: "${{ github.event.inputs.starter-site-ref }}"
@@ -43,13 +46,14 @@ jobs:
           for service in $services; do
             docker compose --profile dev logs $service > "logs/${service}.log"
           done
+          docker compose --profile dev exec mariadb-dev mysqldump drupal_default > logs/drupal_default.sql
 
       - name: Upload logs as artifacts
         if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
           name: docker-logs
-          path: logs/*.log
+          path: logs/*
 
       - name: Notify Slack on nightly test failure
         if: failure() && github.event_name == 'schedule'
@@ -59,3 +63,4 @@ jobs:
           }'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
