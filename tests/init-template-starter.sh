@@ -23,6 +23,7 @@ cp ./tests/solr.php drupal/rootfs/var/www/drupal/
 ./generate-certs.sh
 ./generate-secrets.sh
 
+docker compose --profile dev build --pull
 docker compose --profile dev up -d
 
 ./tests/ping.sh
