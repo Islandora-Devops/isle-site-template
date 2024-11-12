@@ -8,6 +8,11 @@ source /etc/islandora/utilities.sh
 readonly SITE="default"
 
 function configure {
+    # Work around for when the cache is in a bad state, as Drush will access
+    # the cache before rebuilding it for some dumb reason, preventing
+    # Drush from being able to clear it.
+    local params=$(/var/www/drupal/web/core/scripts/rebuild_token_calculator.sh 2>/dev/null)
+    curl -L "${DRUPAL_DRUSH_URI}/core/rebuild.php?${params}"
     # Starter site post install steps.
     drush --root=/var/www/drupal --uri="${DRUPAL_DRUSH_URI}" cache:rebuild
     drush --root=/var/www/drupal --uri="${DRUPAL_DRUSH_URI}" user:role:add fedoraadmin admin
