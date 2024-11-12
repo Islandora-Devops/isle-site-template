@@ -7,11 +7,11 @@
 - [Docker Compose](#docker-compose)
   - [Override](#override)
   - [Building](#building)
-  - [Pulling](#pulling)
+  - [Pulling Docker Images](#pulling-docker-images)
   - [Running / Stoping / Destroying](#running--stoping--destroying)
     - [Development Profile](#development-profile)
     - [Production Profile](#production-profile)
-  - [Pushing](#pushing)
+  - [Pushing Docker Images](#pushing-docker-images)
     - [Local Registry](#local-registry)
     - [Remote Registry](#remote-registry)
 - [Development](#development)
@@ -82,7 +82,7 @@ cause it is left as an exercise to the reader.
 You can build your development environment locally using `docker compose`:
 
 ```bash
-docker compose --profile dev build
+docker compose --profile dev build --pull
 ```
 
 This builds the Drupal image so that it contains the Starter Site files that you downloaded locally earlier.
@@ -203,7 +203,7 @@ This can be done with the assistance of [isle-builder] repository.
 Now you can perform the build locally by pushing to the local registry:
 
 ```bash
-REPOSITORY=islandora.io docker buildx bake --builder isle-builder --push
+REPOSITORY=islandora.io docker buildx bake --pull --builder isle-builder --push
 ```
 
 > N.B. If you **do not** override `REPOSITORY` environment variable, the value
@@ -238,7 +238,7 @@ If you do need produce multi-platform images, you'll need to setup a builder
 which is covered under the [Local Registry](#local-registry) section.
 
 ```bash
-docker buildx bake --builder isle-builder --push
+docker buildx bake --pull --builder isle-builder --push
 ```
 
 > N.B. In this example `REPOSITORY` **is not** overridden, so the value provided

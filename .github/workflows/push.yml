@@ -35,5 +35,6 @@ jobs:
           rm -fr drupal/rootfs/var/www/drupal/.github
           git checkout drupal/rootfs/var/www/drupal/assets/patches/default_settings.txt
           REPOSITORY=islandora TAG=latest docker buildx bake \
+            --pull \
             --builder "${{ steps.buildx.outputs.name }}" \
             --push
