@@ -26,6 +26,9 @@ cp ./tests/solr.php drupal/rootfs/var/www/drupal/
 docker compose --profile dev build --pull
 docker compose --profile dev up -d
 
+echo "Waiting for installation..."
+docker compose  --profile dev exec drupal-dev timeout 600 bash -c "while ! test -f /installed; do sleep 5; done"
+
 ./tests/ping.sh
 
 docker compose --profile dev exec drupal-dev drush scr solr.php
