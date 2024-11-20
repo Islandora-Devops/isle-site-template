@@ -4,7 +4,7 @@ COUNTER=0
 while true; do
   HTTP_STATUS=$(curl -w '%{http_code}' -o /dev/null -s https://islandora.dev/)
   echo "Ping returned http status ${HTTP_STATUS}, exit code $?"
-  if [ "${HTTP_STATUS}" -eq 200 ] || [ "${HTTP_STATUS}" -eq 302 ]; then
+  if [ "${HTTP_STATUS}" -eq 200 ]; then
     echo "We're live 🚀"
     exit 0
   fi

@@ -8,8 +8,13 @@ on:
         required: true
         type: string
         default: 'main'
+      starter-site-owner:
+        description: "The GitHub org the starter site resides in"
+        required: true
+        type: string
+        default: 'Islandora-Devops'
       starter-site-ref:
-        description: "The islandora-starter-site ref to checkout (heads/BRANCH-NAME or tags/TAG-NAME)"
+        description: "The islandora-starter-site git ref to checkout (heads/BRANCH-NAME or tags/TAG-NAME)"
         required: true
         type: string
         default: 'heads/main'
@@ -23,6 +28,7 @@ jobs:
         os: [ubuntu-22.04, ubuntu-24.04]
     env:
       ISLANDORA_TAG: "${{ github.event.inputs.buildkit-tag }}"
+      ISLANDORA_STARTER_OWNER: "${{ github.event.inputs.starter-site-owner }}"
       ISLANDORA_STARTER_REF: "${{ github.event.inputs.starter-site-ref }}"
     steps:
       - uses: actions/checkout@v4
