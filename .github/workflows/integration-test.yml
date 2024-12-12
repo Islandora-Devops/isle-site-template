@@ -58,7 +58,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: docker-logs
+          name: docker-logs-${{ matrix.os }}
           path: logs/*
 
       - name: Notify Slack on nightly test failure
