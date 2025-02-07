@@ -130,14 +130,14 @@ services:
                     - alpaca
         depends_on:
             activemq-dev:
-                condition: service_started
+                condition: service_healthy
     alpaca-prod:
         <<: [*prod, *alpaca]
         secrets:
             - source: ALPACA_JMS_PASSWORD
         depends_on:
             activemq-prod:
-                condition: service_started
+                condition: service_healthy
     crayfits-dev: &crayfits
         <<: [*dev, *common]
         image: ${ISLANDORA_REPOSITORY}/crayfits:${ISLANDORA_TAG}
@@ -499,7 +499,7 @@ services:
                     - fcrepo
         depends_on:
             activemq-dev:
-                condition: service_started
+                condition: service_healthy
     fcrepo-prod:
         <<: [*prod, *fcrepo]
         environment:
@@ -517,7 +517,7 @@ services:
             - source: JWT_PUBLIC_KEY
         depends_on:
             activemq-prod:
-                condition: service_started
+                condition: service_healthy
     solr-dev: &solr
         <<: [*dev, *common]
         image: ${ISLANDORA_REPOSITORY}/solr:${ISLANDORA_TAG}
@@ -545,14 +545,16 @@ services:
                     - solr
         # Ensure drupal mounts the shared volumes first.
         depends_on:
-            - drupal-dev
+            drupal-dev:
+                condition: service_healthy
     solr-prod:
         <<: [*prod, *solr]
         labels:
             <<: [*traefik-disable, *solr-labels]
         # Ensure drupal mounts the shared volumes first.
         depends_on:
-            - drupal-prod
+            drupal-prod:
+                condition: service_healthy
     traefik-dev: &traefik
         <<: [*dev, *common]
         image: traefik:v3.1.0
@@ -560,6 +562,7 @@ services:
             --api.insecure=true
             --api.dashboard=true
             --api.debug=true
+            --ping=true
             --entryPoints.http.address=:80
             --entryPoints.https.address=:443
             --entryPoints.https.transport.respondingTimeouts.readTimeout=60
@@ -588,6 +591,8 @@ services:
             - ./certs:/etc/ssl/traefik:Z,ro
             - ./dev-tls.yml:/etc/traefik/tls.yml:Z,ro
             - /var/run/docker.sock:/var/run/docker.sock:z
+        healthcheck:
+            test: traefik healthcheck --ping
         networks:
             default:
                 aliases:
@@ -601,12 +606,18 @@ services:
         depends_on:
             # Sometimes traefik doesn't pick up on new containers so make sure
             # they are started before traefik.
-            - activemq-dev
-            - blazegraph-dev
-            - drupal-dev
-            - fcrepo-dev
-            - solr-dev
-            - ide
+            activemq-dev:
+                condition: service_healthy
+            blazegraph-dev:
+                condition: service_started
+            drupal-dev:
+                condition: service_healthy
+            fcrepo-dev:
+                condition: service_healthy
+            solr-dev:
+                condition: service_healthy
+            ide:
+                condition: service_healthy
     traefik-prod:
         <<: [*prod, *traefik]
         # Change caServer to use the staging server when testing changes to the Traefik.
@@ -620,6 +631,7 @@ services:
             --api.insecure=false
             --api.dashboard=false
             --api.debug=false
+            --ping=true
             --entryPoints.http.address=:80
             --entryPoints.https.address=:443
             --entryPoints.http.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
@@ -649,5 +661,7 @@ services:
         depends_on:
             # Sometimes traefik doesn't pick up on new containers so make sure
             # they are started before traefik.
-            - drupal-prod
-            - fcrepo-prod
+            drupal-prod:
+                condition: service_healthy
+            fcrepo-prod:
+                condition: service_healthy
