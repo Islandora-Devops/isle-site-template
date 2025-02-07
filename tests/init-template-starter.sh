@@ -5,6 +5,7 @@ set -eou pipefail
 ISLANDORA_STARTER_REF="${ISLANDORA_STARTER_REF:=heads/main}"
 ISLANDORA_STARTER_OWNER="${ISLANDORA_STARTER_OWNER:=islandora-devops}"
 ISLANDORA_TAG="${ISLANDORA_TAG:=main}"
+GITHUB_ACTIONS="${GITHUB_ACTIONS:=false}"
 
 # allow passing "destroy" to this script to cleanup past runs locally
 if [ $# -eq 1 ] && [ "$1" = "destroy" ]; then
@@ -37,4 +38,6 @@ docker compose --profile dev exec drupal-dev timeout 600 bash -c "while ! test -
 
 docker compose --profile dev exec drupal-dev drush scr solr.php
 
-docker compose --profile dev down
+if [ "$GITHUB_ACTIONS" = "false" ]; then
+  docker compose --profile dev down
+fi
