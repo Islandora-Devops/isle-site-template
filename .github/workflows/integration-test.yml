@@ -70,3 +70,6 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
+      - name: cleanup
+        if: ${{ always() }}
+        run: docker compose --profile dev down
