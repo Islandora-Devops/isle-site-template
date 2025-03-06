@@ -108,8 +108,8 @@ function create_repository {
 
 function get_refs {
   local repository="${1}"
-  # List available tags (only interested in main branch if there are no tags).
-  git ls-remote --sort=-version:refname "${repository}" 'refs/tags/*' | cut -f2 || echo "refs/heads/main"
+  echo "refs/heads/main" # Only interested in the main branch.
+  git ls-remote --sort=-version:refname "${repository}" 'refs/tags/*' | cut -f2
 }
 
 function choose_ref {
