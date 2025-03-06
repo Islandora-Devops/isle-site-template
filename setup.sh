@@ -125,7 +125,7 @@ function choose_ref {
   done
   PS3="Choose a branch/tag from ${repository##*/}: "
   select ref in "${display[@]}"; do
-    echo "${refs[$REPLY - 1]##*/}"
+    echo "${refs[$REPLY - 1]}"
     return
   done
 }
