@@ -8,8 +8,32 @@ GREEN=$(tput setaf 2)
 BLUE=$(tput setaf 6)
 readonly RESET RED GREEN BLUE
 
-# For some commands we must invoke a Windows executable if in the context of
-# WSL.
+# Parse flags
+BUILDKIT_TAG=""
+STARTER_SITE_BRANCH=""
+SITE_NAME=""
+
+for arg in "$@"; do
+  case $arg in
+    --buildkit-tag=*)
+      BUILDKIT_TAG="${arg#*=}"
+      shift
+      ;;
+    --starter-site-branch=*)
+      STARTER_SITE_BRANCH="${arg#*=}"
+      shift
+      ;;
+    --site-name=*)
+      SITE_NAME="${arg#*=}"
+      shift
+      ;;
+    *)
+      # Unknown option; ignore or handle as needed.
+      ;;
+  esac
+done
+
+# For some commands we must invoke a Windows executable if in the context of WSL.
 IS_WSL=$(grep -q WSL /proc/version 2>/dev/null && echo "true" || echo "false")
 readonly IS_WSL
 if [[ "${IS_WSL}" == "true" ]]; then
@@ -55,6 +79,16 @@ function valid_repository_name {
 }
 
 function get_repository_name {
+  # If SITE_NAME flag is provided, use it.
+  if [[ -n "${SITE_NAME}" ]]; then
+    if ! valid_repository_name "${SITE_NAME}"; then
+      echo "Invalid repository name ${SITE_NAME} (Only alpha-numeric, underscores, and hyphens allowed)"
+      exit 1
+    fi
+    echo "${SITE_NAME}"
+    return
+  fi
+  # Otherwise prompt the user.
   read -r -p "Please enter a name for your new git repository: " name
   if ! valid_repository_name "${name}"; then
     echo "Invalid repository name ${name} (Only alpha-numeric, underscores, and hyphens allowed)"
@@ -74,8 +108,8 @@ function create_repository {
 
 function get_refs {
   local repository="${1}"
-  echo "refs/heads/main" # Only interested in the main branch.
-  git ls-remote --sort=-version:refname "${repository}" 'refs/tags/*' | cut -f2
+  # List available tags (only interested in main branch if there are no tags).
+  git ls-remote --sort=-version:refname "${repository}" 'refs/tags/*' | cut -f2 || echo "refs/heads/main"
 }
 
 function choose_ref {
@@ -91,7 +125,7 @@ function choose_ref {
   done
   PS3="Choose a branch/tag from ${repository##*/}: "
   select ref in "${display[@]}"; do
-    echo "${refs[$REPLY - 1]}"
+    echo "${refs[$REPLY - 1]##*/}"
     return
   done
 }
@@ -100,7 +134,12 @@ function initialize_from_site_template {
   local repo="https://github.com/Islandora-Devops/isle-site-template"
   local ref
   echo "Initializing from site template..."
-  ref=$(choose_ref "${repo}")
+  # Use --buildkit-tag flag if provided; otherwise, prompt.
+  if [[ -n "${BUILDKIT_TAG}" ]]; then
+    ref="${BUILDKIT_TAG}"
+  else
+    ref=$(choose_ref "${repo}")
+  fi
   curl -L "${repo}/archive/${ref}.tar.gz" | tar -xz --strip-components=1
   rm -fr .github setup.sh tests
   git add .
@@ -111,7 +150,12 @@ function initialize_from_starter_site {
   local repo="https://github.com/Islandora-Devops/islandora-starter-site"
   local ref
   echo "Initializing from starter site..."
-  ref=$(choose_ref "${repo}")
+  # Use --starter-site-branch flag if provided; otherwise, prompt.
+  if [[ -n "${STARTER_SITE_BRANCH}" ]]; then
+    ref="${STARTER_SITE_BRANCH}"
+  else
+    ref=$(choose_ref "${repo}")
+  fi
   curl -L "${repo}/archive/${ref}.tar.gz" \
     | tar --strip-components=1 -C drupal/rootfs/var/www/drupal -xz
   rm -fr drupal/rootfs/var/www/drupal/.github
@@ -153,4 +197,5 @@ EOT
     exit 1
   fi
 }
+
 main
