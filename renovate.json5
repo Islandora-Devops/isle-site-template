@@ -1,17 +1,10 @@
 {
-  "branchPrefix": "renovate.",
   extends: [
     'config:best-practices',
     ':rebaseStalePrs',
     'customManagers:dockerfileVersions',
   ],
   packageRules: [
-    {
-      matchDatasources: [
-        'repology',
-      ],
-      versioning: 'loose',
-    },
     {
       matchUpdateTypes: [
         'minor',
@@ -20,7 +13,7 @@
       ],
       groupName: 'all non-major dependencies',
       schedule: [
-        'after 10pm on Friday',
+        '* 20 * * 5',
       ],
       matchPackageNames: [
         '*',
@@ -32,7 +25,7 @@
       ],
       groupName: null,
       schedule: [
-        'after 10pm on the first day of the month',
+        '* 20 1-7 * 5',
       ],
       matchPackageNames: [
         '*',
@@ -48,4 +41,3 @@
     enabled: true,
   },
 }
-
