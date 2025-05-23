@@ -28,7 +28,6 @@
       - [OSX and Linux](#osx-and-linux-2)
   - [Upgrading Isle Docker Images](#upgrading-isle-docker-images)
   - [Drupal Development](#drupal-development)
-    - [Pushing code changes](#pushing-code-changes)
 - [Production](#production)
   - [Generate secrets](#generate-secrets)
   - [Production Domain](#production-domain)
@@ -56,8 +55,6 @@ There are a number of `docker-compose.yml` files provided by this repository:
 | File                                                       | Description                                                                                           |
 | :--------------------------------------------------------- | :---------------------------------------------------------------------------------------------------- |
 | [docker-compose.yml](docker-compose.yml)                   | Defines all development & production services.                                                        |
-| [docker-compose.darwin.yml](docker-compose.darwin.yml)     | MacOS platform specific customizations to allow access to host `SSH_AGENT`. For development use only. |
-| [docker-compose.linux.yml](docker-compose.linux.yml)       | Linux platform specific customizations to allow access to host `SSH_AGENT`. For development use only. |
 | [docker-compose.override.yml](docker-compose.override.yml) | Customizations for local development environment.                                                     |
 | [docker-compose.registry.yml](docker-compose.registry.yml) | Used for creating a local registry for testing multi-arch builds, etc. Can typically be ignored.      |
 
@@ -66,17 +63,8 @@ There are a number of `docker-compose.yml` files provided by this repository:
 This git repository does not track `docker-compose.override.yml` which will 
 be included in all `docker compose` commands you invoke.
 
-Two platform dependent templates that allow for access to the hosts `SSH agent`
-are provided for `development` environments.
-
-Simply copy the appropriate* `docker-compose.PLATFORM.yml` file into
-`docker-compose.override.yml`, on your development machine.
-
-Any additional changes that are for your local / development environment can
+Any changes that are for your local / development environment can
 then be added to `docker-compose.override.yml`. Because they're not tracked...
-
-Unfortunately getting OpenSSH working is complicated on Windows machines, so in that 
-cause it is left as an exercise to the reader.
 
 ## Building
 
@@ -138,7 +126,6 @@ access all the services at the following URLs.
 | Service    | URL                                       |
 | :--------- | :---------------------------------------- |
 | Drupal     | https://islandora.dev                     |
-| IDE        | https://ide.islandora.dev                 |
 | ActiveMQ   | https://activemq.islandora.dev            |
 | Blazegraph | https://blazegraph.islandora.dev/bigdata/ |
 | Cantaloupe | https://islandora.dev/cantaloupe          |
@@ -381,8 +368,8 @@ Of course **make backups** before deploying to production and test thoroughly.
 
 ## Drupal Development
 
-For local development via the [development profile], an [IDE] is provided which
-can also support the use of [PHPStorm].
+For local development via the [development profile], you can use your host IDE of choice
+to make edits to the drupal codebase at `./drupal/rootfs/var/www/drupal`.
 
 There are a number of bind mounted directories and changes made in the following
 files & folders will persist in this Git repository.
@@ -405,21 +392,6 @@ the Drupal Docker image, see [building](#building) for how.
 > development in a production environment is not supported. The production site
 > should be fairly locked down, and only permit changes to content and not
 > configuration.
-
-### Pushing code changes
-
-The [IDE] configured for local development receives its identity from the host system using `ssh-agent`. This is how you are able to `git push` from within the IDE container to a remote git origin (e.g. GitHub). Depending on whether the host is [Mac OS or Linux the docker compose overrides](#docker-compose) can be seen in the respective override file on how the host identity is propagated into the IDE container.
-
-> [!WARNING]
-> If ssh-agent is not configured properly on your host, code changes made in the IDE may be lost
->
-> For linux host systems such as Debian or Ubuntu 24+ an environment variable `SSH_AUTH_SOCK` (set by `ssh-agent`) needs to be available in order to pass the host system's SSH identity into the IDE container. If this environment variable is not set (which can be checked on the host by seeing if `echo $SSH_AUTH_SOCK` prints output) it will need to be configured on your host system in order to allow the IDE to `git push` code changes to remote git origins. One possible solution to set this is to add this to your shell's login profile. e.g.
->
->```
->echo 'eval $(ssh-agent -s)' >> ~/.bashrc
->```
-
-After ensuring `SSH_AUTH_SOCK` is set properly, you will need to restart the codeserver service to pickup the changes. Then you should be able to push changes made in your IDE to a remote git origin.
 
 # Production
 
@@ -529,7 +501,6 @@ for more details.
 [DockerHub]: https://hub.docker.com/
 [generate-certs.sh]: ./generate-certs.sh
 [generate-secrets.sh]: ./generate-secrets.sh
-[IDE]: https://github.com/Islandora-Devops/isle-buildkit#ide
 [isle-builder]: https://github.com/Islandora-Devops/isle-builder
 [lets-encrypt]: https://letsencrypt.org/
 [mkcert]: https://github.com/FiloSottile/mkcert
