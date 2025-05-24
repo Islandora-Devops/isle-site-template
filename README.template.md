@@ -64,7 +64,7 @@ This git repository does not track `docker-compose.override.yml` which will
 be included in all `docker compose` commands you invoke.
 
 Any changes that are for your local / development environment can
-then be added to `docker-compose.override.yml`. Because they're not tracked...
+be added to `docker-compose.override.yml` because that file is not under version control.
 
 ## Building
 
