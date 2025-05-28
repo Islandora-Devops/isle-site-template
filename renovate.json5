@@ -1,0 +1,58 @@
+{
+  extends: [
+    'config:best-practices',
+    ':rebaseStalePrs',
+    'customManagers:dockerfileVersions',
+  ],
+  packageRules: [
+    {
+      matchUpdateTypes: [
+        'minor',
+        'patch',
+        'digest',
+      ],
+      groupName: 'all non-major dependencies',
+      schedule: [
+        '* 20 * * 5',
+      ],
+      matchPackageNames: [
+        '*',
+      ],
+    },
+    {
+      matchUpdateTypes: [
+        'major',
+      ],
+      groupName: null,
+      schedule: [
+        '* 20 1-7 * 5',
+      ],
+      matchPackageNames: [
+        '*',
+      ],
+    },
+  ],
+  customManagers: [
+    {
+      customType: 'regex',
+      description: 'Update isle-buildkit tag',
+      fileMatch: [
+        '/^\\.env$/',
+      ],
+      matchStrings: [
+        'ISLANDORA_TAG=(?<currentValue>[\\d\\.]+)'
+      ],
+      datasourceTemplate: 'github-releases',
+      packageNameTemplate: 'Islandora-Devops/isle-buildkit',
+      versioningTemplate: 'semver',
+    },
+  ],
+  labels: [
+    'dependencies',
+  ],
+  osvVulnerabilityAlerts: true,
+  dependencyDashboardOSVVulnerabilitySummary: 'unresolved',
+  vulnerabilityAlerts: {
+    enabled: true,
+  },
+}

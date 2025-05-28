@@ -1,25 +1,25 @@
 name: Run tests
 on:
-  pull_request:
+  push:
   workflow_dispatch:
     inputs:
       buildkit-tag:
         description: "The isle-buildkit tag to pull for the fleet of docker containers"
         required: true
         type: string
-        default: 'main'
+        default: "main"
       starter-site-owner:
         description: "The GitHub org the starter site resides in"
         required: true
         type: string
-        default: 'Islandora-Devops'
+        default: "Islandora-Devops"
       starter-site-ref:
         description: "The islandora-starter-site git ref to checkout (heads/BRANCH-NAME or tags/TAG-NAME)"
         required: true
         type: string
-        default: 'heads/main'
+        default: "heads/main"
   schedule:
-    - cron: '15 11 * * *'
+    - cron: "15 11 * * *"
 jobs:
   build:
     runs-on: ${{ matrix.os }}
