@@ -36,11 +36,11 @@
     {
       customType: 'regex',
       description: 'Update isle-buildkit tag',
-      fileMatch: [
-        '/^\\.env$/',
+      managerFilePatterns: [
+        '//^\\.env$//',
       ],
       matchStrings: [
-        'ISLANDORA_TAG=(?<currentValue>[\\d\\.]+)'
+        'ISLANDORA_TAG=(?<currentValue>[\\d\\.]+)',
       ],
       datasourceTemplate: 'github-releases',
       packageNameTemplate: 'Islandora-Devops/isle-buildkit',
