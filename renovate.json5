@@ -2,7 +2,6 @@
   extends: [
     'config:best-practices',
     ':rebaseStalePrs',
-    'customManagers:dockerfileVersions',
   ],
   packageRules: [
     {
@@ -37,7 +36,7 @@
       customType: 'regex',
       description: 'Update isle-buildkit tag',
       managerFilePatterns: [
-        '//^\\.env$//',
+        '/^\\.env$/',
       ],
       matchStrings: [
         'ISLANDORA_TAG=(?<currentValue>[\\d\\.]+)',
