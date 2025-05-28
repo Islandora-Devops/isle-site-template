@@ -54,14 +54,10 @@ volumes:
     activemq-data: {}
     blazegraph-data: {}
     cantaloupe-data: {}
-    code-server-data: {}
     drupal-private-files: {}
     drupal-public-files: {}
-    drupal-root: {}
     drupal-solr-config: {}
     fcrepo-data: {}
-    jetbrains-cache: {}
-    jetbrains-config: {}
     mariadb-data: {}
     solr-data: {}
 
@@ -321,13 +317,12 @@ services:
             DRUPAL_DEFAULT_SITE_URL: "islandora.dev"
             DRUPAL_DEFAULT_SOLR_CORE: "default"
             DRUPAL_DRUSH_URI: "https://islandora.dev" # Used by docker/drupal/rootfs/usr/local/share/custom/install.sh
+        labels:
+            <<: [*traefik-enable, *traefik-https-redirect-middleware, *traefik-drupal-labels]
+            traefik.http.routers.drupal_http.rule: &traefik-host-drupal-prod Host(`${DOMAIN}`)
+            traefik.http.routers.drupal_https.rule: *traefik-host-drupal-prod
+            traefik.http.routers.drupal_https.tls.certresolver: *traefik-certresolver
         volumes:
-            # Allow code-server to serve Drupal / override it.
-            - &drupal-root
-              type: volume
-              source: drupal-root
-              target: /var/www/drupal
-              read_only: false
             - &drupal-public-files
               type: volume
               source: drupal-public-files
@@ -338,12 +333,12 @@ services:
               source: drupal-private-files
               target: /var/www/drupal/private
               read_only: false
-            - &drupal-assets ./drupal/rootfs/var/www/drupal/assets:/var/www/drupal/assets:z,rw,${CONSISTENCY}
-            - &drupal-composer-json ./drupal/rootfs/var/www/drupal/composer.json:/var/www/drupal/composer.json:z,rw,${CONSISTENCY}
-            - &drupal-composer-lock ./drupal/rootfs/var/www/drupal/composer.lock:/var/www/drupal/composer.lock:z,rw,${CONSISTENCY}
-            - &drupal-config ./drupal/rootfs/var/www/drupal/config:/var/www/drupal/config:z,rw,${CONSISTENCY}
-            - &drupal-custom-modules ./drupal/rootfs/var/www/drupal/web/modules/custom:/var/www/drupal/web/modules/custom:z,rw,${CONSISTENCY}
-            - &drupal-custom-themes ./drupal/rootfs/var/www/drupal/web/themes/custom:/var/www/drupal/web/themes/custom:z,rw,${CONSISTENCY}
+            - ./drupal/rootfs/var/www/drupal/assets:/var/www/drupal/assets:z,rw,${CONSISTENCY}
+            - ./drupal/rootfs/var/www/drupal/composer.json:/var/www/drupal/composer.json:z,rw,${CONSISTENCY}
+            - ./drupal/rootfs/var/www/drupal/composer.lock:/var/www/drupal/composer.lock:z,rw,${CONSISTENCY}
+            - ./drupal/rootfs/var/www/drupal/config:/var/www/drupal/config:z,rw,${CONSISTENCY}
+            - ./drupal/rootfs/var/www/drupal/web/modules/custom:/var/www/drupal/web/modules/custom:z,rw,${CONSISTENCY}
+            - ./drupal/rootfs/var/www/drupal/web/themes/custom:/var/www/drupal/web/themes/custom:z,rw,${CONSISTENCY}
             - &drupal-solr-config drupal-solr-config:/opt/solr/server/solr/default:z,rw
         networks:
             default:
@@ -362,11 +357,6 @@ services:
             NGINX_SET_REAL_IP_FROM: ${FRONTEND_IP_1}
             NGINX_SET_REAL_IP_FROM2: ${FRONTEND_IP_2}
             NGINX_SET_REAL_IP_FROM3: ${FRONTEND_IP_3}
-        labels:
-            <<: [*traefik-enable, *traefik-https-redirect-middleware, *traefik-drupal-labels]
-            traefik.http.routers.drupal_http.rule: &traefik-host-drupal-prod Host(`${DOMAIN}`)
-            traefik.http.routers.drupal_https.rule: *traefik-host-drupal-prod
-            traefik.http.routers.drupal_https.tls.certresolver: *traefik-certresolver
         volumes:
             # No bind mounts in production.
             # Changes to anything other than data is not persisted.
@@ -380,91 +370,6 @@ services:
             - source: DRUPAL_DEFAULT_SALT
             - source: JWT_PRIVATE_KEY
             - source: JWT_PUBLIC_KEY
-    ide:
-        <<: [*dev, *common] # No production IDE (no dev'ing on prod)
-        image: ${ISLANDORA_REPOSITORY}/code-server:${ISLANDORA_TAG}
-        labels:
-            # All Drupal traefik is routed through the IDE so that XDebug can be
-            # easily used.
-            <<: [*traefik-enable, *traefik-https-redirect-middleware, *traefik-drupal-labels]
-            traefik.http.routers.drupal_http.rule: &traefik-host-drupal-dev Host(`islandora.dev`)
-            traefik.http.routers.drupal_https.rule: *traefik-host-drupal-dev
-            traefik.http.routers.ide_http.entrypoints: http
-            traefik.http.routers.ide_http.middlewares: *traefik-https-redirect
-            traefik.http.routers.ide_http.rule: &traefik-host-ide-dev Host(`ide.islandora.dev`)
-            traefik.http.routers.ide_http.service: ide
-            traefik.http.routers.ide_https.entrypoints: https
-            traefik.http.routers.ide_https.rule: *traefik-host-ide-dev
-            traefik.http.routers.ide_https.service: ide
-            traefik.http.routers.ide_https.tls: true
-            traefik.http.services.ide.loadbalancer.server.port: 8443
-            traefik.tcp.routers.ssh.entrypoints: ssh
-            traefik.tcp.routers.ssh.rule: HostSNI(`*`)
-            traefik.tcp.routers.ssh.service: ssh
-            traefik.tcp.services.ssh.loadbalancer.server.port: 22
-        environment:
-            <<: [*drupal-environment]
-            # Allow XDebug to be used with Drush as well.
-            # Use the following command in the IDE shell to enable it:
-            # export XDEBUG_SESSION=1
-            DRUSH_ALLOW_XDEBUG: 1
-            XDEBUG_MODE: debug
-            # Do not request a password for accessing the IDE.
-            CODE_SERVER_AUTHENTICATION: none
-            # Bump up time outs to allow for debugging.
-            NGINX_CLIENT_BODY_TIMEOUT: 600s
-            NGINX_FASTCGI_CONNECT_TIMEOUT: 600s
-            NGINX_FASTCGI_READ_TIMEOUT: 1200s
-            NGINX_FASTCGI_SEND_TIMEOUT: 600s
-            NGINX_KEEPALIVE_TIMEOUT: 750s
-            NGINX_LINGERING_TIMEOUT: 50s
-            NGINX_PROXY_CONNECT_TIMEOUT: 600s
-            NGINX_PROXY_READ_TIMEOUT: 600s
-            NGINX_PROXY_SEND_TIMEOUT: 600s
-            NGINX_SEND_TIMEOUT: 600s
-            PHP_DEFAULT_SOCKET_TIMEOUT: 600
-            PHP_MAX_EXECUTION_TIME: 300
-            PHP_MAX_INPUT_TIME: 600
-            PHP_PROCESS_CONTROL_TIMEOUT: 600
-            PHP_REQUEST_TERMINATE_TIMEOUT: 600
-        volumes:
-              # Cache for when using jetbrains ssh connection feature.
-            - type: volume
-              source: jetbrains-cache
-              target: /var/lib/nginx/.cache/JetBrains
-            - type: volume
-              source: jetbrains-config
-              target: /var/lib/nginx/.config/JetBrains
-            # Allow access to Docker cli via IDE.
-            - /var/run/docker.sock:/var/run/docker.sock:z,rw
-            # Mount and serve contents of Drupal site.
-            - <<: [*drupal-root]
-              volume:
-                  nocopy: true
-            # Mount and serve Drupal public files.
-            - <<: [*drupal-public-files]
-              volume:
-                  nocopy: true
-            # Mount and serve Drupal private files.
-            - <<: [*drupal-private-files]
-              volume:
-                  nocopy: true
-            # Volumes for code-server cache.
-            - type: volume
-              source: code-server-data
-              target: /opt/code-server/data
-              read_only: false
-            # Site specific customizations.
-            # These are all bind mounts to the host.
-            - *drupal-assets
-            - *drupal-composer-json
-            - *drupal-composer-lock
-            - *drupal-config
-            - *drupal-custom-modules
-            - *drupal-custom-themes
-        # Ensure drupal mounts the shared volumes first.
-        depends_on:
-            - drupal-dev
     fcrepo-dev: &fcrepo
         <<: [*dev, *common]
         image: ${ISLANDORA_REPOSITORY}/fcrepo6:${ISLANDORA_TAG}
@@ -566,7 +471,6 @@ services:
             --entryPoints.http.address=:80
             --entryPoints.https.address=:443
             --entryPoints.https.transport.respondingTimeouts.readTimeout=60
-            --entryPoints.ssh.address=:22
             --providers.file.filename=/etc/traefik/tls.yml
             --providers.docker=true
             --providers.docker.network=default
@@ -584,7 +488,6 @@ services:
         ports:
             - "80:80"
             - "443:443"
-            - "2222:22"
         security_opt:
             - label=type:container_runtime_t # Required for selinux to access the docker socket.
         volumes:
@@ -615,8 +518,6 @@ services:
             fcrepo-dev:
                 condition: service_healthy
             solr-dev:
-                condition: service_healthy
-            ide:
                 condition: service_healthy
     traefik-prod:
         <<: [*prod, *traefik]
