@@ -164,12 +164,6 @@ function initialize_from_starter_site {
   git commit -am "Second commit, added isle-starter-site."
 }
 
-function create_docker_compose_override {
-  if [[ "${IS_WSL}" == "false" ]]; then
-    cp "docker-compose.${OS}.yml" docker-compose.override.yml
-  fi
-}
-
 function generate_certs {
   ./generate-certs.sh
 }
@@ -190,7 +184,6 @@ EOT
     create_repository
     initialize_from_site_template
     initialize_from_starter_site
-    create_docker_compose_override
     generate_certs
     generate_secrets
   else
