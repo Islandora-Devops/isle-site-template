@@ -42,10 +42,6 @@ else
   MKCERT=mkcert
 fi
 
-# Used to include host-platform specific docker compose files.
-OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-readonly OS
-
 function executable_exists {
   local executable="${1}"
   if ! command -v "${executable}" >/dev/null; then
