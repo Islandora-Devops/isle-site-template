@@ -13,11 +13,6 @@ on:
         required: true
         type: string
         default: "Islandora-Devops"
-      starter-site-ref:
-        description: "The islandora-starter-site git ref to checkout (heads/BRANCH-NAME or tags/TAG-NAME)"
-        required: true
-        type: string
-        default: "heads/main"
   schedule:
     - cron: "15 11 * * *"
 jobs:
@@ -27,9 +22,9 @@ jobs:
       matrix:
         os: [ubuntu-22.04, ubuntu-24.04]
     env:
-      ISLANDORA_TAG: "${{ github.event.inputs.buildkit-tag }}"
-      ISLANDORA_STARTER_OWNER: "${{ github.event.inputs.starter-site-owner }}"
-      ISLANDORA_STARTER_REF: "${{ github.event.inputs.starter-site-ref }}"
+      ISLANDORA_TAG: "${{ github.event.inputs.buildkit-tag || 'main' }}"
+      ISLANDORA_STARTER_OWNER: "${{ github.event.inputs.starter-site-owner || 'islandora-devops' }}"
+      ISLANDORA_STARTER_REF: "${{ github.ref_name }}"
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 

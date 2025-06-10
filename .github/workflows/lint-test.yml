@@ -35,6 +35,7 @@ jobs:
           curl -JLO "https://dl.filippo.io/mkcert/latest?for=$ARCH"
           chmod +x mkcert-v*
           cp mkcert-v* /usr/local/bin/mkcert
+          cp sample.env .env
 
       - name: generate-certs
         shell: bash
