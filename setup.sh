@@ -135,7 +135,7 @@ function initialize_from_site_template {
   local repo="https://github.com/Islandora-Devops/isle-site-template"
   local ref
   echo "Initializing from site template..."
-  # Use --buildkit-tag flag if provided; otherwise, prompt.
+  # Use --isle-site-template-ref flag if provided; otherwise, prompt.
   if [[ -n "${ISLE_SITE_TEMPLATE_REF}" ]]; then
     ref="${ISLE_SITE_TEMPLATE_REF}"
   else
