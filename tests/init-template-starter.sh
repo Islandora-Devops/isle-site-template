@@ -4,7 +4,7 @@ set -eou pipefail
 
 ISLANDORA_STARTER_REF="${ISLANDORA_STARTER_REF:=heads/main}"
 ISLANDORA_STARTER_OWNER="${ISLANDORA_STARTER_OWNER:=islandora-devops}"
-ISLANDORA_TAG="${ISLANDORA_TAG:=main}"
+ISLE_SITE_TEMPLATE_REF="${ISLE_SITE_TEMPLATE_REF:=main}"
 GITHUB_ACTIONS="${GITHUB_ACTIONS:=false}"
 
 # allow passing "destroy" to this script to cleanup past runs locally
@@ -16,7 +16,8 @@ if [ $# -eq 1 ] && [ "$1" = "destroy" ]; then
 fi
 
 ./setup.sh \
-  --buildkit-tag="$ISLANDORA_TAG" \
+  --isle-site-template-ref="$ISLE_SITE_TEMPLATE_REF" \
+  --starter-site-owner="${ISLANDORA_STARTER_OWNER}" \
   --starter-site-branch="${ISLANDORA_STARTER_REF#*/}" \
   --site-name=ist-test
 
