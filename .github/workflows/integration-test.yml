@@ -27,13 +27,20 @@ jobs:
       matrix:
         os: [ubuntu-22.04, ubuntu-24.04]
     env:
-      ISLANDORA_TAG: "${{ github.event.inputs.buildkit-tag }}"
-      ISLANDORA_STARTER_OWNER: "${{ github.event.inputs.starter-site-owner }}"
-      ISLANDORA_STARTER_REF: "${{ github.event.inputs.starter-site-ref }}"
+      ISLANDORA_TAG: "${{ github.event.inputs.buildkit-tag || 'main' }}"
+      ISLE_SITE_TEMPLATE_REF: "${{ github.ref_name }}"
+      ISLANDORA_STARTER_OWNER: "${{ github.event.inputs.starter-site-owner || 'islandora-devops' }}"
+      ISLANDORA_STARTER_REF: "${{ github.event.inputs.starter-site-ref || 'heads/main' }}"
+      TERM: xterm-256color
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - run: shellcheck tests/*.sh
+
+      - name: setup git identity
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actons"
 
       - name: Install mkcert
         run: |-

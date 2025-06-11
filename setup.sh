@@ -9,18 +9,23 @@ BLUE=$(tput setaf 6)
 readonly RESET RED GREEN BLUE
 
 # Parse flags
-BUILDKIT_TAG=""
+ISLE_SITE_TEMPLATE_REF=""
 STARTER_SITE_BRANCH=""
+STARTER_SITE_OWNER="Islandora-Devops"
 SITE_NAME=""
 
 for arg in "$@"; do
   case $arg in
-    --buildkit-tag=*)
-      BUILDKIT_TAG="${arg#*=}"
+    --isle-site-template-ref=*)
+      ISLE_SITE_TEMPLATE_REF="${arg#*=}"
       shift
       ;;
     --starter-site-branch=*)
       STARTER_SITE_BRANCH="${arg#*=}"
+      shift
+      ;;
+    --starter-site-owner=*)
+      STARTER_SITE_OWNER="${arg#*=}"
       shift
       ;;
     --site-name=*)
@@ -130,20 +135,21 @@ function initialize_from_site_template {
   local repo="https://github.com/Islandora-Devops/isle-site-template"
   local ref
   echo "Initializing from site template..."
-  # Use --buildkit-tag flag if provided; otherwise, prompt.
-  if [[ -n "${BUILDKIT_TAG}" ]]; then
-    ref="${BUILDKIT_TAG}"
+  # Use --isle-site-template-ref flag if provided; otherwise, prompt.
+  if [[ -n "${ISLE_SITE_TEMPLATE_REF}" ]]; then
+    ref="${ISLE_SITE_TEMPLATE_REF}"
   else
     ref=$(choose_ref "${repo}")
   fi
   curl -L "${repo}/archive/${ref}.tar.gz" | tar -xz --strip-components=1
   rm -fr .github setup.sh tests
+  cp sample.env .env
   git add .
   git commit -am "First commit, added isle-site-template."
 }
 
 function initialize_from_starter_site {
-  local repo="https://github.com/Islandora-Devops/islandora-starter-site"
+  local repo="https://github.com/${STARTER_SITE_OWNER}/islandora-starter-site"
   local ref
   echo "Initializing from starter site..."
   # Use --starter-site-branch flag if provided; otherwise, prompt.
