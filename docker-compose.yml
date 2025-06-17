@@ -317,7 +317,7 @@ services:
             DRUPAL_DEFAULT_SITE_URL: "islandora.dev"
             DRUPAL_DEFAULT_SOLR_CORE: "default"
             DRUPAL_DRUSH_URI: "https://islandora.dev" # Used by docker/drupal/rootfs/usr/local/share/custom/install.sh
-        labels:
+        labels: &drupal-labels
             <<: [*traefik-enable, *traefik-https-redirect-middleware, *traefik-drupal-labels]
             traefik.http.routers.drupal_http.rule: &traefik-host-drupal-dev Host(`islandora.dev`)
             traefik.http.routers.drupal_https.rule: *traefik-host-drupal-dev
@@ -358,6 +358,7 @@ services:
             NGINX_SET_REAL_IP_FROM2: ${FRONTEND_IP_2}
             NGINX_SET_REAL_IP_FROM3: ${FRONTEND_IP_3}
         labels:
+            <<: [*drupal-labels]
             traefik.http.routers.drupal_http.rule: &traefik-host-drupal-prod Host(`${DOMAIN}`)
             traefik.http.routers.drupal_https.rule: *traefik-host-drupal-prod
         volumes:
