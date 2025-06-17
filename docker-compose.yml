@@ -319,8 +319,8 @@ services:
             DRUPAL_DRUSH_URI: "https://islandora.dev" # Used by docker/drupal/rootfs/usr/local/share/custom/install.sh
         labels:
             <<: [*traefik-enable, *traefik-https-redirect-middleware, *traefik-drupal-labels]
-            traefik.http.routers.drupal_http.rule: &traefik-host-drupal-prod Host(`${DOMAIN}`)
-            traefik.http.routers.drupal_https.rule: *traefik-host-drupal-prod
+            traefik.http.routers.drupal_http.rule: &traefik-host-drupal-dev Host(`islandora.dev`)
+            traefik.http.routers.drupal_https.rule: *traefik-host-drupal-dev
             traefik.http.routers.drupal_https.tls.certresolver: *traefik-certresolver
         volumes:
             - &drupal-public-files
@@ -357,6 +357,9 @@ services:
             NGINX_SET_REAL_IP_FROM: ${FRONTEND_IP_1}
             NGINX_SET_REAL_IP_FROM2: ${FRONTEND_IP_2}
             NGINX_SET_REAL_IP_FROM3: ${FRONTEND_IP_3}
+        labels:
+            traefik.http.routers.drupal_http.rule: &traefik-host-drupal-prod Host(`${DOMAIN}`)
+            traefik.http.routers.drupal_https.rule: *traefik-host-drupal-prod
         volumes:
             # No bind mounts in production.
             # Changes to anything other than data is not persisted.
