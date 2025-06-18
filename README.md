@@ -224,8 +224,6 @@ cp sample.env .env
 ./generate-secrets.sh
 ```
 
-
-
 Continue on to [Customizations](#customizations).
 
 # Customizations
