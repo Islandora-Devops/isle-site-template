@@ -212,8 +212,13 @@ git commit -am "Second commit, added islandora-starter-site."
 git push
 ```
 
-5. For a development server, generate certs and secrets.
+5. Create a custom `.env` file from the provided sample:
 
+```bash
+cp sample.env .env
+```
+
+6. For a development server, generate certs and secrets.
 ```bash
 ./generate-certs.sh
 ./generate-secrets.sh
