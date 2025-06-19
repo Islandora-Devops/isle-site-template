@@ -339,7 +339,12 @@ services:
             - ./drupal/rootfs/var/www/drupal/config:/var/www/drupal/config:z,rw,${CONSISTENCY}
             - ./drupal/rootfs/var/www/drupal/web/modules/custom:/var/www/drupal/web/modules/custom:z,rw,${CONSISTENCY}
             - ./drupal/rootfs/var/www/drupal/web/themes/custom:/var/www/drupal/web/themes/custom:z,rw,${CONSISTENCY}
-            - &drupal-solr-config drupal-solr-config:/opt/solr/server/solr/default:z,rw
+            - type: volume
+              source: drupal-solr-config
+              target: /opt/solr/server/solr/default
+              read_only: false
+              volume:
+                  nocopy: true
         networks:
             default:
                 aliases: # Allow access without using the `-dev` or `-prod` suffix.
@@ -362,7 +367,12 @@ services:
             # Changes to anything other than data is not persisted.
             - *drupal-public-files
             - *drupal-private-files
-            - *drupal-solr-config
+            - type: volume
+              source: drupal-solr-config
+              target: /opt/solr/server/solr/default
+              read_only: false
+              volume:
+                  nocopy: true
         secrets:
             - source: DB_ROOT_PASSWORD
             - source: DRUPAL_DEFAULT_ACCOUNT_PASSWORD
