@@ -55,11 +55,11 @@ jobs:
         if: ${{ always() }}
         run: |
           mkdir -p logs
-          services=$(docker compose --profile dev config --services)
+          services=$(docker compose config --services)
           for service in $services; do
-            docker compose --profile dev logs $service > "logs/${service}.log"
+            docker compose logs $service > "logs/${service}.log"
           done
-          docker compose --profile dev exec mariadb-dev mysqldump drupal_default > logs/drupal_default.sql
+          docker compose exec mariadb mysqldump drupal_default > logs/drupal_default.sql
 
       - name: Upload logs as artifacts
         if: ${{ always() }}

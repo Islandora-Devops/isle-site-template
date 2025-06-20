@@ -9,8 +9,6 @@
   - [Building](#building)
   - [Pulling Docker Images](#pulling-docker-images)
   - [Running / Stoping / Destroying](#running--stoping--destroying)
-    - [Development Profile](#development-profile)
-    - [Production Profile](#production-profile)
   - [Pushing Docker Images](#pushing-docker-images)
     - [Local Registry](#local-registry)
     - [Remote Registry](#remote-registry)
@@ -71,7 +69,7 @@ be added to `docker-compose.override.yml` because that file is not under version
 You can build your development environment locally using `docker compose`:
 
 ```bash
-docker compose --profile dev build --pull
+docker compose build --pull
 ```
 
 This builds the Drupal image so that it contains the Starter Site files that you downloaded locally earlier.
@@ -82,28 +80,23 @@ The Docker Compose file provided requires that you pull the non-buildable island
 images with the following command:
 
 ```bash
-docker compose --profile dev pull --ignore-buildable --ignore-pull-failures
+docker compose pull --ignore-buildable --ignore-pull-failures
 ```
 
 ## Running / Stoping / Destroying
 
-You must specify a profile - either `dev` or `prod` - to use the `docker compose` files
-provided by this repository. Running/stopping/destroying for each profile is outlined below.
-
-### Development Profile
-
-Use the `dev` profile when bring up your local/development environment:
+To bring up your environment:
 
 ```bash
-docker compose --profile dev up -d
+docker compose up -d
 ```
 
 After all containers are "Started", you must wait several minutes for the Islandora
 site to install. When completed, you can see the following in the output from the
-`drupal-dev` container, with the following command:
+`drupal` container, with the following command:
 
 ```bash
-docker compose logs -f drupal-dev
+docker compose logs -f drupal
 ```
 
 ```txt
@@ -136,37 +129,13 @@ access all the services at the following URLs.
 To stop your local/development environment:
 
 ```bash
-docker compose --profile dev down
+docker compose down
 ```
 
 To **destroy all data** from your local/development environment:
 
 ```bash
-docker compose --profile dev down -v
-```
-
-### Production Profile
-
-Use the `prod` profile when bring up your production environment:
-
-```bash
-docker compose --profile prod up -d
-```
-
-To stop your production environment:
-
-```bash
-docker compose --profile prod down
-```
-
-> N.B. You shouldn't really ever run the following on your production server.
-> This is just when testing the differences for production environment on your
-> local machine.
-
-To **destroy all data** from your production environment:
-
-```bash
-docker compose --profile prod down -v
+docker compose down -v
 ```
 
 ## Pushing Docker Images
@@ -219,7 +188,7 @@ If you do not need to build multi-platform images, you can then push to the
 remote repository using `docker compose`:
 
 ```bash
-docker compose --profile dev push drupal-dev
+docker compose push drupal
 ```
 
 If you do need produce multi-platform images, you'll need to setup a builder
@@ -463,8 +432,8 @@ After=docker.service
 User=ubuntu
 Group=ubuntu
 WorkingDirectory=/opt/SITE_NAME
-ExecStart=/usr/bin/docker compose --profile prod up
-ExecStop=/usr/bin/docker compose --profile prod down
+ExecStart=/usr/bin/docker compose up
+ExecStop=/usr/bin/docker compose down
 
 [Install]
 WantedBy=multi-user.target
@@ -496,7 +465,6 @@ for more details.
 
 [.env]: .env
 [acme]: https://doc.traefik.io/traefik/https/acme/
-[development profile]: #development-profile
 [docker-compose.yml]: ./docker-compose.yml
 [DockerHub]: https://hub.docker.com/
 [generate-certs.sh]: ./generate-certs.sh
@@ -505,4 +473,3 @@ for more details.
 [lets-encrypt]: https://letsencrypt.org/
 [mkcert]: https://github.com/FiloSottile/mkcert
 [PHPStorm]: https://github.com/Islandora-Devops/isle-buildkit#phpstorm
-[production profile]: #production-profile
