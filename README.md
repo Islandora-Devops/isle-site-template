@@ -212,10 +212,11 @@ git commit -am "Second commit, added islandora-starter-site."
 git push
 ```
 
-5. Create a custom `.env` file from the provided sample:
+5. Create a custom `.env` file from the provided sample and a docker compose override file:
 
 ```bash
 cp sample.env .env
+git mv docker-compose.sample.yml docker-compose.override.yml
 ```
 
 6. For a development server, generate certs and secrets.
