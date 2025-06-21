@@ -83,7 +83,7 @@ secrets:
 services:
     alpaca:
         <<: [*common]
-        image: ${ISLANDORA_REPOSITORY}/alpaca:${ISLANDORA_TAG}
+        image: islandora/alpaca:4.1.6
         secrets:
             - source: ALPACA_JMS_PASSWORD
         depends_on:
@@ -91,41 +91,41 @@ services:
                 condition: service_healthy
     crayfits:
         <<: [*common]
-        image: ${ISLANDORA_REPOSITORY}/crayfits:${ISLANDORA_TAG}
+        image: islandora/crayfits:4.1.6
         secrets:
             - source: JWT_ADMIN_TOKEN
             - source: JWT_PUBLIC_KEY
     fits:
         <<: [*common]
-        image: ${ISLANDORA_REPOSITORY}/fits:${ISLANDORA_TAG}
+        image: islandora/fits:4.1.6
     homarus:
         <<: [*common]
-        image: ${ISLANDORA_REPOSITORY}/homarus:${ISLANDORA_TAG}
+        image: islandora/homarus:4.1.6
         secrets:
             - source: JWT_ADMIN_TOKEN
             - source: JWT_PUBLIC_KEY
     houdini:
         <<: [*common]
-        image: ${ISLANDORA_REPOSITORY}/houdini:${ISLANDORA_TAG}
+        image: islandora/houdini:4.1.6
         secrets:
             - source: JWT_ADMIN_TOKEN
             - source: JWT_PUBLIC_KEY
     hypercube:
         <<: [*common]
-        image: ${ISLANDORA_REPOSITORY}/hypercube:${ISLANDORA_TAG}
+        image: islandora/hypercube:4.1.6
         secrets:
             - source: JWT_ADMIN_TOKEN
             - source: JWT_PUBLIC_KEY
     mariadb:
         <<: [*common]
-        image: ${ISLANDORA_REPOSITORY}/mariadb:${ISLANDORA_TAG}
+        image: islandora/mariadb:4.1.6
         secrets:
             - source: DB_ROOT_PASSWORD
         volumes:
             - mariadb-data:/var/lib/mysql:rw
     milliner:
         <<: [*common]
-        image: ${ISLANDORA_REPOSITORY}/milliner:${ISLANDORA_TAG}
+        image: islandora/milliner:4.1.6
         environment:
             MILLINER_FEDORA6: ${FEDORA_6}
         secrets:
@@ -133,7 +133,7 @@ services:
             - source: JWT_PUBLIC_KEY
     activemq:
         <<: [*common]
-        image: ${ISLANDORA_REPOSITORY}/activemq:${ISLANDORA_TAG}
+        image: islandora/activemq:4.1.6
         labels:
             traefik.enable: ${DEVELOPMENT_ENVIRONMENT}
             traefik.http.middlewares.https-redirect.redirectscheme.permanent: true
@@ -154,7 +154,7 @@ services:
             - activemq-data:/opt/activemq/data:rw
     blazegraph:
         <<: [*common]
-        image: ${ISLANDORA_REPOSITORY}/blazegraph:${ISLANDORA_TAG}
+        image: islandora/blazegraph:4.1.6
         labels:
             traefik.enable: ${DEVELOPMENT_ENVIRONMENT}
             traefik.http.middlewares.https-redirect.redirectscheme.permanent: true
@@ -171,7 +171,7 @@ services:
             - blazegraph-data:/data:rw
     cantaloupe:
         <<: [*common]
-        image: ${ISLANDORA_REPOSITORY}/cantaloupe:${ISLANDORA_TAG}
+        image: islandora/cantaloupe:4.1.6
         labels:
             traefik.enable: ${DEVELOPMENT_ENVIRONMENT}
             traefik.http.middlewares.https-redirect.redirectscheme.permanent: true
@@ -196,8 +196,8 @@ services:
         build:
             context: ./drupal
             args:
-                REPOSITORY: ${ISLANDORA_REPOSITORY}
-                TAG: ${ISLANDORA_TAG}
+                REPOSITORY: islandora
+                TAG: 4.1.6
             x-bake:
                 platforms: [linux/amd64, linux/arm64]
                 cache-from:
@@ -256,7 +256,7 @@ services:
             - drupal-solr-config:/opt/solr/server/solr/default:z,rw
     fcrepo:
         <<: [*common]
-        image: ${ISLANDORA_REPOSITORY}/fcrepo6:${ISLANDORA_TAG}
+        image: islandora/fcrepo6:4.1.6
         environment:
             FCREPO_ALLOW_EXTERNAL_DEFAULT: "http://default/"
             FCREPO_ALLOW_EXTERNAL_DRUPAL: "https://${DOMAIN}/"
@@ -294,7 +294,7 @@ services:
                 condition: service_healthy
     solr:
         <<: [*common]
-        image: ${ISLANDORA_REPOSITORY}/solr:${ISLANDORA_TAG}
+        image: islandora/solr:4.1.6
         labels:
             traefik.enable: ${DEVELOPMENT_ENVIRONMENT}
             traefik.http.middlewares.https-redirect.redirectscheme.permanent: true
