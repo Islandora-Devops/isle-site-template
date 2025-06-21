@@ -28,7 +28,7 @@ cp ./tests/solr.php ./ist-test/drupal/rootfs/var/www/drupal/
 
 docker compose \
   -f ist-test/docker-compose.yml -f ist-test/docker-compose.override.yml \
-  up --pull=always --build -d
+  up --pull=always --build -d --wait-timeout 900
 
 echo "Waiting for installation..."
 docker compose \
