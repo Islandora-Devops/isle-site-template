@@ -316,7 +316,7 @@ services:
             DRUPAL_DEFAULT_PROFILE: "minimal"
             DRUPAL_DEFAULT_SITE_URL: "${DOMAIN}"
             DRUPAL_DEFAULT_SOLR_CORE: "default"
-            DRUPAL_DRUSH_URI: "https://${DOMAIN}" # Used by docker/drupal/rootfs/usr/local/share/custom/install.sh
+            DRUSH_OPTIONS_URI: "https://${DOMAIN}" # Used by docker/drupal/rootfs/usr/local/share/custom/install.sh
         labels:
             <<: [*traefik-enable, *traefik-https-redirect-middleware, *traefik-drupal-labels]
             traefik.http.routers.drupal_http.rule: &traefik-host-drupal-prod Host(`${DOMAIN}`)
@@ -352,7 +352,7 @@ services:
             DRUPAL_DEFAULT_CANTALOUPE_URL: "https://${DOMAIN}/cantaloupe/iiif/2"
             DRUPAL_DEFAULT_FCREPO_URL: "https://fcrepo.${DOMAIN}/fcrepo/rest/"
             DRUPAL_DEFAULT_SITE_URL: "${DOMAIN}"
-            DRUPAL_DRUSH_URI: "https://${DOMAIN}"
+            DRUSH_OPTIONS_URI: "https://${DOMAIN}"
             NGINX_REAL_IP_RECURSIVE: ${REVERSE_PROXY}
             NGINX_SET_REAL_IP_FROM: ${FRONTEND_IP_1}
             NGINX_SET_REAL_IP_FROM2: ${FRONTEND_IP_2}
