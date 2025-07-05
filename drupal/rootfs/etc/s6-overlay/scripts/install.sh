@@ -12,15 +12,15 @@ function configure {
     # the cache before rebuilding it for some dumb reason, preventing
     # Drush from being able to clear it.
     local params=$(/var/www/drupal/web/core/scripts/rebuild_token_calculator.sh 2>/dev/null)
-    curl -L "${DRUPAL_DRUSH_URI}/core/rebuild.php?${params}"
+    curl -L "${DRUSH_OPTIONS_URI}/core/rebuild.php?${params}"
     # Starter site post install steps.
-    drush --root=/var/www/drupal --uri="${DRUPAL_DRUSH_URI}" cache:rebuild
-    drush --root=/var/www/drupal --uri="${DRUPAL_DRUSH_URI}" user:role:add fedoraadmin admin
-    drush --root=/var/www/drupal --uri="${DRUPAL_DRUSH_URI}" pm:uninstall pgsql sqlite
-    drush --root=/var/www/drupal --uri="${DRUPAL_DRUSH_URI}" migrate:import --userid=1 --tag=islandora
-    drush --root=/var/www/drupal --uri="${DRUPAL_DRUSH_URI}" cron || true
-    drush --root=/var/www/drupal --uri="${DRUPAL_DRUSH_URI}" search-api:index || true
-    drush --root=/var/www/drupal --uri="${DRUPAL_DRUSH_URI}" cache:rebuild
+    drush --root=/var/www/drupal --uri="${DRUSH_OPTIONS_URI}" cache:rebuild
+    drush --root=/var/www/drupal --uri="${DRUSH_OPTIONS_URI}" user:role:add fedoraadmin admin
+    drush --root=/var/www/drupal --uri="${DRUSH_OPTIONS_URI}" pm:uninstall pgsql sqlite
+    drush --root=/var/www/drupal --uri="${DRUSH_OPTIONS_URI}" migrate:import --userid=1 --tag=islandora
+    drush --root=/var/www/drupal --uri="${DRUSH_OPTIONS_URI}" cron || true
+    drush --root=/var/www/drupal --uri="${DRUSH_OPTIONS_URI}" search-api:index || true
+    drush --root=/var/www/drupal --uri="${DRUSH_OPTIONS_URI}" cache:rebuild
 }
 
 function install {
