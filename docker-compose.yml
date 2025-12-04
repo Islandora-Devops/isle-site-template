@@ -462,7 +462,7 @@ services:
                 condition: service_healthy
     traefik-dev: &traefik
         <<: [*dev, *common]
-        image: traefik:v3.5.3@sha256:d6be8725d21b45bdd84b93ea01438256e0e3c94aa8fa51834fe87f37cd5d4af8
+        image: traefik:v3.6.2@sha256:aaf0f6185419a50c74651448c1a5bf4606bd2d2ddb7b8749eed505d55bf8b8ea
         command: >-
             --api.insecure=true
             --api.dashboard=true
