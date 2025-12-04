@@ -12,8 +12,10 @@ readonly PROGDIR
 # shellcheck source=/dev/null
 source .env
 
-BASE_IMAGE="islandora/base:${ISLANDORA_TAG}"
+BASE_IMAGE="islandora/base:main"
 readonly BASE_IMAGE
+
+docker pull "${BASE_IMAGE}"
 
 # Drupal salt is a special case, treat it as such.
 SALT_FILE="${PROGDIR}/secrets/DRUPAL_DEFAULT_SALT"

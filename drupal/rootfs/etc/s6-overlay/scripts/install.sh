@@ -38,7 +38,7 @@ function install {
       if timeout 300 curl -X HEAD "${DRUPAL_DEFAULT_FCREPO_URL}" &>/dev/null; then
           echo "Valid certificate"
       else
-          echo "Invalid certificate"
+          echo "Invalid certificate for ${DRUPAL_DEFAULT_FCREPO_URL}"
           exit 1
       fi
     fi
