@@ -135,12 +135,12 @@ services:
         <<: [*common]
         image: islandora/activemq:6.1.3
         labels:
-            traefik.enable: ${DEVELOPMENT_ENVIRONMENT}
+            traefik.enable: ${DEVELOPMENT_ENVIRONMENT:-false}
             traefik.http.middlewares.https-redirect.redirectscheme.permanent: true
             traefik.http.middlewares.https-redirect.redirectscheme.scheme: https
             traefik.http.routers.activemq_http.entrypoints: http
             traefik.http.routers.activemq_http.middlewares: https-redirect
-            traefik.http.routers.activemq_http.rule: &traefik-host-activemq-dev Host(`activemq.${DOMAIN}`)
+            traefik.http.routers.activemq_http.rule: &traefik-host-activemq-dev Host(`activemq.${DOMAIN:-islandora.dev}`)
             traefik.http.routers.activemq_http.service: activemq
             traefik.http.routers.activemq_https.entrypoints: https
             traefik.http.routers.activemq_https.rule: *traefik-host-activemq-dev
@@ -156,12 +156,12 @@ services:
         <<: [*common]
         image: islandora/blazegraph:6.1.3
         labels:
-            traefik.enable: ${DEVELOPMENT_ENVIRONMENT}
+            traefik.enable: ${DEVELOPMENT_ENVIRONMENT:-false}
             traefik.http.middlewares.https-redirect.redirectscheme.permanent: true
             traefik.http.middlewares.https-redirect.redirectscheme.scheme: https
             traefik.http.routers.blazegraph_http.entrypoints: http
             traefik.http.routers.blazegraph_http.middlewares: https-redirect
-            traefik.http.routers.blazegraph_http.rule: &traefik-host-blazegraph-dev Host(`blazegraph.${DOMAIN}`)
+            traefik.http.routers.blazegraph_http.rule: &traefik-host-blazegraph-dev Host(`blazegraph.${DOMAIN:-islandora.dev}`)
             traefik.http.routers.blazegraph_http.service: blazegraph
             traefik.http.routers.blazegraph_https.entrypoints: https
             traefik.http.routers.blazegraph_https.rule: *traefik-host-blazegraph-dev
@@ -173,7 +173,7 @@ services:
         <<: [*common]
         image: islandora/cantaloupe:6.1.3
         labels:
-            traefik.enable: ${DEVELOPMENT_ENVIRONMENT}
+            traefik.enable: ${DEVELOPMENT_ENVIRONMENT:-false}
             traefik.http.middlewares.https-redirect.redirectscheme.permanent: true
             traefik.http.middlewares.https-redirect.redirectscheme.scheme: https
             traefik.http.middlewares.cantaloupe-custom-request-headers.headers.customrequestheaders.X-Forwarded-Path: /cantaloupe
@@ -181,7 +181,7 @@ services:
             traefik.http.middlewares.cantaloupe.chain.middlewares: cantaloupe-strip-prefix,cantaloupe-custom-request-headers
             traefik.http.routers.cantaloupe_http.entrypoints: http
             traefik.http.routers.cantaloupe_http.middlewares: https-redirect
-            traefik.http.routers.cantaloupe_http.rule: &traefik-host-cantaloupe-dev Host(`${DOMAIN}`) && PathPrefix(`/cantaloupe`)
+            traefik.http.routers.cantaloupe_http.rule: &traefik-host-cantaloupe-dev Host(`${DOMAIN:-islandora.dev}`) && PathPrefix(`/cantaloupe`)
             traefik.http.routers.cantaloupe_http.service: cantaloupe
             traefik.http.routers.cantaloupe_https.middlewares: cantaloupe
             traefik.http.routers.cantaloupe_https.entrypoints: https
@@ -206,19 +206,19 @@ services:
                 cache-to:
                     - type=inline
         environment:
-            DEVELOPMENT_ENVIRONMENT: ${DEVELOPMENT_ENVIRONMENT}
+            DEVELOPMENT_ENVIRONMENT: ${DEVELOPMENT_ENVIRONMENT:-false}
             DRUPAL_DEFAULT_BROKER_URL: "tcp://activemq:61613"
-            DRUPAL_DEFAULT_CANTALOUPE_URL: "https://${DOMAIN}/cantaloupe/iiif/2"
+            DRUPAL_DEFAULT_CANTALOUPE_URL: "https://${DOMAIN:-islandora.dev}/cantaloupe/iiif/2"
             DRUPAL_DEFAULT_CONFIGDIR: "/var/www/drupal/config/sync"
             DRUPAL_DEFAULT_FCREPO_HOST: "fcrepo"
             DRUPAL_DEFAULT_FCREPO_PORT: 8080
-            DRUPAL_DEFAULT_FCREPO_URL: "https://fcrepo.${DOMAIN}/fcrepo/rest/"
+            DRUPAL_DEFAULT_FCREPO_URL: "https://fcrepo.${DOMAIN:-islandora.dev}/fcrepo/rest/"
             DRUPAL_DEFAULT_INSTALL_EXISTING_CONFIG: "true"
             DRUPAL_DEFAULT_NAME: "Islandora Digital Collections"
             DRUPAL_DEFAULT_PROFILE: "minimal"
-            DRUPAL_DEFAULT_SITE_URL: "${DOMAIN}"
+            DRUPAL_DEFAULT_SITE_URL: "${DOMAIN:-islandora.dev}"
             DRUPAL_DEFAULT_SOLR_CORE: "default"
-            DRUSH_OPTIONS_URI: "https://${DOMAIN}"
+            DRUSH_OPTIONS_URI: "https://${DOMAIN:-islandora.dev}"
             NGINX_REAL_IP_RECURSIVE: ${REVERSE_PROXY}
             NGINX_SET_REAL_IP_FROM: ${FRONTEND_IP_1}
             NGINX_SET_REAL_IP_FROM2: ${FRONTEND_IP_2}
@@ -234,7 +234,7 @@ services:
             traefik.http.routers.drupal_https.service: drupal
             traefik.http.routers.drupal_https.tls: true
             traefik.http.services.drupal.loadbalancer.server.port: 80
-            traefik.http.routers.drupal_http.rule: &traefik-host-drupal-prod Host(`${DOMAIN}`)
+            traefik.http.routers.drupal_http.rule: &traefik-host-drupal-prod Host(`${DOMAIN:-islandora.dev}`)
             traefik.http.routers.drupal_https.rule: *traefik-host-drupal-prod
             traefik.http.routers.drupal_https.tls.certresolver: resolver
         secrets:
@@ -259,12 +259,12 @@ services:
         image: islandora/fcrepo6:6.1.3
         environment:
             FCREPO_ALLOW_EXTERNAL_DEFAULT: "http://default/"
-            FCREPO_ALLOW_EXTERNAL_DRUPAL: "https://${DOMAIN}/"
+            FCREPO_ALLOW_EXTERNAL_DRUPAL: "https://${DOMAIN:-islandora.dev}/"
             FCREPO_PERSISTENCE_TYPE: "mysql"
             DB_HOST: mariadb
             DB_PORT: 3306
         labels:
-            traefik.enable: ${DEVELOPMENT_ENVIRONMENT}
+            traefik.enable: ${DEVELOPMENT_ENVIRONMENT:-false}
             traefik.http.middlewares.https-redirect.redirectscheme.permanent: true
             traefik.http.middlewares.https-redirect.redirectscheme.scheme: https
             # Due to weird logic in `fcrepo/static/js/common.js`, do not use https
@@ -275,7 +275,7 @@ services:
             traefik.http.middlewares.fcrepo-strip-suffix.replacepathregex.replacement: "$$1"
             traefik.http.routers.fcrepo_http.entrypoints: http
             traefik.http.routers.fcrepo_http.middlewares: https-redirect
-            traefik.http.routers.fcrepo_http.rule: &traefik-host-fcrepo-dev Host(`fcrepo.${DOMAIN}`)
+            traefik.http.routers.fcrepo_http.rule: &traefik-host-fcrepo-dev Host(`fcrepo.${DOMAIN:-islandora.dev}`)
             traefik.http.routers.fcrepo_http.service: fcrepo
             traefik.http.routers.fcrepo_https.entrypoints: https
             traefik.http.routers.fcrepo_https.middlewares: fcrepo-strip-suffix
@@ -296,12 +296,12 @@ services:
         <<: [*common]
         image: islandora/solr:6.1.3
         labels:
-            traefik.enable: ${DEVELOPMENT_ENVIRONMENT}
+            traefik.enable: ${DEVELOPMENT_ENVIRONMENT:-false}
             traefik.http.middlewares.https-redirect.redirectscheme.permanent: true
             traefik.http.middlewares.https-redirect.redirectscheme.scheme: https
             traefik.http.routers.solr_http.entrypoints: http
             traefik.http.routers.solr_http.middlewares: https-redirect
-            traefik.http.routers.solr_http.rule: &traefik-host-solr Host(`solr.${DOMAIN}`)
+            traefik.http.routers.solr_http.rule: &traefik-host-solr Host(`solr.${DOMAIN:-islandora.dev}`)
             traefik.http.routers.solr_http.service: solr
             traefik.http.routers.solr_https.entrypoints: https
             traefik.http.routers.solr_https.rule: *traefik-host-solr
@@ -331,7 +331,7 @@ services:
         command: >-
             --api.insecure=true
             --api.dashboard=true
-            --api.debug=true
+            --api.debug=${DEVELOPMENT_ENVIRONMENT:-false}
             --ping=true
             --entryPoints.http.address=:80
             --entryPoints.https.address=:443
@@ -346,12 +346,12 @@ services:
             --certificatesresolvers.resolver.acme.storage=/acme/acme.json
             --certificatesResolvers.resolver.acme.caServer=https://acme-v02.api.letsencrypt.org/directory
         labels:
-            traefik.enable: ${DEVELOPMENT_ENVIRONMENT}
+            traefik.enable: ${DEVELOPMENT_ENVIRONMENT:-false}
             traefik.http.middlewares.https-redirect.redirectscheme.permanent: true
             traefik.http.middlewares.https-redirect.redirectscheme.scheme: https
             traefik.http.routers.traefik_http.entrypoints: http
             traefik.http.routers.traefik_http.middlewares: https-redirect
-            traefik.http.routers.traefik_http.rule: &traefik-host-traefik Host(`traefik.${DOMAIN}`)
+            traefik.http.routers.traefik_http.rule: &traefik-host-traefik Host(`traefik.${DOMAIN:-islandora.dev}`)
             traefik.http.routers.traefik_http.service: traefik
             traefik.http.routers.traefik_https.entrypoints: https
             traefik.http.routers.traefik_https.rule: *traefik-host-traefik
@@ -364,19 +364,19 @@ services:
             - label=type:container_runtime_t # Required for selinux to access the docker socket.
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:z
-            - ./certs:/acme:Z
-            - ./prod-tls.yml:/etc/traefik/tls.yml:Z,ro
+            - ./certs:${TRAEFIK_CONTAINER_CERTS_DIR:-/acme}:Z
+            - ${TRAEFIK_HOST_TLS_CONFIG:-./prod-tls.yml}:/etc/traefik/tls.yml:Z,ro
         healthcheck:
             test: traefik healthcheck --ping
         networks:
             default:
                 aliases:
                     # Allow services to connect on the same name/port as the outside.
-                    - activemq.${DOMAIN}
-                    - blazegraph.${DOMAIN}
-                    - fcrepo.${DOMAIN}
-                    - ${DOMAIN} # Drupal is at the root domain.
-                    - solr.${DOMAIN}
+                    - activemq.${DOMAIN:-islandora.dev}
+                    - blazegraph.${DOMAIN:-islandora.dev}
+                    - fcrepo.${DOMAIN:-islandora.dev}
+                    - ${DOMAIN:-islandora.dev} # Drupal is at the root domain.
+                    - solr.${DOMAIN:-islandora.dev}
         depends_on:
             # Sometimes traefik doesn't pick up on new containers so make sure
             # they are started before traefik.
