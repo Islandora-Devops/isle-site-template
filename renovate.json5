@@ -31,6 +31,21 @@
       ],
     },
   ],
+  customManagers: [
+    {
+      customType: 'regex',
+      description: 'Update isle-buildkit tag',
+      managerFilePatterns: [
+        '/^sample\\.env$/',
+      ],
+      matchStrings: [
+        'ISLANDORA_TAG=(?<currentValue>[\\d\\.]+)',
+      ],
+      datasourceTemplate: 'github-releases',
+      packageNameTemplate: 'Islandora-Devops/isle-buildkit',
+      versioningTemplate: 'semver',
+    },
+  ],
   labels: [
     'dependencies',
   ],

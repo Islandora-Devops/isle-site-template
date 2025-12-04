@@ -83,7 +83,7 @@ secrets:
 services:
     alpaca:
         <<: [*common]
-        image: islandora/alpaca:4.1.6
+        image: islandora/alpaca:6.1.3
         secrets:
             - source: ALPACA_JMS_PASSWORD
         depends_on:
@@ -91,41 +91,41 @@ services:
                 condition: service_healthy
     crayfits:
         <<: [*common]
-        image: islandora/crayfits:4.1.6
+        image: islandora/crayfits:6.1.3
         secrets:
             - source: JWT_ADMIN_TOKEN
             - source: JWT_PUBLIC_KEY
     fits:
         <<: [*common]
-        image: islandora/fits:4.1.6
+        image: islandora/fits:6.1.3
     homarus:
         <<: [*common]
-        image: islandora/homarus:4.1.6
+        image: islandora/homarus:6.1.3
         secrets:
             - source: JWT_ADMIN_TOKEN
             - source: JWT_PUBLIC_KEY
     houdini:
         <<: [*common]
-        image: islandora/houdini:4.1.6
+        image: islandora/houdini:6.1.3
         secrets:
             - source: JWT_ADMIN_TOKEN
             - source: JWT_PUBLIC_KEY
     hypercube:
         <<: [*common]
-        image: islandora/hypercube:4.1.6
+        image: islandora/hypercube:6.1.3
         secrets:
             - source: JWT_ADMIN_TOKEN
             - source: JWT_PUBLIC_KEY
     mariadb:
         <<: [*common]
-        image: islandora/mariadb:4.1.6
+        image: islandora/mariadb:6.1.3
         secrets:
             - source: DB_ROOT_PASSWORD
         volumes:
             - mariadb-data:/var/lib/mysql:rw
     milliner:
         <<: [*common]
-        image: islandora/milliner:4.1.6
+        image: islandora/milliner:6.1.3
         environment:
             MILLINER_FEDORA6: ${FEDORA_6}
         secrets:
@@ -133,7 +133,7 @@ services:
             - source: JWT_PUBLIC_KEY
     activemq:
         <<: [*common]
-        image: islandora/activemq:4.1.6
+        image: islandora/activemq:6.1.3
         labels:
             traefik.enable: ${DEVELOPMENT_ENVIRONMENT}
             traefik.http.middlewares.https-redirect.redirectscheme.permanent: true
@@ -154,7 +154,7 @@ services:
             - activemq-data:/opt/activemq/data:rw
     blazegraph:
         <<: [*common]
-        image: islandora/blazegraph:4.1.6
+        image: islandora/blazegraph:6.1.3
         labels:
             traefik.enable: ${DEVELOPMENT_ENVIRONMENT}
             traefik.http.middlewares.https-redirect.redirectscheme.permanent: true
@@ -171,7 +171,7 @@ services:
             - blazegraph-data:/data:rw
     cantaloupe:
         <<: [*common]
-        image: islandora/cantaloupe:4.1.6
+        image: islandora/cantaloupe:6.1.3
         labels:
             traefik.enable: ${DEVELOPMENT_ENVIRONMENT}
             traefik.http.middlewares.https-redirect.redirectscheme.permanent: true
@@ -197,7 +197,7 @@ services:
             context: ./drupal
             args:
                 REPOSITORY: islandora
-                TAG: 4.1.6
+                TAG: 6.1.3
             x-bake:
                 platforms: [linux/amd64, linux/arm64]
                 cache-from:
@@ -218,7 +218,7 @@ services:
             DRUPAL_DEFAULT_PROFILE: "minimal"
             DRUPAL_DEFAULT_SITE_URL: "${DOMAIN}"
             DRUPAL_DEFAULT_SOLR_CORE: "default"
-            DRUPAL_DRUSH_URI: "https://${DOMAIN}" # Used by docker/drupal/rootfs/usr/local/share/custom/install.sh
+            DRUSH_OPTIONS_URI: "https://${DOMAIN}"
             NGINX_REAL_IP_RECURSIVE: ${REVERSE_PROXY}
             NGINX_SET_REAL_IP_FROM: ${FRONTEND_IP_1}
             NGINX_SET_REAL_IP_FROM2: ${FRONTEND_IP_2}
@@ -256,7 +256,7 @@ services:
             - drupal-solr-config:/opt/solr/server/solr/default:z,rw
     fcrepo:
         <<: [*common]
-        image: islandora/fcrepo6:4.1.6
+        image: islandora/fcrepo6:6.1.3
         environment:
             FCREPO_ALLOW_EXTERNAL_DEFAULT: "http://default/"
             FCREPO_ALLOW_EXTERNAL_DRUPAL: "https://${DOMAIN}/"
@@ -294,7 +294,7 @@ services:
                 condition: service_healthy
     solr:
         <<: [*common]
-        image: islandora/solr:4.1.6
+        image: islandora/solr:6.1.3
         labels:
             traefik.enable: ${DEVELOPMENT_ENVIRONMENT}
             traefik.http.middlewares.https-redirect.redirectscheme.permanent: true
@@ -320,7 +320,7 @@ services:
                 condition: service_healthy
     traefik:
         <<: [*common]
-        image: traefik:v3.4.1@sha256:cd40ab7bc1f047731d5b22595203812343efcb6538014c4e93221cfc3a77217a
+        image: traefik:v3.6.2@sha256:aaf0f6185419a50c74651448c1a5bf4606bd2d2ddb7b8749eed505d55bf8b8ea
         # Change caServer to use the staging server when testing changes to the Traefik.
         #
         # Staging: https://acme-staging-v02.api.letsencrypt.org/directory
