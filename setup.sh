@@ -144,6 +144,7 @@ function initialize_from_site_template {
   curl -L "${repo}/archive/${ref}.tar.gz" | tar -xz --strip-components=1
   rm -fr .github setup.sh tests
   cp sample.env .env
+  mv docker-compose.sample.yml docker-compose.override.yml
   git add .
   git commit -am "First commit, added isle-site-template."
 }
