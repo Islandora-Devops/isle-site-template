@@ -3,11 +3,6 @@
 x-common: &common
     restart: unless-stopped
     tty: true # Required for non-root users with selinux enabled.
-    secrets:
-        - source: CERT_PUBLIC_KEY
-        - source: CERT_PRIVATE_KEY
-        - source: CERT_AUTHORITY
-        - source: UID
     security_opt:
         - label=type:container_runtime_t # Required for selinux to access the docker socket and bind mount files.
 
@@ -85,6 +80,10 @@ services:
         <<: [*common]
         image: islandora/alpaca:6.1.3
         secrets:
+            - source: CERT_PUBLIC_KEY
+            - source: CERT_PRIVATE_KEY
+            - source: CERT_AUTHORITY
+            - source: UID
             - source: ALPACA_JMS_PASSWORD
         depends_on:
             activemq:
@@ -93,6 +92,10 @@ services:
         <<: [*common]
         image: islandora/crayfits:6.1.3
         secrets:
+            - source: CERT_PUBLIC_KEY
+            - source: CERT_PRIVATE_KEY
+            - source: CERT_AUTHORITY
+            - source: UID
             - source: JWT_ADMIN_TOKEN
             - source: JWT_PUBLIC_KEY
     fits:
@@ -102,18 +105,30 @@ services:
         <<: [*common]
         image: islandora/homarus:6.1.3
         secrets:
+            - source: CERT_PUBLIC_KEY
+            - source: CERT_PRIVATE_KEY
+            - source: CERT_AUTHORITY
+            - source: UID
             - source: JWT_ADMIN_TOKEN
             - source: JWT_PUBLIC_KEY
     houdini:
         <<: [*common]
         image: islandora/houdini:6.1.3
         secrets:
+            - source: CERT_PUBLIC_KEY
+            - source: CERT_PRIVATE_KEY
+            - source: CERT_AUTHORITY
+            - source: UID
             - source: JWT_ADMIN_TOKEN
             - source: JWT_PUBLIC_KEY
     hypercube:
         <<: [*common]
         image: islandora/hypercube:6.1.3
         secrets:
+            - source: CERT_PUBLIC_KEY
+            - source: CERT_PRIVATE_KEY
+            - source: CERT_AUTHORITY
+            - source: UID
             - source: JWT_ADMIN_TOKEN
             - source: JWT_PUBLIC_KEY
     mariadb:
@@ -129,6 +144,10 @@ services:
         environment:
             MILLINER_FEDORA6: ${FEDORA_6}
         secrets:
+            - source: CERT_PUBLIC_KEY
+            - source: CERT_PRIVATE_KEY
+            - source: CERT_AUTHORITY
+            - source: UID
             - source: JWT_ADMIN_TOKEN
             - source: JWT_PUBLIC_KEY
     activemq:
@@ -188,6 +207,11 @@ services:
             traefik.http.routers.cantaloupe_https.rule: *traefik-host-cantaloupe-dev
             traefik.http.routers.cantaloupe_https.tls: true
             traefik.http.services.cantaloupe.loadbalancer.server.port: 8182
+        secrets:
+            - source: CERT_PUBLIC_KEY
+            - source: CERT_PRIVATE_KEY
+            - source: CERT_AUTHORITY
+            - source: UID
         volumes:
             - cantaloupe-data:/data:rw
     drupal:
@@ -244,6 +268,10 @@ services:
             - source: DRUPAL_DEFAULT_SALT
             - source: JWT_PRIVATE_KEY
             - source: JWT_PUBLIC_KEY
+            - source: CERT_PUBLIC_KEY
+            - source: CERT_PRIVATE_KEY
+            - source: CERT_AUTHORITY
+            - source: UID
         volumes:
             - type: volume
               source: drupal-public-files
