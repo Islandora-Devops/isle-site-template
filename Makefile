@@ -54,7 +54,7 @@ traefik-certs: ## Generate mkcert certificates
 	@echo "Certificates generated successfully."
 
 init:
-	@docker compose up --abort-on-container-exit --exit-code-from init init 
+	@docker compose run --rm init
 
 build:
 	@docker compose build drupal

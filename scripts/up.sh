@@ -4,7 +4,8 @@ set -e
 # 1. Load Environment Variables
 if [ -f .env ]; then
   # Export variables so docker-compose and this script can see them
-  export $(grep -v '^#' .env | xargs)
+  # shellcheck disable=SC1091
+  source .env
 else
   echo "Error: .env file not found."
   exit 1
@@ -18,8 +19,6 @@ HTTPS_PORT=443
 # Function to find the next available port
 find_port() {
     local port=$1
-    local type=$2 # "HTTP" or "HTTPS"
-    
     while true; do
         # Check if anything is listening on TCP at this port
         local pids
@@ -49,8 +48,9 @@ find_port() {
 }
 
 # 3. Resolve Ports
-export HOST_INSECURE_PORT=$(find_port $HTTP_PORT "HTTP")
-export HOST_SECURE_PORT=$(find_port $HTTPS_PORT "HTTPS")
+HOST_INSECURE_PORT=$(find_port $HTTP_PORT "HTTP")
+HOST_SECURE_PORT=$(find_port $HTTPS_PORT "HTTPS")
+export HOST_INSECURE_PORT HOST_SECURE_PORT
 
 # 4. Start Docker Compose
 docker compose up --remove-orphans -d
@@ -77,7 +77,7 @@ echo "🚀 Site is up at: $URL"
 echo "---------------------------------------------------"
 
 # don't open the URL is we're in GHA
-if [ "${GITHUB_ACTIONS:-" != "" ]; then
+if [ "${GITHUB_ACTIONS:-}" != "" ]; then
   exit 0
 fi
 

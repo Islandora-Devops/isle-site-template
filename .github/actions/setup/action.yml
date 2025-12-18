@@ -61,7 +61,6 @@ runs:
         ISLE_SITE_TEMPLATE_OWNER: ${{ inputs.ist-owner }}
         ISLE_SITE_TEMPLATE_REF: ${{ inputs.ist-ref }}
         SITE_NAME: test
-        INIT_DIR_PWD: "true"
       run: make setup build up
 
     - name: make sure traefik is serving traffic

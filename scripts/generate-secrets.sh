@@ -8,10 +8,6 @@ set -euf -o pipefail
 PROGDIR=$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")
 readonly PROGDIR
 
-# Get the tag for the base image.
-# shellcheck source=/dev/null
-source .env
-
 # Drupal salt is a special case, treat it as such.
 SALT_FILE="${PROGDIR}/secrets/DRUPAL_DEFAULT_SALT"
 readonly SALT_FILE

@@ -14,7 +14,6 @@ ISLE_SITE_TEMPLATE_REF="${ISLE_SITE_TEMPLATE_REF:-}"
 STARTER_SITE_BRANCH="${STARTER_SITE_BRANCH:-}"
 STARTER_SITE_OWNER="${STARTER_SITE_OWNER:-Islandora-Devops}"
 SITE_NAME="${SITE_NAME:-}"
-INIT_DIR_PWD="${INIT_DIR_PWD:-false}"
 
 for arg in "$@"; do
   case $arg in
@@ -71,40 +70,6 @@ function valid_repository_name {
   return $?
 }
 
-function get_repository_name {
-  # If SITE_NAME flag is provided, use it.
-  if [[ -n "${SITE_NAME}" ]]; then
-    if ! valid_repository_name "${SITE_NAME}"; then
-      echo "Invalid repository name ${SITE_NAME} (Only alpha-numeric, underscores, and hyphens allowed)"
-      exit 1
-    fi
-    echo "${SITE_NAME}"
-    return
-  fi
-  # Otherwise prompt the user.
-  read -r -p "Please enter a name for your new git repository: " name
-  if ! valid_repository_name "${name}"; then
-    echo "Invalid repository name ${name} (Only alpha-numeric, underscores, and hyphens allowed)"
-    exit 1
-  fi
-  echo "${name}"
-}
-
-function create_repository {
-  local repository
-  repository=$(get_repository_name)
-  if [ "${INIT_DIR_PWD}" = "true" ]; then
-    rm -rf .git
-    git init
-    return 0
-  fi
-
-  echo "Creating new repository: ${repository}..."
-  mkdir -p "${repository}"
-  pushd "${repository}" 2>/dev/null
-  git init
-}
-
 function get_refs {
   local repository="${1}"
   echo "refs/heads/main" # Only interested in the main branch.
@@ -130,6 +95,10 @@ function choose_ref {
 }
 
 function initialize_from_site_template {
+  if [ -f ./docker-compose.yml ]; then
+    return 0
+  fi
+
   local repo="https://github.com/${ISLE_SITE_TEMPLATE_OWNER}/isle-site-template"
   local ref
   echo "Initializing from site template..."
@@ -141,19 +110,18 @@ function initialize_from_site_template {
     ref=$(choose_ref "${repo}")
   fi
   curl -L "${repo}/archive/${ref#refs/}.tar.gz" | tar -xz --strip-components=1
-  rm -fr .github scripts/setup.sh
+  rm -fr .github
   cp sample.env .env
   if [[ -n "${ISLANDORA_TAG:-}" ]]; then
     sed -i.bak "s|^ISLANDORA_TAG=.*|ISLANDORA_TAG=\"${ISLANDORA_TAG}\"|" .env && rm -f .env.bak
   fi
   mv docker-compose.sample.yml docker-compose.override.yml
-  git add .
-  git commit -am "First commit, added isle-site-template."
 }
 
 function initialize_from_starter_site {
   local repo="https://github.com/${STARTER_SITE_OWNER}/islandora-starter-site"
   local ref
+  cp drupal/rootfs/var/www/drupal/assets/patches/default_settings.txt .
   echo "Initializing from starter site..."
   # Use --starter-site-branch flag if provided; otherwise, prompt.
   if [[ -n "${STARTER_SITE_BRANCH}" ]]; then
@@ -165,9 +133,7 @@ function initialize_from_starter_site {
   curl -L "${repo}/archive/${ref#refs/}.tar.gz" \
     | tar --strip-components=1 -C drupal/rootfs/var/www/drupal -xz
   rm -fr drupal/rootfs/var/www/drupal/.github
-  git checkout drupal/rootfs/var/www/drupal/assets/patches/default_settings.txt
-  git add .
-  git commit -am "Second commit, added isle-starter-site."
+  mv default_settings.txt drupal/rootfs/var/www/drupal/assets/patches/default_settings.txt
 }
 
 function main {
@@ -179,7 +145,6 @@ ${GREEN}
 ${RESET}
 EOT
   if has_prerequisites; then
-    create_repository
     initialize_from_site_template
     initialize_from_starter_site
     make init
