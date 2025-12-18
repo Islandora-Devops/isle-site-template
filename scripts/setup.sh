@@ -2,6 +2,10 @@
 # shellcheck shell=bash
 set -euf -o pipefail
 
+if [ "${GITHUB_ACTIONS:-}" != "" ]; then
+  set -x
+fi
+
 RESET=$(tput sgr0)
 RED=$(tput setaf 9)
 GREEN=$(tput setaf 2)
@@ -13,7 +17,6 @@ ISLE_SITE_TEMPLATE_OWNER="${ISLE_SITE_TEMPLATE_OWNER:-Islandora-Devops}"
 ISLE_SITE_TEMPLATE_REF="${ISLE_SITE_TEMPLATE_REF:-}"
 STARTER_SITE_BRANCH="${STARTER_SITE_BRANCH:-}"
 STARTER_SITE_OWNER="${STARTER_SITE_OWNER:-Islandora-Devops}"
-SITE_NAME="${SITE_NAME:-}"
 
 for arg in "$@"; do
   case $arg in
@@ -27,10 +30,6 @@ for arg in "$@"; do
       ;;
     --starter-site-owner=*)
       STARTER_SITE_OWNER="${arg#*=}"
-      shift
-      ;;
-    --site-name=*)
-      SITE_NAME="${arg#*=}"
       shift
       ;;
     *)
@@ -64,12 +63,6 @@ EOT
   return 0
 }
 
-function valid_repository_name {
-  local name="${1}"
-  echo "${name}" | awk '/^[a-zA-Z0-9_-]+$/' | grep . &>/dev/null
-  return $?
-}
-
 function get_refs {
   local repository="${1}"
   echo "refs/heads/main" # Only interested in the main branch.
@@ -94,8 +87,16 @@ function choose_ref {
   done
 }
 
+function set_site_template_files {
+  cp sample.env .env
+  if [[ -n "${ISLANDORA_TAG:-}" ]]; then
+    sed -i.bak "s|^ISLANDORA_TAG=.*|ISLANDORA_TAG=\"${ISLANDORA_TAG}\"|" .env && rm -f .env.bak
+  fi
+  mv docker-compose.sample.yml docker-compose.override.yml
+}
 function initialize_from_site_template {
   if [ -f ./docker-compose.yml ]; then
+    set_site_template_files
     return 0
   fi
 
@@ -111,11 +112,7 @@ function initialize_from_site_template {
   fi
   curl -L "${repo}/archive/${ref#refs/}.tar.gz" | tar -xz --strip-components=1
   rm -fr .github
-  cp sample.env .env
-  if [[ -n "${ISLANDORA_TAG:-}" ]]; then
-    sed -i.bak "s|^ISLANDORA_TAG=.*|ISLANDORA_TAG=\"${ISLANDORA_TAG}\"|" .env && rm -f .env.bak
-  fi
-  mv docker-compose.sample.yml docker-compose.override.yml
+  set_site_template_files
 }
 
 function initialize_from_starter_site {
