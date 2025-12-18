@@ -54,6 +54,7 @@ traefik-certs: ## Generate mkcert certificates
 	@echo "Certificates generated successfully."
 
 init:
+	@id -u > ./certs/UID
 	@docker compose run --rm init
 
 build:

@@ -73,13 +73,15 @@ if [ "$FINAL_PORT" != "$DEFAULT_P" ]; then
 fi
 
 echo "---------------------------------------------------"
-echo "🚀 Site is up at: $URL"
+echo "🚀 Site starting at: $URL"
 echo "---------------------------------------------------"
 
 # don't open the URL is we're in GHA
 if [ "${GITHUB_ACTIONS:-}" != "" ]; then
   exit 0
 fi
+
+sleep 10
 
 # 6. Open in Browser (Cross-Platform)
 case "$(uname -s)" in
