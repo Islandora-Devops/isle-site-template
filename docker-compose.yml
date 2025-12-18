@@ -279,6 +279,10 @@ services:
   traefik:
     <<: *common
     image: traefik:v3.6.5@sha256:2979bff651c98e70345dd886186a7a15ee3ce18b636af208d4ccbf2d56dbdddd
+    command: >-
+      --api.insecure=${DEVELOPMENT_ENVIRONMENT:-false}
+      --api.dashboard=${DEVELOPMENT_ENVIRONMENT:-false}
+      --api.debug=${DEVELOPMENT_ENVIRONMENT:-false}
     environment:
       ENABLE_ACME: "${ENABLE_ACME:-false}"
       ACME_EMAIL: "${ACME_EMAIL}"
@@ -289,9 +293,8 @@ services:
       - source: CERT_PUBLIC_KEY
       - source: CERT_PRIVATE_KEY
     ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
+      - "${HOST_INSECURE_PORT:-80}:80"
+      - "${HOST_SECURE_PORT:-443}:443"
     security_opt:
       - label=type:container_runtime_t
     volumes:

@@ -1,5 +1,9 @@
 .PHONY: help init up down build setup traefik-http traefik-https-mkcert traefik-https-acme traefik-certs traefik-status
 
+PROJECT_NAME=$(shell grep '^COMPOSE_PROJECT_NAME=' .env | cut -d= -f2 | tr -d '"' || basename $(CURDIR))
+DEFAULT_HTTP=80
+DEFAULT_HTTPS=443
+
 help: ## Show this help message
 	@echo 'Usage: make [target]'
 	@echo ''
@@ -55,8 +59,8 @@ init:
 build:
 	@docker compose build drupal
 
-up:
-	@docker compose up --remove-orphans -d
+up: ## Start containers with smart port allocation
+	@./scripts/up.sh
 
 down:
 	@docker compose down

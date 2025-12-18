@@ -1,13 +1,8 @@
 ---
-api:
-  insecure: true
-  dashboard: true
-  debug: true
-
 ping: {}
 
 log:
-  level: DEBUG
+  level: INFO
 
 entryPoints:
   http:
