@@ -26,10 +26,6 @@ have the appropriate [requirements
 [instructions](#instructions) to set up your institution's Islandora
 installation from this template.
 
-> N.B. This is the **not** the only way to manage your Islandora installation,
-> please also see [isle-dc] and [islandora-playbook], and consult with the wider
-> community on the [Islandora Slack].
-
 ## Forking Warning
 
 This is not intended to be an upstream fork that your institution will be
@@ -75,20 +71,7 @@ See the [customizations](#customizations) steps afterwards about removing unwant
 
 - [Docker 24.0+](https://docs.docker.com/get-docker/) **Referring to the Docker Engine version, not Docker Desktop**.
 - [Docker Compose](https://docs.docker.com/compose/install/linux/) **Already included in OSX with Docker**
-- [mkcert 1.4+](https://github.com/FiloSottile/mkcert)
 - `cURL` and `git`
-## Java and macOS
-
-mkcert seems to have problems when running on Java installed via Homebrew. 
-This is resolved by installing OpenJDK from an installer such as [temurin](https://adoptium.net/temurin/releases/) from the Eclipse foundation.
-
-Be sure to set the JAVA_HOME environment variable to the correct
- value, for version 20 of the temurin packaged installer linked above it is: 
-
-```
-/Library/Java/JavaVirtualMachines/temurin-20.jdk/Contents/Home
-```
-
 
 # Automatic Setup
 

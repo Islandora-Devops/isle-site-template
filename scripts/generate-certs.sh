@@ -2,7 +2,7 @@
 # shellcheck shell=bash
 set -euf -o pipefail
 
-PROGDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROGDIR=$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")
 readonly PROGDIR
 
 # For some commands we must invoke a Windows executable if in the context of
@@ -40,6 +40,8 @@ fi
   "islandora.io" \
   "*.islandora.info" \
   "islandora.info" \
+  "*.islandora.traefik.me" \
+  "islandora.traefik.me" \
   "localhost" \
   "127.0.0.1" \
   "::1"

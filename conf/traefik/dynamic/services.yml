@@ -1,0 +1,36 @@
+http:
+  services:
+    activemq:
+      loadBalancer:
+        servers:
+          - url: http://activemq:8161
+
+    blazegraph:
+      loadBalancer:
+        servers:
+          - url: http://blazegraph:8080
+
+    cantaloupe:
+      loadBalancer:
+        servers:
+          - url: http://cantaloupe:8182
+
+    drupal:
+      loadBalancer:
+        servers:
+          - url: http://drupal:80
+
+    fcrepo:
+      loadBalancer:
+        servers:
+          - url: http://fcrepo:8080
+
+    solr:
+      loadBalancer:
+        servers:
+          - url: http://solr:8983
+
+    traefik:
+      loadBalancer:
+        servers:
+          - url: http://traefik:8080

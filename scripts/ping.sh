@@ -1,18 +1,22 @@
 #!/usr/bin/env bash
 
-COUNTER=0
-while true; do
-  HTTP_STATUS=$(curl -w '%{http_code}' -o /dev/null -s https://islandora.dev/)
-  echo "Ping returned http status ${HTTP_STATUS}, exit code $?"
-  if [ "${HTTP_STATUS}" -eq 200 ]; then
-    echo "We're live 🚀"
-    exit 0
-  fi
+set -eou pipefail
 
-  ((COUNTER++))
-  if [ "${COUNTER}" -eq 50 ]; then
-    echo "Failed to come online after 4m"
-    exit 1
-  fi
-  sleep 5;
+MAX_RETRIES=20
+SLEEP_INCREMENT=5
+RETRIES=0
+while true; do
+    timeout 5 curl -vfs http://islandora.traefik.me/ | grep Islandora && break || exit_code=$?
+
+    RETRIES=$((RETRIES + 1))
+    if [ "$RETRIES" -ge "$MAX_RETRIES" ]; then
+        echo "Site failed to come online after $MAX_RETRIES attempts (Last exit code: $exit_code)." >&2
+        exit 1
+    fi
+
+    SLEEP=$(( SLEEP_INCREMENT * RETRIES ))
+    echo "We're not live yet (Exit code: $exit_code). Retrying in $SLEEP seconds... (Attempt $RETRIES/$MAX_RETRIES)" >&2
+    sleep "$SLEEP"
 done
+
+echo "We're live 🚀"

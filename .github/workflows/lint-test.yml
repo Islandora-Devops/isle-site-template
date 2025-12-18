@@ -2,45 +2,13 @@ name: lint-test
 on: [push]
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
-      - run: shellcheck *.sh
+      - run: shellcheck **/*.sh
 
       - uses: hadolint/hadolint-action@2332a7b74a6de0dda2e2221d575162eba76ba5e5 # v3.3.0
         with:
           dockerfile: drupal/Dockerfile
           verbose: true
-
-  test:
-    needs: [lint]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
-
-      - name: install mkcert (ubuntu or macos)
-        shell: bash
-        run: |-
-          ARCH="linux/amd64"
-          if [ "${{ matrix.os }}" = "macos-latest" ]; then
-            ARCH="darwin/arm64"
-          elif [ "${{ matrix.os }}" = "macos-13" ]; then
-            ARCH="darwin/amd64"
-          fi
-
-          curl -JLO "https://dl.filippo.io/mkcert/latest?for=$ARCH"
-          chmod +x mkcert-v*
-          cp mkcert-v* /usr/local/bin/mkcert
-          cp sample.env .env
-
-      - name: generate-certs
-        shell: bash
-        run: ./generate-certs.sh
-
-      - name: generate-secrets
-        shell: bash
-        run: ./generate-secrets.sh

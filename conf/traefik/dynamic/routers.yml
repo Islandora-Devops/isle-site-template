@@ -1,0 +1,75 @@
+http:
+  routers:
+    activemq:
+      rule: Host(`activemq.{{ env "DOMAIN" }}`)
+      service: activemq
+{{- if eq (env "ENABLE_HTTPS") "true" }}
+      tls: {}
+{{- if eq (env "ENABLE_ACME") "true" }}
+        certResolver: letsencrypt
+{{- end }}
+{{- end }}
+
+    blazegraph:
+      rule: Host(`blazegraph.{{ env "DOMAIN" }}`)
+      service: blazegraph
+{{- if eq (env "ENABLE_HTTPS") "true" }}
+      tls: {}
+{{- if eq (env "ENABLE_ACME") "true" }}
+        certResolver: letsencrypt
+{{- end }}
+{{- end }}
+
+    cantaloupe:
+      rule: Host(`{{ env "DOMAIN" }}`) && PathPrefix(`/cantaloupe`)
+      middlewares:
+        - cantaloupe
+      service: cantaloupe
+{{- if eq (env "ENABLE_HTTPS") "true" }}
+      tls: {}
+{{- if eq (env "ENABLE_ACME") "true" }}
+        certResolver: letsencrypt
+{{- end }}
+{{- end }}
+
+    drupal:
+      rule: Host(`{{ env "DOMAIN" }}`)
+      service: drupal
+{{- if eq (env "ENABLE_HTTPS") "true" }}
+      tls: {}
+{{- if eq (env "ENABLE_ACME") "true" }}
+        certResolver: letsencrypt
+{{- end }}
+{{- end }}
+
+    fcrepo:
+      rule: Host(`fcrepo.{{ env "DOMAIN" }}`)
+      middlewares:
+        - fcrepo-strip-suffix
+      service: fcrepo
+{{- if eq (env "ENABLE_HTTPS") "true" }}
+      tls: {}
+{{- if eq (env "ENABLE_ACME") "true" }}
+        certResolver: letsencrypt
+{{- end }}
+{{- end }}
+
+    solr:
+      rule: Host(`solr.{{ env "DOMAIN" }}`)
+      service: solr
+{{- if eq (env "ENABLE_HTTPS") "true" }}
+      tls: {}
+{{- if eq (env "ENABLE_ACME") "true" }}
+        certResolver: letsencrypt
+{{- end }}
+{{- end }}
+
+    traefik:
+      rule: Host(`traefik.{{ env "DOMAIN" }}`)
+      service: traefik
+{{- if eq (env "ENABLE_HTTPS") "true" }}
+      tls: {}
+{{- if eq (env "ENABLE_ACME") "true" }}
+        certResolver: letsencrypt
+{{- end }}
+{{- end }}

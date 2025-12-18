@@ -1,0 +1,40 @@
+---
+api:
+  insecure: true
+  dashboard: true
+  debug: true
+
+ping: {}
+
+log:
+  level: DEBUG
+
+entryPoints:
+  http:
+    address: ":80"
+    transport:
+      respondingTimeouts:
+        readTimeout: 60
+  https:
+    address: ":443"
+    transport:
+      respondingTimeouts:
+        readTimeout: 60
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: postmaster@example.com
+      storage: /acme/acme.json
+      caServer: https://acme-v02.api.letsencrypt.org/directory
+      httpChallenge:
+        entryPoint: http
+
+providers:
+  # load our main traefik conf which has dynamic content
+  # see https://doc.traefik.io/traefik/reference/install-configuration/providers/others/file/
+  file:
+    directory: /etc/traefik/dynamic
+  docker:
+    network: default
+    exposedByDefault: false

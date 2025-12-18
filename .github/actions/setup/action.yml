@@ -1,0 +1,69 @@
+name: 'Setup ISLE Composite'
+description: 'Sets up the ISLE environment'
+inputs:
+  buildkit-tag:
+    description: 'islandora-devops/isle-buildkit docker tag to pull'
+    default: 'main'
+  starter-site-owner:
+    description: 'islandora-starter-site github owner'
+    default: 'Islandora-Devops'
+  starter-site-ref:
+    description: 'islandora-starter-site ref to checkout'
+    default: 'heads/main'
+  ist-owner:
+    description: 'isle-site-template github owner'
+    default: 'Islandora-Devops'
+  ist-ref:
+    description: 'isle-site-template ref to checkout'
+    default: 'heads/main'
+runs:
+  using: "composite"
+  steps:
+    - name: Validate Inputs
+      shell: bash
+      run: |
+        REGEX_DOCKER="^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$"
+        REGEX_GITHUB_OWNER="^[a-zA-Z0-9]([a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$"
+        REGEX_GIT_REF="^([a-zA-Z0-9._\/-]+)$"
+        validate() {
+          local name=$1
+          local value=$2
+          local regex=$3
+          if [[ ! $value =~ $regex ]]; then
+            echo "::error::Invalid input for $name: '$value'. Potential shell injection or malformed string."
+            exit 1
+          fi
+        }
+
+        validate "buildkit-tag" "${{ inputs.buildkit-tag }}" "$REGEX_DOCKER"
+        validate "starter-site-owner" "${{ inputs.starter-site-owner }}" "$REGEX_GITHUB_OWNER"
+        validate "ist-owner" "${{ inputs.ist-owner }}" "$REGEX_GITHUB_OWNER"
+        validate "starter-site-ref" "${{ inputs.starter-site-ref }}" "$REGEX_GIT_REF"
+        validate "ist-ref" "${{ inputs.ist-ref }}" "$REGEX_GIT_REF"
+
+    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      with:
+        repository: ${{ inputs.ist-owner }}/isle-site-template
+        ref:  ${{ inputs.ist-ref }}
+
+    - name: setup git identity
+      shell: bash
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Actions"
+
+    - name: Start islandora-starter-site
+      shell: bash
+      env:
+        ISLANDORA_TAG: ${{ inputs.buildkit-tag }}
+        STARTER_SITE_OWNER: ${{ inputs.starter-site-owner }}
+        STARTER_SITE_BRANCH: ${{ inputs.starter-site-ref }}
+        ISLE_SITE_TEMPLATE_OWNER: ${{ inputs.ist-owner }}
+        ISLE_SITE_TEMPLATE_REF: ${{ inputs.ist-ref }}
+        SITE_NAME: test
+        INIT_DIR_PWD: "true"
+      run: make setup build up
+
+    - name: make sure traefik is serving traffic
+      shell: bash
+      run: ./scripts/ping.sh
