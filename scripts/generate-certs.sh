@@ -2,6 +2,8 @@
 # shellcheck shell=bash
 set -euf -o pipefail
 
+echo "Generating certificates with mkcert..."
+
 PROGDIR=$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")
 readonly PROGDIR
 
@@ -47,3 +49,5 @@ fi
   "::1"
 
 printf '%s' "$(id -u)" > ./certs/UID
+
+echo "Certificates generated successfully."
