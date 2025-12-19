@@ -1,0 +1,48 @@
+uuid: bbd4f114-c54d-492c-9268-99ddd6f518cb
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+    - openseadragon
+_core:
+  default_config_hash: sN9l77XqTzoy1x5fp1O7v91Di5_6iCx9prNHDvGYrKo
+label: 'Openseadragon Block - Multipaged items'
+name: openseadragon_block
+group: Display
+description: 'If Paged Content or Publication Issue, display Openseadragon from manifest.'
+requireAllConditions: false
+disabled: true
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: false
+    uuid: e5689bd5-7eec-4378-b329-2f35d5bb35b0
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'https://schema.org/Book,https://schema.org/PublicationIssue'
+    logic: or
+reactions:
+  blocks:
+    id: blocks
+    uuid: 50b9b25e-0836-4531-8a78-9698d71d81de
+    blocks:
+      30e02221-7810-425f-abed-5b5f82da4612:
+        uuid: 30e02221-7810-425f-abed-5b5f82da4612
+        id: openseadragon_block
+        label: 'Multipage Viewer'
+        provider: openseadragon
+        label_display: visible
+        region: content_above
+        weight: '0'
+        custom_id: openseadragon_block
+        theme: olivero
+        css_class: ''
+        unique: 0
+        context_id: openseadragon_block
+        context_mapping: {  }
+        iiif_manifest_url: 'node/[node:nid]/book-manifest'
+        third_party_settings: {  }
+    include_default_blocks: 1
+    saved: false
+weight: -8

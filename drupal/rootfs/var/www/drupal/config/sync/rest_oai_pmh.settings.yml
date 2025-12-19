@@ -1,0 +1,27 @@
+_core:
+  default_config_hash: ZdPdgeYPxAPoTIlcCxW_tRoExm87onUdOjF3ZY2gfto
+rest_oai_pmh:
+  entity_type: node
+view_displays:
+  'oai_pmh:all_repository_items': 'oai_pmh:all_repository_items'
+  'oai_pmh:collection_sets': 'oai_pmh:collection_sets'
+  'oai_pmh:collectionless_set': 'oai_pmh:collectionless_set'
+support_sets: 1
+mapping_source: rdf
+repository_name: 'Islandora 8'
+repository_email: admin@example.com
+expiration: '3600'
+metadata_map_plugins:
+  -
+    label: mods
+    value: mods
+  -
+    label: oai_raw
+    value: ''
+  -
+    label: oai_dc
+    value: dublin_core_rdf
+cache_technique: liberal_cache
+mods_view:
+  view_machine_name: oai_pmh_item_data
+  view_display_name: page_1

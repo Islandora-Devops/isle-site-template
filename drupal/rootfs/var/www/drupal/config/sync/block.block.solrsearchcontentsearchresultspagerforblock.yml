@@ -1,0 +1,42 @@
+uuid: 0b112c69-6a7f-4be5-999c-4e5a5b5486d4
+langcode: en
+status: true
+dependencies:
+  module:
+    - advanced_search
+    - context
+    - islandora
+  theme:
+    - olivero
+id: solrsearchcontentsearchresultspagerforblock
+theme: olivero
+region: content
+weight: -10
+provider: null
+plugin: 'advanced_search_result_pager:solr_search_content__block_1'
+settings:
+  id: 'advanced_search_result_pager:solr_search_content__block_1'
+  label: 'Solr search content: Search Results Pager for Block'
+  label_display: '0'
+  provider: advanced_search
+visibility:
+  user_status:
+    id: user_status
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    user_status:
+      viewing_profile: '0'
+      logged_viewing_profile: '0'
+      own_page_true: '0'
+      field_value: '0'
+    user_fields: uid
+  context_all:
+    id: context_all
+    negate: null
+    values: collection
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''

@@ -1,0 +1,21 @@
+uuid: 51ffafeb-eea8-45c5-a902-270a4fc4d2c8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_full_title
+    - node.type.islandora_object
+_core:
+  default_config_hash: Z-SrfiHLAiTx5FMtdRjJfe-JDb8UFGzVAtu3If26S6U
+id: node.islandora_object.field_full_title
+field_name: field_full_title
+entity_type: node
+bundle: islandora_object
+label: 'Full Title'
+description: 'If the full resource title is longer than 255 characters and you truncated it in the required Title field above, record the full title here.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

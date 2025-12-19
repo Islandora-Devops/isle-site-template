@@ -1,0 +1,49 @@
+uuid: 94f973a2-30e6-466a-9ade-5b07b9e79b5e
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.media_display_blocks
+  module:
+    - islandora
+    - views
+label: PDF.js
+name: pdfjs
+group: Display
+description: 'Displays the Service File or Original File in PDF.js view mode'
+requireAllConditions: false
+disabled: false
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: false
+    uuid: 7bbec6a5-86ff-47b4-9027-28e32a3d2947
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'http://mozilla.github.io/pdf.js'
+    logic: and
+reactions:
+  blocks:
+    id: blocks
+    uuid: 2d27abaf-89e5-4a96-8644-d21353159a16
+    blocks:
+      10d286f9-7003-4aff-918c-b54f8b232bb8:
+        uuid: 10d286f9-7003-4aff-918c-b54f8b232bb8
+        id: 'views_block:media_display_blocks-pdfjs'
+        label: ''
+        provider: views
+        label_display: '0'
+        region: content_above
+        weight: '0'
+        custom_id: views_block_media_display_blocks_pdfjs
+        theme: olivero
+        css_class: ''
+        unique: 0
+        context_id: pdfjs
+        context_mapping: {  }
+        views_label: ''
+        items_per_page: none
+        third_party_settings: {  }
+    include_default_blocks: 1
+    saved: false
+weight: -5

@@ -1,0 +1,12 @@
+uuid: 2d3264c8-f9d2-4158-844d-07429de09c61
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: Kwa413G8vt72_OIgvVEDhnmTCX-KnjCVPnowVOwSnwc
+id: islandora
+label: Islandora
+description: 'Migrations into Islandora'
+source_type: Anything
+module: null
+shared_configuration: null

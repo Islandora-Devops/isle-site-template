@@ -1,0 +1,23 @@
+uuid: d43db435-3e9e-45b7-995b-81f95233689b
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: C6RAaNDse3-eQaG8S7HMTKViyB3Q9A3G_h2GM4cwAwA
+id: node.field_edtf_date
+field_name: field_edtf_date
+entity_type: node
+type: edtf
+settings:
+  max_length: 128
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

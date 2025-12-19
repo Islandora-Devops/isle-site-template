@@ -1,0 +1,21 @@
+uuid: 2a26bdb0-0b59-40e4-8a51-e9cdc81b101d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_place_published
+    - node.type.islandora_object
+_core:
+  default_config_hash: pYmYPOxQhPt1sHME9s9bE1M7mNdA1oO26oA_gO5p0ck
+id: node.islandora_object.field_place_published
+field_name: field_place_published
+entity_type: node
+bundle: islandora_object
+label: 'Place Published'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

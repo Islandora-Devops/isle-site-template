@@ -1,0 +1,904 @@
+id,vid,name,description,external_uri,authority_link_source,parent,code
+1,resource_types,Text,Resource intended to be perceived visually and understood through the use of language in written or spoken form.,http://id.loc.gov/vocabulary/resourceTypes/txt,resourceTypes,,
+2,resource_types,Periodical,,http://id.loc.gov/vocabulary/resourceTypes/per,resourceTypes,1,
+3,resource_types,Newspaper,,http://id.loc.gov/vocabulary/resourceTypes/nws,resourceTypes,1,
+4,resource_types,Book,,http://id.loc.gov/vocabulary/resourceTypes/bke,resourceTypes,1,
+5,resource_types,Legislation,,http://id.loc.gov/vocabulary/resourceTypes/leg,resourceTypes,1,
+6,resource_types,Cartographic,"Resource that shows spatial information, including maps, atlases, globes, digital, and other cartographic resources.",http://id.loc.gov/vocabulary/resourceTypes/car,resourceTypes,,
+7,resource_types,Remote sensing image,,http://id.loc.gov/vocabulary/resourceTypes/rsi,resourceTypes,6,
+8,resource_types,Globe,,http://id.loc.gov/vocabulary/resourceTypes/glo,resourceTypes,6,
+9,resource_types,Map,,http://id.loc.gov/vocabulary/resourceTypes/map,resourceTypes,6,
+10,resource_types,Notated music,"Graphic, non-realized representations of musical works intended to be perceived visually.",http://id.loc.gov/vocabulary/resourceTypes/not,resourceTypes,,
+11,resource_types,Notated movement,,http://id.loc.gov/vocabulary/resourceTypes/nmv,resourceTypes,10,
+12,resource_types,Audio,"Resources expressed in an audible form, including music or other sounds.",http://id.loc.gov/vocabulary/resourceTypes/aud,resourceTypes,,
+13,resource_types,Audio musical,,http://id.loc.gov/vocabulary/resourceTypes/aum,resourceTypes,12,
+14,resource_types,Audio non-musical,,http://id.loc.gov/vocabulary/resourceTypes/aun,resourceTypes,12,
+15,resource_types,Still Image,"Resource expressed through line, shape, shading, etc., intended to be perceived visually as a still image or images in two dimensions.",http://id.loc.gov/vocabulary/resourceTypes/img,resourceTypes,,
+16,resource_types,Print,,http://id.loc.gov/vocabulary/resourceTypes/pri,resourceTypes,15,
+17,resource_types,Photograph,,http://id.loc.gov/vocabulary/resourceTypes/pho,resourceTypes,15,
+18,resource_types,Drawing,,http://id.loc.gov/vocabulary/resourceTypes/dwg,resourceTypes,15,
+19,resource_types,Moving Image,"Images intended to be perceived as moving, including motion pictures and video recordings.",http://id.loc.gov/vocabulary/resourceTypes/mov,resourceTypes,,
+20,resource_types,Video recording,,http://id.loc.gov/vocabulary/resourceTypes/vid,resourceTypes,19,
+21,resource_types,Motion picture,,http://id.loc.gov/vocabulary/resourceTypes/mot,resourceTypes,19,
+22,resource_types,Artifact,Resource in a form intended to be perceived visually in three dimensions. Includes man-made objects as well as naturally occurring objects such as specimens mounted for viewing.,http://id.loc.gov/vocabulary/resourceTypes/art,resourceTypes,,
+23,resource_types,Mixed Material,"Resource comprised of multiple types which is not driven by software; for instance, a manuscript collection of text, photographs and sound recordings.",http://id.loc.gov/vocabulary/resourceTypes/mix,resourceTypes,,
+24,resource_types,Kit,,http://id.loc.gov/vocabulary/resourceTypes/kit,resourceTypes,23,
+25,resource_types,Digital,"Resource that is intended for manipulation by a computer, accessed either directly or remotely",http://id.loc.gov/vocabulary/resourceTypes/dig,resourceTypes,,
+26,resource_types,Multimedia,Electronic resource that is a computer program or which consists of multiple media types that are software driven.,http://id.loc.gov/vocabulary/resourceTypes/mul,resourceTypes,,
+27,resource_types,Software,,http://id.loc.gov/vocabulary/resourceTypes/sof,resourceTypes,26,
+28,resource_types,Website,,http://id.loc.gov/vocabulary/resourceTypes/web,resourceTypes,26,
+29,resource_types,Dataset,"Data encoded in a defined structure, but not normally displayed in its raw form.",http://id.loc.gov/vocabulary/resourceTypes/dat,resourceTypes,,
+30,resource_types,Manuscript,Resource that is written in handwriting or typescript. These are generally unique resources.,http://id.loc.gov/vocabulary/resourceTypes/man,resourceTypes,,
+31,resource_types,Collection,"Aggregation of resources, generally gathered together artificially.",http://id.loc.gov/vocabulary/resourceTypes/col,resourceTypes,,
+32,resource_types,Unspecified,The type of resource is unknown or undetermined.,http://id.loc.gov/vocabulary/resourceTypes/unk,resourceTypes,,
+33,resource_types,Tactile,Resource that is intended to be perceived by touch.,http://id.loc.gov/vocabulary/resourceTypes/tac,resourceTypes,,
+34,islandora_display,OpenSeadragon,Display using the OpenSeadragon viewer,http://openseadragon.github.io,,,
+35,islandora_display,PDF.js,Display using the PDF.js viewer,http://mozilla.github.io/pdf.js,,,
+36,country,Western Sahara,,http://id.loc.gov/vocabulary/countries/ss,MarcCountry,,ss
+37,country,Fiji,,http://id.loc.gov/vocabulary/countries/fj,MarcCountry,,fj
+38,country,Australia,,http://id.loc.gov/vocabulary/countries/at,MarcCountry,,at
+39,country,England,,http://id.loc.gov/vocabulary/countries/enk,MarcCountry,,enk
+40,country,Dominican Republic,,http://id.loc.gov/vocabulary/countries/dr,MarcCountry,,dr
+41,country,Jersey,,http://id.loc.gov/vocabulary/countries/je,MarcCountry,,je
+42,country,British Columbia,,http://id.loc.gov/vocabulary/countries/bcc,MarcCountry,,bcc
+43,country,Germany,,http://id.loc.gov/vocabulary/countries/gw,MarcCountry,,gw
+44,country,Marshall Islands,,http://id.loc.gov/vocabulary/countries/xe,MarcCountry,,xe
+45,country,Laos,,http://id.loc.gov/vocabulary/countries/ls,MarcCountry,,ls
+46,country,Turks and Caicos Islands,,http://id.loc.gov/vocabulary/countries/tc,MarcCountry,,tc
+47,country,French Polynesia,,http://id.loc.gov/vocabulary/countries/fp,MarcCountry,,fp
+48,country,Slovenia,,http://id.loc.gov/vocabulary/countries/xv,MarcCountry,,xv
+49,country,Texas,,http://id.loc.gov/vocabulary/countries/txu,MarcCountry,,txu
+50,country,Isle of Man,,http://id.loc.gov/vocabulary/countries/im,MarcCountry,,im
+51,country,Korea (South),,http://id.loc.gov/vocabulary/countries/ko,MarcCountry,,ko
+52,country,Liberia,,http://id.loc.gov/vocabulary/countries/lb,MarcCountry,,lb
+53,country,Utah,,http://id.loc.gov/vocabulary/countries/utu,MarcCountry,,utu
+54,country,Palau,,http://id.loc.gov/vocabulary/countries/pw,MarcCountry,,pw
+55,country,Iran,,http://id.loc.gov/vocabulary/countries/ir,MarcCountry,,ir
+56,country,Maryland,,http://id.loc.gov/vocabulary/countries/mdu,MarcCountry,,mdu
+57,country,Bulgaria,,http://id.loc.gov/vocabulary/countries/bu,MarcCountry,,bu
+58,country,North Dakota,,http://id.loc.gov/vocabulary/countries/ndu,MarcCountry,,ndu
+59,country,British Virgin Islands,,http://id.loc.gov/vocabulary/countries/vb,MarcCountry,,vb
+60,country,Alberta,,http://id.loc.gov/vocabulary/countries/abc,MarcCountry,,abc
+61,country,Vanuatu,,http://id.loc.gov/vocabulary/countries/nn,MarcCountry,,nn
+62,country,United Kingdom,,http://id.loc.gov/vocabulary/countries/xxk,MarcCountry,,xxk
+63,country,Nunavut,,http://id.loc.gov/vocabulary/countries/nuc,MarcCountry,,nuc
+64,country,Oman,,http://id.loc.gov/vocabulary/countries/mk,MarcCountry,,mk
+65,country,Pakistan,,http://id.loc.gov/vocabulary/countries/pk,MarcCountry,,pk
+66,country,Kazakhstan,,http://id.loc.gov/vocabulary/countries/kz,MarcCountry,,kz
+67,country,Spratly Island,,http://id.loc.gov/vocabulary/countries/xp,MarcCountry,,xp
+68,country,Cabo Verde,,http://id.loc.gov/vocabulary/countries/cv,MarcCountry,,cv
+69,country,Martinique,,http://id.loc.gov/vocabulary/countries/mq,MarcCountry,,mq
+70,country,Turkmenistan,,http://id.loc.gov/vocabulary/countries/tk,MarcCountry,,tk
+71,country,Spanish North Africa,,http://id.loc.gov/vocabulary/countries/sh,MarcCountry,,sh
+72,country,Burundi,,http://id.loc.gov/vocabulary/countries/bd,MarcCountry,,bd
+73,country,New Zealand,,http://id.loc.gov/vocabulary/countries/nz,MarcCountry,,nz
+74,country,Egypt,,http://id.loc.gov/vocabulary/countries/ua,MarcCountry,,ua
+75,country,Uganda,,http://id.loc.gov/vocabulary/countries/ug,MarcCountry,,ug
+76,country,Bolivia,,http://id.loc.gov/vocabulary/countries/bo,MarcCountry,,bo
+77,country,Antarctica,,http://id.loc.gov/vocabulary/countries/ay,MarcCountry,,ay
+78,country,South Australia,,http://id.loc.gov/vocabulary/countries/xra,MarcCountry,,xra
+79,country,Delaware,,http://id.loc.gov/vocabulary/countries/deu,MarcCountry,,deu
+80,country,Yemen,,http://id.loc.gov/vocabulary/countries/ye,MarcCountry,,ye
+81,country,Sri Lanka,,http://id.loc.gov/vocabulary/countries/ce,MarcCountry,,ce
+82,country,Georgia,,http://id.loc.gov/vocabulary/countries/gau,MarcCountry,,gau
+83,country,Newfoundland and Labrador,,http://id.loc.gov/vocabulary/countries/nfc,MarcCountry,,nfc
+84,country,Israel,,http://id.loc.gov/vocabulary/countries/is,MarcCountry,,is
+85,country,Montserrat,,http://id.loc.gov/vocabulary/countries/mj,MarcCountry,,mj
+86,country,Zambia,,http://id.loc.gov/vocabulary/countries/za,MarcCountry,,za
+87,country,Poland,,http://id.loc.gov/vocabulary/countries/pl,MarcCountry,,pl
+88,country,Pennsylvania,,http://id.loc.gov/vocabulary/countries/pau,MarcCountry,,pau
+89,country,Sint Maarten,,http://id.loc.gov/vocabulary/countries/sn,MarcCountry,,sn
+90,country,Vietnam,,http://id.loc.gov/vocabulary/countries/vm,MarcCountry,,vm
+91,country,Equatorial Guinea,,http://id.loc.gov/vocabulary/countries/eg,MarcCountry,,eg
+92,country,Alabama,,http://id.loc.gov/vocabulary/countries/alu,MarcCountry,,alu
+93,country,Saint Helena,,http://id.loc.gov/vocabulary/countries/xj,MarcCountry,,xj
+94,country,Colombia,,http://id.loc.gov/vocabulary/countries/ck,MarcCountry,,ck
+95,country,Falkland Islands,,http://id.loc.gov/vocabulary/countries/fk,MarcCountry,,fk
+96,country,Oregon,,http://id.loc.gov/vocabulary/countries/oru,MarcCountry,,oru
+97,country,Tuvalu,,http://id.loc.gov/vocabulary/countries/tv,MarcCountry,,tv
+98,country,Washington (State),,http://id.loc.gov/vocabulary/countries/wau,MarcCountry,,wau
+99,country,Arkansas,,http://id.loc.gov/vocabulary/countries/aru,MarcCountry,,aru
+100,country,Nauru,,http://id.loc.gov/vocabulary/countries/nu,MarcCountry,,nu
+101,country,Heard and McDonald Islands,,http://id.loc.gov/vocabulary/countries/hm,MarcCountry,,hm
+102,country,Nevada,,http://id.loc.gov/vocabulary/countries/nvu,MarcCountry,,nvu
+103,country,Saint-Martin,,http://id.loc.gov/vocabulary/countries/st,MarcCountry,,st
+104,country,Moldova,,http://id.loc.gov/vocabulary/countries/mv,MarcCountry,,mv
+105,country,North Carolina,,http://id.loc.gov/vocabulary/countries/ncu,MarcCountry,,ncu
+106,country,Greenland,,http://id.loc.gov/vocabulary/countries/gl,MarcCountry,,gl
+107,country,El Salvador,,http://id.loc.gov/vocabulary/countries/es,MarcCountry,,es
+108,country,Mongolia,,http://id.loc.gov/vocabulary/countries/mp,MarcCountry,,mp
+109,country,Cook Islands,,http://id.loc.gov/vocabulary/countries/cw,MarcCountry,,cw
+110,country,Saint-Barthélemy,,http://id.loc.gov/vocabulary/countries/sc,MarcCountry,,sc
+111,country,Liechtenstein,,http://id.loc.gov/vocabulary/countries/lh,MarcCountry,,lh
+112,country,Alaska,,http://id.loc.gov/vocabulary/countries/aku,MarcCountry,,aku
+113,country,British Indian Ocean Territory,,http://id.loc.gov/vocabulary/countries/bi,MarcCountry,,bi
+114,country,Norway,,http://id.loc.gov/vocabulary/countries/no,MarcCountry,,no
+115,country,Kuwait,,http://id.loc.gov/vocabulary/countries/ku,MarcCountry,,ku
+116,country,Comoros,,http://id.loc.gov/vocabulary/countries/cq,MarcCountry,,cq
+117,country,Andorra,,http://id.loc.gov/vocabulary/countries/an,MarcCountry,,an
+118,country,Romania,,http://id.loc.gov/vocabulary/countries/rm,MarcCountry,,rm
+119,country,Greece,,http://id.loc.gov/vocabulary/countries/gr,MarcCountry,,gr
+120,country,Saint Kitts-Nevis,,http://id.loc.gov/vocabulary/countries/xd,MarcCountry,,xd
+121,country,Timor-Leste,,http://id.loc.gov/vocabulary/countries/em,MarcCountry,,em
+122,country,Connecticut,,http://id.loc.gov/vocabulary/countries/ctu,MarcCountry,,ctu
+123,country,Paracel Islands],,http://id.loc.gov/vocabulary/countries/pf,MarcCountry,,pf
+124,country,Coral Sea Islands Territory,,http://id.loc.gov/vocabulary/countries/xga,MarcCountry,,xga
+125,country,Mali,,http://id.loc.gov/vocabulary/countries/ml,MarcCountry,,ml
+126,country,Lesotho,,http://id.loc.gov/vocabulary/countries/lo,MarcCountry,,lo
+127,country,China,,http://id.loc.gov/vocabulary/countries/cc,MarcCountry,,cc
+128,country,Bouvet Island,,http://id.loc.gov/vocabulary/countries/bv,MarcCountry,,bv
+129,country,Papua New Guinea,,http://id.loc.gov/vocabulary/countries/pp,MarcCountry,,pp
+130,country,Florida,,http://id.loc.gov/vocabulary/countries/flu,MarcCountry,,flu
+131,country,Zimbabwe,,http://id.loc.gov/vocabulary/countries/rh,MarcCountry,,rh
+132,country,Estonia,,http://id.loc.gov/vocabulary/countries/er,MarcCountry,,er
+133,country,Djibouti,,http://id.loc.gov/vocabulary/countries/ft,MarcCountry,,ft
+134,country,Slovakia,,http://id.loc.gov/vocabulary/countries/xo,MarcCountry,,xo
+135,country,Maine,,http://id.loc.gov/vocabulary/countries/meu,MarcCountry,,meu
+136,country,South Carolina,,http://id.loc.gov/vocabulary/countries/scu,MarcCountry,,scu
+137,country,Queensland,,http://id.loc.gov/vocabulary/countries/qea,MarcCountry,,qea
+138,country,Argentina,,http://id.loc.gov/vocabulary/countries/ag,MarcCountry,,ag
+139,country,Lithuania,,http://id.loc.gov/vocabulary/countries/li,MarcCountry,,li
+140,country,Solomon Islands,,http://id.loc.gov/vocabulary/countries/bp,MarcCountry,,bp
+141,country,Morocco,,http://id.loc.gov/vocabulary/countries/mr,MarcCountry,,mr
+142,country,Sao Tome and Principe,,http://id.loc.gov/vocabulary/countries/sf,MarcCountry,,sf
+143,country,Sierra Leone,,http://id.loc.gov/vocabulary/countries/sl,MarcCountry,,sl
+144,country,Kentucky,,http://id.loc.gov/vocabulary/countries/kyu,MarcCountry,,kyu
+145,country,Ukraine,,http://id.loc.gov/vocabulary/countries/un,MarcCountry,,un
+146,country,Turkey,,http://id.loc.gov/vocabulary/countries/tu,MarcCountry,,tu
+147,country,Croatia,,http://id.loc.gov/vocabulary/countries/ci,MarcCountry,,ci
+148,country,West Bank of the Jordan River,,http://id.loc.gov/vocabulary/countries/wj,MarcCountry,,wj
+149,country,Guernsey,,http://id.loc.gov/vocabulary/countries/gg,MarcCountry,,gg
+150,country,American Samoa,,http://id.loc.gov/vocabulary/countries/as,MarcCountry,,as
+151,country,Maldives,,http://id.loc.gov/vocabulary/countries/xc,MarcCountry,,xc
+152,country,Anguilla,,http://id.loc.gov/vocabulary/countries/am,MarcCountry,,am
+153,country,Curaçao,,http://id.loc.gov/vocabulary/countries/co,MarcCountry,,co
+154,country,Mayotte,,http://id.loc.gov/vocabulary/countries/ot,MarcCountry,,ot
+155,country,Niger,,http://id.loc.gov/vocabulary/countries/ng,MarcCountry,,ng
+156,country,Serbia,,http://id.loc.gov/vocabulary/countries/rb,MarcCountry,,rb
+157,country,Eritrea,,http://id.loc.gov/vocabulary/countries/ea,MarcCountry,,ea
+158,country,Surinam,,http://id.loc.gov/vocabulary/countries/sr,MarcCountry,,sr
+159,country,Mexico,,http://id.loc.gov/vocabulary/countries/mx,MarcCountry,,mx
+160,country,West Virginia,,http://id.loc.gov/vocabulary/countries/wvu,MarcCountry,,wvu
+161,country,Senegal,,http://id.loc.gov/vocabulary/countries/sg,MarcCountry,,sg
+162,country,Belgium,,http://id.loc.gov/vocabulary/countries/be,MarcCountry,,be
+163,country,Malawi,,http://id.loc.gov/vocabulary/countries/mw,MarcCountry,,mw
+164,country,Namibia,,http://id.loc.gov/vocabulary/countries/sx,MarcCountry,,sx
+165,country,Benin,,http://id.loc.gov/vocabulary/countries/dm,MarcCountry,,dm
+166,country,Gambia,,http://id.loc.gov/vocabulary/countries/gm,MarcCountry,,gm
+167,country,Uruguay,,http://id.loc.gov/vocabulary/countries/uy,MarcCountry,,uy
+168,country,Montana,,http://id.loc.gov/vocabulary/countries/mtu,MarcCountry,,mtu
+169,country,Peru,,http://id.loc.gov/vocabulary/countries/pe,MarcCountry,,pe
+170,country,South Africa,,http://id.loc.gov/vocabulary/countries/sa,MarcCountry,,sa
+171,country,Jamaica,,http://id.loc.gov/vocabulary/countries/jm,MarcCountry,,jm
+172,country,Ireland,,http://id.loc.gov/vocabulary/countries/ie,MarcCountry,,ie
+173,country,Scotland,,http://id.loc.gov/vocabulary/countries/stk,MarcCountry,,stk
+174,country,Illinois,,http://id.loc.gov/vocabulary/countries/ilu,MarcCountry,,ilu
+175,country,Wyoming,,http://id.loc.gov/vocabulary/countries/wyu,MarcCountry,,wyu
+176,country,Georgia (Republic),,http://id.loc.gov/vocabulary/countries/gs,MarcCountry,,gs
+177,country,Guyana,,http://id.loc.gov/vocabulary/countries/gy,MarcCountry,,gy
+178,country,Tonga,,http://id.loc.gov/vocabulary/countries/to,MarcCountry,,to
+179,country,Chad,,http://id.loc.gov/vocabulary/countries/cd,MarcCountry,,cd
+180,country,Luxembourg,,http://id.loc.gov/vocabulary/countries/lu,MarcCountry,,lu
+181,country,Niue,,http://id.loc.gov/vocabulary/countries/xh,MarcCountry,,xh
+182,country,Cuba,,http://id.loc.gov/vocabulary/countries/cu,MarcCountry,,cu
+183,country,North Macedonia,,http://id.loc.gov/vocabulary/countries/xn,MarcCountry,,xn
+184,country,Finland,,http://id.loc.gov/vocabulary/countries/fi,MarcCountry,,fi
+185,country,Mauritius,,http://id.loc.gov/vocabulary/countries/mf,MarcCountry,,mf
+186,country,Kiribati,,http://id.loc.gov/vocabulary/countries/gb,MarcCountry,,gb
+187,country,Ontario,,http://id.loc.gov/vocabulary/countries/onc,MarcCountry,,onc
+188,country,Japan,,http://id.loc.gov/vocabulary/countries/ja,MarcCountry,,ja
+189,country,Korea (North),,http://id.loc.gov/vocabulary/countries/kn,MarcCountry,,kn
+190,country,San Marino,,http://id.loc.gov/vocabulary/countries/sm,MarcCountry,,sm
+191,country,Iraq,,http://id.loc.gov/vocabulary/countries/iq,MarcCountry,,iq
+192,country,Tunisia,,http://id.loc.gov/vocabulary/countries/ti,MarcCountry,,ti
+193,country,Tanzania,,http://id.loc.gov/vocabulary/countries/tz,MarcCountry,,tz
+194,country,Wake Island,,http://id.loc.gov/vocabulary/countries/wk,MarcCountry,,wk
+195,country,Cayman Islands,,http://id.loc.gov/vocabulary/countries/cj,MarcCountry,,cj
+196,country,Minnesota,,http://id.loc.gov/vocabulary/countries/mnu,MarcCountry,,mnu
+197,country,Belarus,,http://id.loc.gov/vocabulary/countries/bw,MarcCountry,,bw
+198,country,Albania,,http://id.loc.gov/vocabulary/countries/aa,MarcCountry,,aa
+199,country,Ghana,,http://id.loc.gov/vocabulary/countries/gh,MarcCountry,,gh
+200,country,Hawaii,,http://id.loc.gov/vocabulary/countries/hiu,MarcCountry,,hiu
+201,country,Panama,,http://id.loc.gov/vocabulary/countries/pn,MarcCountry,,pn
+202,country,Cocos (Keeling) Islands,,http://id.loc.gov/vocabulary/countries/xb,MarcCountry,,xb
+203,country,Louisiana,,http://id.loc.gov/vocabulary/countries/lau,MarcCountry,,lau
+204,country,Australian Capital Territory,,http://id.loc.gov/vocabulary/countries/aca,MarcCountry,,aca
+205,country,Western Australia,,http://id.loc.gov/vocabulary/countries/wea,MarcCountry,,wea
+206,country,Canada,,http://id.loc.gov/vocabulary/countries/xxc,MarcCountry,,xxc
+207,country,South Dakota,,http://id.loc.gov/vocabulary/countries/sdu,MarcCountry,,sdu
+208,country,Bermuda Islands,,http://id.loc.gov/vocabulary/countries/bm,MarcCountry,,bm
+209,country,Malaysia,,http://id.loc.gov/vocabulary/countries/my,MarcCountry,,my
+210,country,Micronesia (Federated States),,http://id.loc.gov/vocabulary/countries/fm,MarcCountry,,fm
+211,country,Guatemala,,http://id.loc.gov/vocabulary/countries/gt,MarcCountry,,gt
+212,country,Monaco,,http://id.loc.gov/vocabulary/countries/mc,MarcCountry,,mc
+213,country,Latvia,,http://id.loc.gov/vocabulary/countries/lv,MarcCountry,,lv
+214,country,Antigua and Barbuda,,http://id.loc.gov/vocabulary/countries/aq,MarcCountry,,aq
+215,country,Portugal,,http://id.loc.gov/vocabulary/countries/po,MarcCountry,,po
+216,country,Cameroon,,http://id.loc.gov/vocabulary/countries/cm,MarcCountry,,cm
+217,country,Bahrain,,http://id.loc.gov/vocabulary/countries/ba,MarcCountry,,ba
+218,country,Nicaragua,,http://id.loc.gov/vocabulary/countries/nq,MarcCountry,,nq
+219,country,Hungary,,http://id.loc.gov/vocabulary/countries/hu,MarcCountry,,hu
+220,country,Cyprus,,http://id.loc.gov/vocabulary/countries/cy,MarcCountry,,cy
+221,country,Thailand,,http://id.loc.gov/vocabulary/countries/th,MarcCountry,,th
+222,country,Indonesia,,http://id.loc.gov/vocabulary/countries/io,MarcCountry,,io
+223,country,Philippines,,http://id.loc.gov/vocabulary/countries/ph,MarcCountry,,ph
+224,country,Burma,,http://id.loc.gov/vocabulary/countries/br,MarcCountry,,br
+225,country,Virginia,,http://id.loc.gov/vocabulary/countries/vau,MarcCountry,,vau
+226,country,Honduras,,http://id.loc.gov/vocabulary/countries/ho,MarcCountry,,ho
+227,country,Oklahoma,,http://id.loc.gov/vocabulary/countries/oku,MarcCountry,,oku
+228,country,South Georgia and the South Sandwich Islands,,http://id.loc.gov/vocabulary/countries/xs,MarcCountry,,xs
+229,country,Québec (Province),,http://id.loc.gov/vocabulary/countries/quc,MarcCountry,,quc
+230,country,Seychelles,,http://id.loc.gov/vocabulary/countries/se,MarcCountry,,se
+231,country,Aruba,,http://id.loc.gov/vocabulary/countries/aw,MarcCountry,,aw
+232,country,California,,http://id.loc.gov/vocabulary/countries/cau,MarcCountry,,cau
+233,country,Afghanistan,,http://id.loc.gov/vocabulary/countries/af,MarcCountry,,af
+234,country,Nebraska,,http://id.loc.gov/vocabulary/countries/nbu,MarcCountry,,nbu
+235,country,French Guiana,,http://id.loc.gov/vocabulary/countries/fg,MarcCountry,,fg
+236,country,Russia (Federation),,http://id.loc.gov/vocabulary/countries/ru,MarcCountry,,ru
+237,country,Venezuela,,http://id.loc.gov/vocabulary/countries/ve,MarcCountry,,ve
+238,country,Yukon Territory,,http://id.loc.gov/vocabulary/countries/ykc,MarcCountry,,ykc
+239,country,Northern Mariana Islands,,http://id.loc.gov/vocabulary/countries/nw,MarcCountry,,nw
+240,country,Cambodia,,http://id.loc.gov/vocabulary/countries/cb,MarcCountry,,cb
+241,country,Bangladesh,,http://id.loc.gov/vocabulary/countries/bg,MarcCountry,,bg
+242,country,Mississippi,,http://id.loc.gov/vocabulary/countries/msu,MarcCountry,,msu
+243,country,Côte d'Ivoire,,http://id.loc.gov/vocabulary/countries/iv,MarcCountry,,iv
+244,country,Ohio,,http://id.loc.gov/vocabulary/countries/ohu,MarcCountry,,ohu
+245,country,Michigan,,http://id.loc.gov/vocabulary/countries/miu,MarcCountry,,miu
+246,country,Colorado,,http://id.loc.gov/vocabulary/countries/cou,MarcCountry,,cou
+247,country,Various places,,http://id.loc.gov/vocabulary/countries/vp,MarcCountry,,vp
+248,country,Madagascar,,http://id.loc.gov/vocabulary/countries/mg,MarcCountry,,mg
+249,country,Saint Vincent and the Grenadines,,http://id.loc.gov/vocabulary/countries/xm,MarcCountry,,xm
+250,country,Wallis and Futuna,,http://id.loc.gov/vocabulary/countries/wf,MarcCountry,,wf
+251,country,Nova Scotia,,http://id.loc.gov/vocabulary/countries/nsc,MarcCountry,,nsc
+252,country,Tajikistan,,http://id.loc.gov/vocabulary/countries/ta,MarcCountry,,ta
+253,country,China (Republic : 1949- ),,http://id.loc.gov/vocabulary/countries/ch,MarcCountry,,ch
+254,country,Nigeria,,http://id.loc.gov/vocabulary/countries/nr,MarcCountry,,nr
+255,country,Eswatini,,http://id.loc.gov/vocabulary/countries/sq,MarcCountry,,sq
+256,country,Idaho,,http://id.loc.gov/vocabulary/countries/idu,MarcCountry,,idu
+257,country,Wales,,http://id.loc.gov/vocabulary/countries/wlk,MarcCountry,,wlk
+258,country,Brunei,,http://id.loc.gov/vocabulary/countries/bx,MarcCountry,,bx
+259,country,New Mexico,,http://id.loc.gov/vocabulary/countries/nmu,MarcCountry,,nmu
+260,country,United States Misc. Caribbean Islands,,http://id.loc.gov/vocabulary/countries/uc,MarcCountry,,uc
+261,country,Gibraltar,,http://id.loc.gov/vocabulary/countries/gi,MarcCountry,,gi
+262,country,Algeria,,http://id.loc.gov/vocabulary/countries/ae,MarcCountry,,ae
+263,country,Sweden,,http://id.loc.gov/vocabulary/countries/sw,MarcCountry,,sw
+264,country,Pitcairn Island,,http://id.loc.gov/vocabulary/countries/pc,MarcCountry,,pc
+265,country,Lebanon,,http://id.loc.gov/vocabulary/countries/le,MarcCountry,,le
+266,country,Tennessee,,http://id.loc.gov/vocabulary/countries/tnu,MarcCountry,,tnu
+267,country,Uzbekistan,,http://id.loc.gov/vocabulary/countries/uz,MarcCountry,,uz
+268,country,Qatar,,http://id.loc.gov/vocabulary/countries/qa,MarcCountry,,qa
+269,country,Bahamas,,http://id.loc.gov/vocabulary/countries/bf,MarcCountry,,bf
+270,country,Missouri,,http://id.loc.gov/vocabulary/countries/mou,MarcCountry,,mou
+271,country,Kyrgyzstan,,http://id.loc.gov/vocabulary/countries/kg,MarcCountry,,kg
+272,country,"No place, unknown, or undetermined",,http://id.loc.gov/vocabulary/countries/xx,MarcCountry,,xx
+273,country,New Jersey,,http://id.loc.gov/vocabulary/countries/nju,MarcCountry,,nju
+274,country,Terres australes et antarctiques françaises,,http://id.loc.gov/vocabulary/countries/fs,MarcCountry,,fs
+275,country,Norfolk Island,,http://id.loc.gov/vocabulary/countries/nx,MarcCountry,,nx
+276,country,Malta,,http://id.loc.gov/vocabulary/countries/mm,MarcCountry,,mm
+277,country,United Arab Emirates,,http://id.loc.gov/vocabulary/countries/ts,MarcCountry,,ts
+278,country,Gaza Strip,,http://id.loc.gov/vocabulary/countries/gz,MarcCountry,,gz
+279,country,Brazil,,http://id.loc.gov/vocabulary/countries/bl,MarcCountry,,bl
+280,country,Christmas Island (Indian Ocean),,http://id.loc.gov/vocabulary/countries/xa,MarcCountry,,xa
+281,country,Gabon,,http://id.loc.gov/vocabulary/countries/go,MarcCountry,,go
+282,country,New Caledonia,,http://id.loc.gov/vocabulary/countries/nl,MarcCountry,,nl
+283,country,Prince Edward Island,,http://id.loc.gov/vocabulary/countries/pic,MarcCountry,,pic
+284,country,New South Wales,,http://id.loc.gov/vocabulary/countries/xna,MarcCountry,,xna
+285,country,Saint Pierre and Miquelon,,http://id.loc.gov/vocabulary/countries/xl,MarcCountry,,xl
+286,country,Montenegro,,http://id.loc.gov/vocabulary/countries/mo,MarcCountry,,mo
+287,country,Switzerland,,http://id.loc.gov/vocabulary/countries/sz,MarcCountry,,sz
+288,country,Czech Republic,,http://id.loc.gov/vocabulary/countries/xr,MarcCountry,,xr
+289,country,New Brunswick,,http://id.loc.gov/vocabulary/countries/nkc,MarcCountry,,nkc
+290,country,Haiti,,http://id.loc.gov/vocabulary/countries/ht,MarcCountry,,ht
+291,country,New York (State),,http://id.loc.gov/vocabulary/countries/nyu,MarcCountry,,nyu
+292,country,Togo,,http://id.loc.gov/vocabulary/countries/tg,MarcCountry,,tg
+293,country,Singapore,,http://id.loc.gov/vocabulary/countries/si,MarcCountry,,si
+294,country,Guinea-Bissau,,http://id.loc.gov/vocabulary/countries/pg,MarcCountry,,pg
+295,country,Manitoba,,http://id.loc.gov/vocabulary/countries/mbc,MarcCountry,,mbc
+296,country,Azerbaijan,,http://id.loc.gov/vocabulary/countries/aj,MarcCountry,,aj
+297,country,Congo (Brazzaville),,http://id.loc.gov/vocabulary/countries/cf,MarcCountry,,cf
+298,country,Rhode Island,,http://id.loc.gov/vocabulary/countries/riu,MarcCountry,,riu
+299,country,Botswana,,http://id.loc.gov/vocabulary/countries/bs,MarcCountry,,bs
+300,country,Grenada,,http://id.loc.gov/vocabulary/countries/gd,MarcCountry,,gd
+301,country,Nepal,,http://id.loc.gov/vocabulary/countries/np,MarcCountry,,np
+302,country,Somalia,,http://id.loc.gov/vocabulary/countries/so,MarcCountry,,so
+303,country,Vermont,,http://id.loc.gov/vocabulary/countries/vtu,MarcCountry,,vtu
+304,country,Northwest Territories,,http://id.loc.gov/vocabulary/countries/ntc,MarcCountry,,ntc
+305,country,Paraguay,,http://id.loc.gov/vocabulary/countries/py,MarcCountry,,py
+306,country,Kansas,,http://id.loc.gov/vocabulary/countries/ksu,MarcCountry,,ksu
+307,country,Jordan,,http://id.loc.gov/vocabulary/countries/jo,MarcCountry,,jo
+308,country,United States,,http://id.loc.gov/vocabulary/countries/xxu,MarcCountry,,xxu
+309,country,Bosnia and Herzegovina,,http://id.loc.gov/vocabulary/countries/bn,MarcCountry,,bn
+310,country,Iceland,,http://id.loc.gov/vocabulary/countries/ic,MarcCountry,,ic
+311,country,Kosovo,,http://id.loc.gov/vocabulary/countries/kv,MarcCountry,,kv
+312,country,Dominica,,http://id.loc.gov/vocabulary/countries/dq,MarcCountry,,dq
+313,country,Trinidad and Tobago,,http://id.loc.gov/vocabulary/countries/tr,MarcCountry,,tr
+314,country,Johnston Atoll,,http://id.loc.gov/vocabulary/countries/ji,MarcCountry,,ji
+315,country,Mauritania,,http://id.loc.gov/vocabulary/countries/mu,MarcCountry,,mu
+316,country,Chile,,http://id.loc.gov/vocabulary/countries/cl,MarcCountry,,cl
+317,country,Saudi Arabia,,http://id.loc.gov/vocabulary/countries/su,MarcCountry,,su
+318,country,Kenya,,http://id.loc.gov/vocabulary/countries/ke,MarcCountry,,ke
+319,country,Midway Islands,,http://id.loc.gov/vocabulary/countries/xf,MarcCountry,,xf
+320,country,Réunion,,http://id.loc.gov/vocabulary/countries/re,MarcCountry,,re
+321,country,India,,http://id.loc.gov/vocabulary/countries/ii,MarcCountry,,ii
+322,country,Iraq-Saudi Arabia Neutral Zone,,http://id.loc.gov/vocabulary/countries/iy,MarcCountry,,iy
+323,country,Samoa,,http://id.loc.gov/vocabulary/countries/ws,MarcCountry,,ws
+324,country,Guam,,http://id.loc.gov/vocabulary/countries/gu,MarcCountry,,gu
+325,country,Victoria,,http://id.loc.gov/vocabulary/countries/vra,MarcCountry,,vra
+326,country,Denmark,,http://id.loc.gov/vocabulary/countries/dk,MarcCountry,,dk
+327,country,Ethiopia,,http://id.loc.gov/vocabulary/countries/et,MarcCountry,,et
+328,country,Guadeloupe,,http://id.loc.gov/vocabulary/countries/gp,MarcCountry,,gp
+329,country,Vatican City,,http://id.loc.gov/vocabulary/countries/vc,MarcCountry,,vc
+330,country,Burkina Faso,,http://id.loc.gov/vocabulary/countries/uv,MarcCountry,,uv
+331,country,Central African Republic,,http://id.loc.gov/vocabulary/countries/cx,MarcCountry,,cx
+332,country,Netherlands,,http://id.loc.gov/vocabulary/countries/ne,MarcCountry,,ne
+333,country,France,,http://id.loc.gov/vocabulary/countries/fr,MarcCountry,,fr
+334,country,Rwanda,,http://id.loc.gov/vocabulary/countries/rw,MarcCountry,,rw
+335,country,Tokelau,,http://id.loc.gov/vocabulary/countries/tl,MarcCountry,,tl
+336,country,Indiana,,http://id.loc.gov/vocabulary/countries/inu,MarcCountry,,inu
+337,country,Syria,,http://id.loc.gov/vocabulary/countries/sy,MarcCountry,,sy
+338,country,Mozambique,,http://id.loc.gov/vocabulary/countries/mz,MarcCountry,,mz
+339,country,South Sudan,,http://id.loc.gov/vocabulary/countries/sd,MarcCountry,,sd
+340,country,Angola,,http://id.loc.gov/vocabulary/countries/ao,MarcCountry,,ao
+341,country,Caribbean Netherlands,,http://id.loc.gov/vocabulary/countries/ca,MarcCountry,,ca
+342,country,Massachusetts,,http://id.loc.gov/vocabulary/countries/mau,MarcCountry,,mau
+343,country,United States Misc. Pacific Islands,,http://id.loc.gov/vocabulary/countries/up,MarcCountry,,up
+344,country,Guinea,,http://id.loc.gov/vocabulary/countries/gv,MarcCountry,,gv
+345,country,Iowa,,http://id.loc.gov/vocabulary/countries/iau,MarcCountry,,iau
+346,country,Faroe Islands,,http://id.loc.gov/vocabulary/countries/fa,MarcCountry,,fa
+347,country,Belize,,http://id.loc.gov/vocabulary/countries/bh,MarcCountry,,bh
+348,country,Barbados,,http://id.loc.gov/vocabulary/countries/bb,MarcCountry,,bb
+349,country,Virgin Islands of the United States,,http://id.loc.gov/vocabulary/countries/vi,MarcCountry,,vi
+350,country,Armenia (Republic),,http://id.loc.gov/vocabulary/countries/ai,MarcCountry,,ai
+351,country,Tasmania,,http://id.loc.gov/vocabulary/countries/tma,MarcCountry,,tma
+352,country,Costa Rica,,http://id.loc.gov/vocabulary/countries/cr,MarcCountry,,cr
+353,country,Puerto Rico,,http://id.loc.gov/vocabulary/countries/pr,MarcCountry,,pr
+354,country,District of Columbia,,http://id.loc.gov/vocabulary/countries/dcu,MarcCountry,,dcu
+355,country,Saskatchewan,,http://id.loc.gov/vocabulary/countries/snc,MarcCountry,,snc
+356,country,Northern Ireland,,http://id.loc.gov/vocabulary/countries/nik,MarcCountry,,nik
+357,country,Sudan,,http://id.loc.gov/vocabulary/countries/sj,MarcCountry,,sj
+358,country,Ecuador,,http://id.loc.gov/vocabulary/countries/ec,MarcCountry,,ec
+359,country,Saint Lucia,,http://id.loc.gov/vocabulary/countries/xk,MarcCountry,,xk
+360,country,Italy,,http://id.loc.gov/vocabulary/countries/it,MarcCountry,,it
+361,country,Wisconsin,,http://id.loc.gov/vocabulary/countries/wiu,MarcCountry,,wiu
+362,country,Arizona,,http://id.loc.gov/vocabulary/countries/azu,MarcCountry,,azu
+363,country,Congo (Democratic Republic),,http://id.loc.gov/vocabulary/countries/cg,MarcCountry,,cg
+364,country,Northern Territory,,http://id.loc.gov/vocabulary/countries/xoa,MarcCountry,,xoa
+365,country,Spain,,http://id.loc.gov/vocabulary/countries/sp,MarcCountry,,sp
+366,country,Libya,,http://id.loc.gov/vocabulary/countries/ly,MarcCountry,,ly
+367,country,Bhutan,,http://id.loc.gov/vocabulary/countries/bt,MarcCountry,,bt
+368,country,New Hampshire,,http://id.loc.gov/vocabulary/countries/nhu,MarcCountry,,nhu
+369,country,Austria,,http://id.loc.gov/vocabulary/countries/au,MarcCountry,,au
+370,frequencies,semimonthly,,http://id.loc.gov/vocabulary/frequencies/smn,frequencies,,smn
+371,frequencies,monthly,,http://id.loc.gov/vocabulary/frequencies/mon,frequencies,,mon
+372,frequencies,three times a month,,http://id.loc.gov/vocabulary/frequencies/ttm,frequencies,,ttm
+373,frequencies,quarterly,,http://id.loc.gov/vocabulary/frequencies/qrt,frequencies,,qrt
+374,frequencies,biennial,,http://id.loc.gov/vocabulary/frequencies/bin,frequencies,,bin
+375,frequencies,bimonthly,,http://id.loc.gov/vocabulary/frequencies/bmn,frequencies,,bmn
+376,frequencies,three times a year,,http://id.loc.gov/vocabulary/frequencies/tty,frequencies,,tty
+377,frequencies,unknown,,http://id.loc.gov/vocabulary/frequencies/unk,frequencies,,unk
+378,frequencies,biweekly,,http://id.loc.gov/vocabulary/frequencies/bwk,frequencies,,bwk
+379,frequencies,other,,http://id.loc.gov/vocabulary/frequencies/oth,frequencies,,oth
+380,frequencies,semiweekly,,http://id.loc.gov/vocabulary/frequencies/swk,frequencies,,swk
+381,frequencies,triennial,,http://id.loc.gov/vocabulary/frequencies/ten,frequencies,,ten
+382,frequencies,daily,,http://id.loc.gov/vocabulary/frequencies/dyl,frequencies,,dyl
+383,frequencies,semiannual,,http://id.loc.gov/vocabulary/frequencies/san,frequencies,,san
+384,frequencies,irregular,,http://id.loc.gov/vocabulary/frequencies/irr,frequencies,,irr
+385,frequencies,annual,,http://id.loc.gov/vocabulary/frequencies/ann,frequencies,,ann
+386,frequencies,three times a week,,http://id.loc.gov/vocabulary/frequencies/ttw,frequencies,,ttw
+387,frequencies,weekly,,http://id.loc.gov/vocabulary/frequencies/wkl,frequencies,,wkl
+388,frequencies,continuously updated,,http://id.loc.gov/vocabulary/frequencies/con,frequencies,,con
+389,issuance_modes,single unit,,http://id.loc.gov/vocabulary/issuance/mono,issuance,,mono
+390,issuance_modes,multipart monograph,,http://id.loc.gov/vocabulary/issuance/mulm,issuance,,mulm
+391,issuance_modes,serial,,http://id.loc.gov/vocabulary/issuance/serl,issuance,,serl
+392,issuance_modes,integrating resource,,http://id.loc.gov/vocabulary/issuance/intg,issuance,,intg
+393,language,Tai languages,,http://id.loc.gov/vocabulary/iso639-2/tai,iso639-2,,tai
+394,language,No linguistic content | Not applicable,,http://id.loc.gov/vocabulary/iso639-2/zxx,iso639-2,,zxx
+395,language,Bantu languages,,http://id.loc.gov/vocabulary/iso639-2/bnt,iso639-2,,bnt
+396,language,Bulgarian,,http://id.loc.gov/vocabulary/iso639-2/bul,iso639-2,,bul
+397,language,Filipino | Pilipino,,http://id.loc.gov/vocabulary/iso639-2/fil,iso639-2,,fil
+398,language,Chichewa | Chewa | Nyanja,,http://id.loc.gov/vocabulary/iso639-2/nya,iso639-2,,nya
+399,language,Scots,,http://id.loc.gov/vocabulary/iso639-2/sco,iso639-2,,sco
+400,language,Basque,,http://id.loc.gov/vocabulary/iso639-2/baq,iso639-2,,baq
+401,language,Manchu,,http://id.loc.gov/vocabulary/iso639-2/mnc,iso639-2,,mnc
+402,language,Athapascan languages,,http://id.loc.gov/vocabulary/iso639-2/ath,iso639-2,,ath
+403,language,Nepal Bhasa | Newari,,http://id.loc.gov/vocabulary/iso639-2/new,iso639-2,,new
+404,language,Romanian | Moldavian | Moldovan,,http://id.loc.gov/vocabulary/iso639-2/ron,iso639-2,,ron
+405,language,Icelandic,,http://id.loc.gov/vocabulary/iso639-2/ice,iso639-2,,ice
+406,language,Erzya,,http://id.loc.gov/vocabulary/iso639-2/myv,iso639-2,,myv
+407,language,Venda,,http://id.loc.gov/vocabulary/iso639-2/ven,iso639-2,,ven
+408,language,Sundanese,,http://id.loc.gov/vocabulary/iso639-2/sun,iso639-2,,sun
+409,language,Munda languages,,http://id.loc.gov/vocabulary/iso639-2/mun,iso639-2,,mun
+410,language,Salishan languages,,http://id.loc.gov/vocabulary/iso639-2/sal,iso639-2,,sal
+411,language,Madurese,,http://id.loc.gov/vocabulary/iso639-2/mad,iso639-2,,mad
+412,language,Austronesian languages,,http://id.loc.gov/vocabulary/iso639-2/map,iso639-2,,map
+413,language,Mi'kmaq | Micmac,,http://id.loc.gov/vocabulary/iso639-2/mic,iso639-2,,mic
+414,language,Luo (Kenya and Tanzania),,http://id.loc.gov/vocabulary/iso639-2/luo,iso639-2,,luo
+415,language,Elamite,,http://id.loc.gov/vocabulary/iso639-2/elx,iso639-2,,elx
+416,language,Papuan languages,,http://id.loc.gov/vocabulary/iso639-2/paa,iso639-2,,paa
+417,language,Sorbian languages,,http://id.loc.gov/vocabulary/iso639-2/wen,iso639-2,,wen
+418,language,Bhojpuri,,http://id.loc.gov/vocabulary/iso639-2/bho,iso639-2,,bho
+419,language,Zapotec,,http://id.loc.gov/vocabulary/iso639-2/zap,iso639-2,,zap
+420,language,Maltese,,http://id.loc.gov/vocabulary/iso639-2/mlt,iso639-2,,mlt
+421,language,Buriat,,http://id.loc.gov/vocabulary/iso639-2/bua,iso639-2,,bua
+422,language,Ewondo,,http://id.loc.gov/vocabulary/iso639-2/ewo,iso639-2,,ewo
+423,language,Tsimshian,,http://id.loc.gov/vocabulary/iso639-2/tsi,iso639-2,,tsi
+424,language,Fang,,http://id.loc.gov/vocabulary/iso639-2/fan,iso639-2,,fan
+425,language,Maori,,http://id.loc.gov/vocabulary/iso639-2/mao,iso639-2,,mao
+426,language,Skolt Sami,,http://id.loc.gov/vocabulary/iso639-2/sms,iso639-2,,sms
+427,language,Kutenai,,http://id.loc.gov/vocabulary/iso639-2/kut,iso639-2,,kut
+428,language,Lunda,,http://id.loc.gov/vocabulary/iso639-2/lun,iso639-2,,lun
+429,language,Manobo languages,,http://id.loc.gov/vocabulary/iso639-2/mno,iso639-2,,mno
+430,language,Slave (Athapascan),,http://id.loc.gov/vocabulary/iso639-2/den,iso639-2,,den
+431,language,Sicilian,,http://id.loc.gov/vocabulary/iso639-2/scn,iso639-2,,scn
+432,language,Tokelau,,http://id.loc.gov/vocabulary/iso639-2/tkl,iso639-2,,tkl
+433,language,Prakrit languages,,http://id.loc.gov/vocabulary/iso639-2/pra,iso639-2,,pra
+434,language,Gilbertese,,http://id.loc.gov/vocabulary/iso639-2/gil,iso639-2,,gil
+435,language,Braj,,http://id.loc.gov/vocabulary/iso639-2/bra,iso639-2,,bra
+436,language,Songhai languages,,http://id.loc.gov/vocabulary/iso639-2/son,iso639-2,,son
+437,language,Catalan | Valencian,,http://id.loc.gov/vocabulary/iso639-2/cat,iso639-2,,cat
+438,language,Romany,,http://id.loc.gov/vocabulary/iso639-2/rom,iso639-2,,rom
+439,language,Altaic languages,,http://id.loc.gov/vocabulary/iso639-2/tut,iso639-2,,tut
+440,language,Arapaho,,http://id.loc.gov/vocabulary/iso639-2/arp,iso639-2,,arp
+441,language,Votic,,http://id.loc.gov/vocabulary/iso639-2/vot,iso639-2,,vot
+442,language,Beja | Bedawiyet,,http://id.loc.gov/vocabulary/iso639-2/bej,iso639-2,,bej
+443,language,Swahili,,http://id.loc.gov/vocabulary/iso639-2/swa,iso639-2,,swa
+444,language,Aleut,,http://id.loc.gov/vocabulary/iso639-2/ale,iso639-2,,ale
+445,language,Pampanga | Kapampangan,,http://id.loc.gov/vocabulary/iso639-2/pam,iso639-2,,pam
+446,language,Minangkabau,,http://id.loc.gov/vocabulary/iso639-2/min,iso639-2,,min
+447,language,Spanish | Castilian,,http://id.loc.gov/vocabulary/iso639-2/spa,iso639-2,,spa
+448,language,Sanskrit,,http://id.loc.gov/vocabulary/iso639-2/san,iso639-2,,san
+449,language,Kurdish,,http://id.loc.gov/vocabulary/iso639-2/kur,iso639-2,,kur
+450,language,Chagatai,,http://id.loc.gov/vocabulary/iso639-2/chg,iso639-2,,chg
+451,language,Bini | Edo,,http://id.loc.gov/vocabulary/iso639-2/bin,iso639-2,,bin
+452,language,Oromo,,http://id.loc.gov/vocabulary/iso639-2/orm,iso639-2,,orm
+453,language,Tuvinian,,http://id.loc.gov/vocabulary/iso639-2/tyv,iso639-2,,tyv
+454,language,Sindhi,,http://id.loc.gov/vocabulary/iso639-2/snd,iso639-2,,snd
+455,language,Mongo,,http://id.loc.gov/vocabulary/iso639-2/lol,iso639-2,,lol
+456,language,Classical Newari | Old Newari | Classical Nepal Bhasa,,http://id.loc.gov/vocabulary/iso639-2/nwc,iso639-2,,nwc
+457,language,Vai,,http://id.loc.gov/vocabulary/iso639-2/vai,iso639-2,,vai
+458,language,Gbaya,,http://id.loc.gov/vocabulary/iso639-2/gba,iso639-2,,gba
+459,language,Macedonian,,http://id.loc.gov/vocabulary/iso639-2/mac,iso639-2,,mac
+460,language,Ndonga,,http://id.loc.gov/vocabulary/iso639-2/ndo,iso639-2,,ndo
+461,language,Mongolian,,http://id.loc.gov/vocabulary/iso639-2/mon,iso639-2,,mon
+462,language,Central American Indian languages,,http://id.loc.gov/vocabulary/iso639-2/cai,iso639-2,,cai
+463,language,Romance languages,,http://id.loc.gov/vocabulary/iso639-2/roa,iso639-2,,roa
+464,language,Panjabi | Punjabi,,http://id.loc.gov/vocabulary/iso639-2/pan,iso639-2,,pan
+465,language,Coptic,,http://id.loc.gov/vocabulary/iso639-2/cop,iso639-2,,cop
+466,language,Luba-Lulua,,http://id.loc.gov/vocabulary/iso639-2/lua,iso639-2,,lua
+467,language,Lingala,,http://id.loc.gov/vocabulary/iso639-2/lin,iso639-2,,lin
+468,language,Kru languages,,http://id.loc.gov/vocabulary/iso639-2/kro,iso639-2,,kro
+469,language,Banda languages,,http://id.loc.gov/vocabulary/iso639-2/bad,iso639-2,,bad
+470,language,Afrikaans,,http://id.loc.gov/vocabulary/iso639-2/afr,iso639-2,,afr
+471,language,Apache languages,,http://id.loc.gov/vocabulary/iso639-2/apa,iso639-2,,apa
+472,language,Ingush,,http://id.loc.gov/vocabulary/iso639-2/inh,iso639-2,,inh
+473,language,Dravidian languages,,http://id.loc.gov/vocabulary/iso639-2/dra,iso639-2,,dra
+474,language,South American Indian languages,,http://id.loc.gov/vocabulary/iso639-2/sai,iso639-2,,sai
+475,language,"Provençal, Old (to 1500) | Occitan, Old (to 1500)",,http://id.loc.gov/vocabulary/iso639-2/pro,iso639-2,,pro
+476,language,Gujarati,,http://id.loc.gov/vocabulary/iso639-2/guj,iso639-2,,guj
+477,language,Luba-Katanga,,http://id.loc.gov/vocabulary/iso639-2/lub,iso639-2,,lub
+478,language,Central Khmer,,http://id.loc.gov/vocabulary/iso639-2/khm,iso639-2,,khm
+479,language,Malagasy,,http://id.loc.gov/vocabulary/iso639-2/mlg,iso639-2,,mlg
+480,language,Turkish,,http://id.loc.gov/vocabulary/iso639-2/tur,iso639-2,,tur
+481,language,Yoruba,,http://id.loc.gov/vocabulary/iso639-2/yor,iso639-2,,yor
+482,language,Philippine languages,,http://id.loc.gov/vocabulary/iso639-2/phi,iso639-2,,phi
+483,language,Estonian,,http://id.loc.gov/vocabulary/iso639-2/est,iso639-2,,est
+484,language,Limburgan | Limburger | Limburgish,,http://id.loc.gov/vocabulary/iso639-2/lim,iso639-2,,lim
+485,language,Dzongkha,,http://id.loc.gov/vocabulary/iso639-2/dzo,iso639-2,,dzo
+486,language,Caucasian languages,,http://id.loc.gov/vocabulary/iso639-2/cau,iso639-2,,cau
+487,language,Tamashek,,http://id.loc.gov/vocabulary/iso639-2/tmh,iso639-2,,tmh
+488,language,Italian,,http://id.loc.gov/vocabulary/iso639-2/ita,iso639-2,,ita
+489,language,Somali,,http://id.loc.gov/vocabulary/iso639-2/som,iso639-2,,som
+490,language,Cherokee,,http://id.loc.gov/vocabulary/iso639-2/chr,iso639-2,,chr
+491,language,Malay,,http://id.loc.gov/vocabulary/iso639-2/may,iso639-2,,may
+492,language,Sami languages,,http://id.loc.gov/vocabulary/iso639-2/smi,iso639-2,,smi
+493,language,Neapolitan,,http://id.loc.gov/vocabulary/iso639-2/nap,iso639-2,,nap
+494,language,Croatian,,http://id.loc.gov/vocabulary/iso639-2/hrv,iso639-2,,hrv
+495,language,Luxembourgish | Letzeburgesch,,http://id.loc.gov/vocabulary/iso639-2/ltz,iso639-2,,ltz
+496,language,Rundi,,http://id.loc.gov/vocabulary/iso639-2/run,iso639-2,,run
+497,language,Iranian languages,,http://id.loc.gov/vocabulary/iso639-2/ira,iso639-2,,ira
+498,language,Samaritan Aramaic,,http://id.loc.gov/vocabulary/iso639-2/sam,iso639-2,,sam
+499,language,Ido,,http://id.loc.gov/vocabulary/iso639-2/ido,iso639-2,,ido
+500,language,Konkani,,http://id.loc.gov/vocabulary/iso639-2/kok,iso639-2,,kok
+501,language,Khasi,,http://id.loc.gov/vocabulary/iso639-2/kha,iso639-2,,kha
+502,language,Kimbundu,,http://id.loc.gov/vocabulary/iso639-2/kmb,iso639-2,,kmb
+503,language,Mandingo,,http://id.loc.gov/vocabulary/iso639-2/man,iso639-2,,man
+504,language,Duala,,http://id.loc.gov/vocabulary/iso639-2/dua,iso639-2,,dua
+505,language,Gondi,,http://id.loc.gov/vocabulary/iso639-2/gon,iso639-2,,gon
+506,language,Galician,,http://id.loc.gov/vocabulary/iso639-2/glg,iso639-2,,glg
+507,language,Cebuano,,http://id.loc.gov/vocabulary/iso639-2/ceb,iso639-2,,ceb
+508,language,Judeo-Persian,,http://id.loc.gov/vocabulary/iso639-2/jpr,iso639-2,,jpr
+509,language,Indonesian,,http://id.loc.gov/vocabulary/iso639-2/ind,iso639-2,,ind
+510,language,"Ndebele, North | North Ndebele",,http://id.loc.gov/vocabulary/iso639-2/nde,iso639-2,,nde
+511,language,Baltic languages,,http://id.loc.gov/vocabulary/iso639-2/bat,iso639-2,,bat
+512,language,Lahnda,,http://id.loc.gov/vocabulary/iso639-2/lah,iso639-2,,lah
+513,language,Gaelic | Scottish Gaelic,,http://id.loc.gov/vocabulary/iso639-2/gla,iso639-2,,gla
+514,language,Dargwa,,http://id.loc.gov/vocabulary/iso639-2/dar,iso639-2,,dar
+515,language,"Creoles and pidgins, Portuguese-based",,http://id.loc.gov/vocabulary/iso639-2/cpp,iso639-2,,cpp
+516,language,Artificial languages,,http://id.loc.gov/vocabulary/iso639-2/art,iso639-2,,art
+517,language,Khotanese | Sakan,,http://id.loc.gov/vocabulary/iso639-2/kho,iso639-2,,kho
+518,language,Akkadian,,http://id.loc.gov/vocabulary/iso639-2/akk,iso639-2,,akk
+519,language,Occitan (post 1500),,http://id.loc.gov/vocabulary/iso639-2/oci,iso639-2,,oci
+520,language,Sukuma,,http://id.loc.gov/vocabulary/iso639-2/suk,iso639-2,,suk
+521,language,Sino-Tibetan languages,,http://id.loc.gov/vocabulary/iso639-2/sit,iso639-2,,sit
+522,language,Volapük,,http://id.loc.gov/vocabulary/iso639-2/vol,iso639-2,,vol
+523,language,Belarusian,,http://id.loc.gov/vocabulary/iso639-2/bel,iso639-2,,bel
+524,language,Norwegian,,http://id.loc.gov/vocabulary/iso639-2/nor,iso639-2,,nor
+525,language,Algonquian languages,,http://id.loc.gov/vocabulary/iso639-2/alg,iso639-2,,alg
+526,language,Afar,,http://id.loc.gov/vocabulary/iso639-2/aar,iso639-2,,aar
+527,language,Fulah,,http://id.loc.gov/vocabulary/iso639-2/ful,iso639-2,,ful
+528,language,Chuukese,,http://id.loc.gov/vocabulary/iso639-2/chk,iso639-2,,chk
+529,language,Blissymbols | Blissymbolics | Bliss,,http://id.loc.gov/vocabulary/iso639-2/zbl,iso639-2,,zbl
+530,language,Portuguese,,http://id.loc.gov/vocabulary/iso639-2/por,iso639-2,,por
+531,language,Northern Frisian,,http://id.loc.gov/vocabulary/iso639-2/frr,iso639-2,,frr
+532,language,Osage,,http://id.loc.gov/vocabulary/iso639-2/osa,iso639-2,,osa
+533,language,Tibetan,,http://id.loc.gov/vocabulary/iso639-2/bod,iso639-2,,bod
+534,language,Afrihili,,http://id.loc.gov/vocabulary/iso639-2/afh,iso639-2,,afh
+535,language,Mossi,,http://id.loc.gov/vocabulary/iso639-2/mos,iso639-2,,mos
+536,language,Hupa,,http://id.loc.gov/vocabulary/iso639-2/hup,iso639-2,,hup
+537,language,Mohawk,,http://id.loc.gov/vocabulary/iso639-2/moh,iso639-2,,moh
+538,language,Gayo,,http://id.loc.gov/vocabulary/iso639-2/gay,iso639-2,,gay
+539,language,Bislama,,http://id.loc.gov/vocabulary/iso639-2/bis,iso639-2,,bis
+540,language,Lule Sami,,http://id.loc.gov/vocabulary/iso639-2/smj,iso639-2,,smj
+541,language,Dutch | Flemish,,http://id.loc.gov/vocabulary/iso639-2/dut,iso639-2,,dut
+542,language,Washo,,http://id.loc.gov/vocabulary/iso639-2/was,iso639-2,,was
+543,language,Syriac,,http://id.loc.gov/vocabulary/iso639-2/syr,iso639-2,,syr
+544,language,Turkmen,,http://id.loc.gov/vocabulary/iso639-2/tuk,iso639-2,,tuk
+545,language,Bamileke languages,,http://id.loc.gov/vocabulary/iso639-2/bai,iso639-2,,bai
+546,language,Lithuanian,,http://id.loc.gov/vocabulary/iso639-2/lit,iso639-2,,lit
+547,language,Mirandese,,http://id.loc.gov/vocabulary/iso639-2/mwl,iso639-2,,mwl
+548,language,English,,http://id.loc.gov/vocabulary/iso639-2/eng,iso639-2,,eng
+549,language,Indic languages,,http://id.loc.gov/vocabulary/iso639-2/inc,iso639-2,,inc
+550,language,Hindi,,http://id.loc.gov/vocabulary/iso639-2/hin,iso639-2,,hin
+551,language,Egyptian (Ancient),,http://id.loc.gov/vocabulary/iso639-2/egy,iso639-2,,egy
+552,language,Montenegrin,,http://id.loc.gov/vocabulary/iso639-2/cnr,iso639-2,,cnr
+553,language,Avaric,,http://id.loc.gov/vocabulary/iso639-2/ava,iso639-2,,ava
+554,language,Ga,,http://id.loc.gov/vocabulary/iso639-2/gaa,iso639-2,,gaa
+555,language,Tamil,,http://id.loc.gov/vocabulary/iso639-2/tam,iso639-2,,tam
+556,language,Eastern Frisian,,http://id.loc.gov/vocabulary/iso639-2/frs,iso639-2,,frs
+557,language,Celtic languages,,http://id.loc.gov/vocabulary/iso639-2/cel,iso639-2,,cel
+558,language,Papiamento,,http://id.loc.gov/vocabulary/iso639-2/pap,iso639-2,,pap
+559,language,Kpelle,,http://id.loc.gov/vocabulary/iso639-2/kpe,iso639-2,,kpe
+560,language,Bemba,,http://id.loc.gov/vocabulary/iso639-2/bem,iso639-2,,bem
+561,language,Malayalam,,http://id.loc.gov/vocabulary/iso639-2/mal,iso639-2,,mal
+562,language,Santali,,http://id.loc.gov/vocabulary/iso639-2/sat,iso639-2,,sat
+563,language,Bihari languages,,http://id.loc.gov/vocabulary/iso639-2/bih,iso639-2,,bih
+564,language,Chuvash,,http://id.loc.gov/vocabulary/iso639-2/chv,iso639-2,,chv
+565,language,Nogai,,http://id.loc.gov/vocabulary/iso639-2/nog,iso639-2,,nog
+566,language,"German, Middle High (ca.1050-1500)",,http://id.loc.gov/vocabulary/iso639-2/gmh,iso639-2,,gmh
+567,language,Sumerian,,http://id.loc.gov/vocabulary/iso639-2/sux,iso639-2,,sux
+568,language,Asturian | Bable | Leonese | Asturleonese,,http://id.loc.gov/vocabulary/iso639-2/ast,iso639-2,,ast
+569,language,Aragonese,,http://id.loc.gov/vocabulary/iso639-2/arg,iso639-2,,arg
+570,language,"Irish, Old (to 900)",,http://id.loc.gov/vocabulary/iso639-2/sga,iso639-2,,sga
+571,language,Southern Altai,,http://id.loc.gov/vocabulary/iso639-2/alt,iso639-2,,alt
+572,language,Zhuang | Chuang,,http://id.loc.gov/vocabulary/iso639-2/zha,iso639-2,,zha
+573,language,Akan,,http://id.loc.gov/vocabulary/iso639-2/aka,iso639-2,,aka
+574,language,Finnish,,http://id.loc.gov/vocabulary/iso639-2/fin,iso639-2,,fin
+575,language,Uzbek,,http://id.loc.gov/vocabulary/iso639-2/uzb,iso639-2,,uzb
+576,language,Fon,,http://id.loc.gov/vocabulary/iso639-2/fon,iso639-2,,fon
+577,language,Kosraean,,http://id.loc.gov/vocabulary/iso639-2/kos,iso639-2,,kos
+578,language,Ewe,,http://id.loc.gov/vocabulary/iso639-2/ewe,iso639-2,,ewe
+579,language,Nzima,,http://id.loc.gov/vocabulary/iso639-2/nzi,iso639-2,,nzi
+580,language,"Ndebele, South | South Ndebele",,http://id.loc.gov/vocabulary/iso639-2/nbl,iso639-2,,nbl
+581,language,Delaware,,http://id.loc.gov/vocabulary/iso639-2/del,iso639-2,,del
+582,language,Nepali,,http://id.loc.gov/vocabulary/iso639-2/nep,iso639-2,,nep
+583,language,Hiligaynon,,http://id.loc.gov/vocabulary/iso639-2/hil,iso639-2,,hil
+584,language,Kashmiri,,http://id.loc.gov/vocabulary/iso639-2/kas,iso639-2,,kas
+585,language,Corsican,,http://id.loc.gov/vocabulary/iso639-2/cos,iso639-2,,cos
+586,language,Tereno,,http://id.loc.gov/vocabulary/iso639-2/ter,iso639-2,,ter
+587,language,Azerbaijani,,http://id.loc.gov/vocabulary/iso639-2/aze,iso639-2,,aze
+588,language,Tonga (Tonga Islands),,http://id.loc.gov/vocabulary/iso639-2/ton,iso639-2,,ton
+589,language,Waray,,http://id.loc.gov/vocabulary/iso639-2/war,iso639-2,,war
+590,language,Karen languages,,http://id.loc.gov/vocabulary/iso639-2/kar,iso639-2,,kar
+591,language,Wolof,,http://id.loc.gov/vocabulary/iso639-2/wol,iso639-2,,wol
+592,language,Sranan Tongo,,http://id.loc.gov/vocabulary/iso639-2/srn,iso639-2,,srn
+593,language,Makasar,,http://id.loc.gov/vocabulary/iso639-2/mak,iso639-2,,mak
+594,language,Tiv,,http://id.loc.gov/vocabulary/iso639-2/tiv,iso639-2,,tiv
+595,language,Galibi Carib,,http://id.loc.gov/vocabulary/iso639-2/car,iso639-2,,car
+596,language,Indo-European languages,,http://id.loc.gov/vocabulary/iso639-2/ine,iso639-2,,ine
+597,language,Cornish,,http://id.loc.gov/vocabulary/iso639-2/cor,iso639-2,,cor
+598,language,Church Slavic | Old Slavonic | Church Slavonic | Old Bulgarian | Old Church Slavonic,,http://id.loc.gov/vocabulary/iso639-2/chu,iso639-2,,chu
+599,language,Niuean,,http://id.loc.gov/vocabulary/iso639-2/niu,iso639-2,,niu
+600,language,"Low German | Low Saxon | German, Low | Saxon, Low",,http://id.loc.gov/vocabulary/iso639-2/nds,iso639-2,,nds
+601,language,Rajasthani,,http://id.loc.gov/vocabulary/iso639-2/raj,iso639-2,,raj
+602,language,Bengali,,http://id.loc.gov/vocabulary/iso639-2/ben,iso639-2,,ben
+603,language,Kikuyu | Gikuyu,,http://id.loc.gov/vocabulary/iso639-2/kik,iso639-2,,kik
+604,language,Himachali languages | Western Pahari languages,,http://id.loc.gov/vocabulary/iso639-2/him,iso639-2,,him
+605,language,Basa,,http://id.loc.gov/vocabulary/iso639-2/bas,iso639-2,,bas
+606,language,Faroese,,http://id.loc.gov/vocabulary/iso639-2/fao,iso639-2,,fao
+607,language,Nubian languages,,http://id.loc.gov/vocabulary/iso639-2/nub,iso639-2,,nub
+608,language,Latin,,http://id.loc.gov/vocabulary/iso639-2/lat,iso639-2,,lat
+609,language,Gwich'in,,http://id.loc.gov/vocabulary/iso639-2/gwi,iso639-2,,gwi
+610,language,Chinese,,http://id.loc.gov/vocabulary/iso639-2/chi,iso639-2,,chi
+611,language,Thai,,http://id.loc.gov/vocabulary/iso639-2/tha,iso639-2,,tha
+612,language,Soninke,,http://id.loc.gov/vocabulary/iso639-2/snk,iso639-2,,snk
+613,language,Kalmyk | Oirat,,http://id.loc.gov/vocabulary/iso639-2/xal,iso639-2,,xal
+614,language,Swati,,http://id.loc.gov/vocabulary/iso639-2/ssw,iso639-2,,ssw
+615,language,Selkup,,http://id.loc.gov/vocabulary/iso639-2/sel,iso639-2,,sel
+616,language,Pangasinan,,http://id.loc.gov/vocabulary/iso639-2/pag,iso639-2,,pag
+617,language,Iban,,http://id.loc.gov/vocabulary/iso639-2/iba,iso639-2,,iba
+618,language,Arawak,,http://id.loc.gov/vocabulary/iso639-2/arw,iso639-2,,arw
+619,language,Avestan,,http://id.loc.gov/vocabulary/iso639-2/ave,iso639-2,,ave
+620,language,Acoli,,http://id.loc.gov/vocabulary/iso639-2/ach,iso639-2,,ach
+621,language,Kashubian,,http://id.loc.gov/vocabulary/iso639-2/csb,iso639-2,,csb
+622,language,Bashkir,,http://id.loc.gov/vocabulary/iso639-2/bak,iso639-2,,bak
+623,language,Classical Syriac,,http://id.loc.gov/vocabulary/iso639-2/syc,iso639-2,,syc
+624,language,Ugaritic,,http://id.loc.gov/vocabulary/iso639-2/uga,iso639-2,,uga
+625,language,Tumbuka,,http://id.loc.gov/vocabulary/iso639-2/tum,iso639-2,,tum
+626,language,Dogrib,,http://id.loc.gov/vocabulary/iso639-2/dgr,iso639-2,,dgr
+627,language,Hungarian,,http://id.loc.gov/vocabulary/iso639-2/hun,iso639-2,,hun
+628,language,Japanese,,http://id.loc.gov/vocabulary/iso639-2/jpn,iso639-2,,jpn
+629,language,North American Indian languages,,http://id.loc.gov/vocabulary/iso639-2/nai,iso639-2,,nai
+630,language,Kawi,,http://id.loc.gov/vocabulary/iso639-2/kaw,iso639-2,,kaw
+631,language,Sign Languages,,http://id.loc.gov/vocabulary/iso639-2/sgn,iso639-2,,sgn
+632,language,"French, Old (842-ca.1400)",,http://id.loc.gov/vocabulary/iso639-2/fro,iso639-2,,fro
+633,language,Southern Sami,,http://id.loc.gov/vocabulary/iso639-2/sma,iso639-2,,sma
+634,language,Fanti,,http://id.loc.gov/vocabulary/iso639-2/fat,iso639-2,,fat
+635,language,Kalaallisut | Greenlandic,,http://id.loc.gov/vocabulary/iso639-2/kal,iso639-2,,kal
+636,language,Nauru,,http://id.loc.gov/vocabulary/iso639-2/nau,iso639-2,,nau
+637,language,Chinook jargon,,http://id.loc.gov/vocabulary/iso639-2/chn,iso639-2,,chn
+638,language,Luiseno,,http://id.loc.gov/vocabulary/iso639-2/lui,iso639-2,,lui
+639,language,Chamic languages,,http://id.loc.gov/vocabulary/iso639-2/cmc,iso639-2,,cmc
+640,language,Interlingua (International Auxiliary Language Association),,http://id.loc.gov/vocabulary/iso639-2/ina,iso639-2,,ina
+641,language,Burmese,,http://id.loc.gov/vocabulary/iso639-2/bur,iso639-2,,bur
+642,language,Romansh,,http://id.loc.gov/vocabulary/iso639-2/roh,iso639-2,,roh
+643,language,"Greek, Modern (1453-)",,http://id.loc.gov/vocabulary/iso639-2/ell,iso639-2,,ell
+644,language,Geez,,http://id.loc.gov/vocabulary/iso639-2/gez,iso639-2,,gez
+645,language,Tok Pisin,,http://id.loc.gov/vocabulary/iso639-2/tpi,iso639-2,,tpi
+646,language,Nilo-Saharan languages,,http://id.loc.gov/vocabulary/iso639-2/ssa,iso639-2,,ssa
+647,language,Sardinian,,http://id.loc.gov/vocabulary/iso639-2/srd,iso639-2,,srd
+648,language,Latvian,,http://id.loc.gov/vocabulary/iso639-2/lav,iso639-2,,lav
+649,language,Zulu,,http://id.loc.gov/vocabulary/iso639-2/zul,iso639-2,,zul
+650,language,Ukrainian,,http://id.loc.gov/vocabulary/iso639-2/ukr,iso639-2,,ukr
+651,language,Ojibwa,,http://id.loc.gov/vocabulary/iso639-2/oji,iso639-2,,oji
+652,language,Karelian,,http://id.loc.gov/vocabulary/iso639-2/krl,iso639-2,,krl
+653,language,Cheyenne,,http://id.loc.gov/vocabulary/iso639-2/chy,iso639-2,,chy
+654,language,Buginese,,http://id.loc.gov/vocabulary/iso639-2/bug,iso639-2,,bug
+655,language,Iloko,,http://id.loc.gov/vocabulary/iso639-2/ilo,iso639-2,,ilo
+656,language,Lojban,,http://id.loc.gov/vocabulary/iso639-2/jbo,iso639-2,,jbo
+657,language,Dinka,,http://id.loc.gov/vocabulary/iso639-2/din,iso639-2,,din
+658,language,"Sotho, Southern",,http://id.loc.gov/vocabulary/iso639-2/sot,iso639-2,,sot
+659,language,Undetermined,,http://id.loc.gov/vocabulary/iso639-2/und,iso639-2,,und
+660,language,Creek,,http://id.loc.gov/vocabulary/iso639-2/mus,iso639-2,,mus
+661,language,Rarotongan | Cook Islands Maori,,http://id.loc.gov/vocabulary/iso639-2/rar,iso639-2,,rar
+662,language,Baluchi,,http://id.loc.gov/vocabulary/iso639-2/bal,iso639-2,,bal
+663,language,Korean,,http://id.loc.gov/vocabulary/iso639-2/kor,iso639-2,,kor
+664,language,Welsh,,http://id.loc.gov/vocabulary/iso639-2/cym,iso639-2,,cym
+665,language,Manipuri,,http://id.loc.gov/vocabulary/iso639-2/mni,iso639-2,,mni
+666,language,Quechua,,http://id.loc.gov/vocabulary/iso639-2/que,iso639-2,,que
+667,language,Efik,,http://id.loc.gov/vocabulary/iso639-2/efi,iso639-2,,efi
+668,language,Maithili,,http://id.loc.gov/vocabulary/iso639-2/mai,iso639-2,,mai
+669,language,Tsonga,,http://id.loc.gov/vocabulary/iso639-2/tso,iso639-2,,tso
+670,language,Chibcha,,http://id.loc.gov/vocabulary/iso639-2/chb,iso639-2,,chb
+671,language,Pali,,http://id.loc.gov/vocabulary/iso639-2/pli,iso639-2,,pli
+672,language,Land Dayak languages,,http://id.loc.gov/vocabulary/iso639-2/day,iso639-2,,day
+673,language,Esperanto,,http://id.loc.gov/vocabulary/iso639-2/epo,iso639-2,,epo
+674,language,Dyula,,http://id.loc.gov/vocabulary/iso639-2/dyu,iso639-2,,dyu
+675,language,Slavic languages,,http://id.loc.gov/vocabulary/iso639-2/sla,iso639-2,,sla
+676,language,Persian,,http://id.loc.gov/vocabulary/iso639-2/fas,iso639-2,,fas
+677,language,Inupiaq,,http://id.loc.gov/vocabulary/iso639-2/ipk,iso639-2,,ipk
+678,language,Lezghian,,http://id.loc.gov/vocabulary/iso639-2/lez,iso639-2,,lez
+679,language,Tigrinya,,http://id.loc.gov/vocabulary/iso639-2/tir,iso639-2,,tir
+680,language,Navajo | Navaho,,http://id.loc.gov/vocabulary/iso639-2/nav,iso639-2,,nav
+681,language,Vietnamese,,http://id.loc.gov/vocabulary/iso639-2/vie,iso639-2,,vie
+682,language,Chamorro,,http://id.loc.gov/vocabulary/iso639-2/cha,iso639-2,,cha
+683,language,Angika,,http://id.loc.gov/vocabulary/iso639-2/anp,iso639-2,,anp
+684,language,Mari,,http://id.loc.gov/vocabulary/iso639-2/chm,iso639-2,,chm
+685,language,Serbian,,http://id.loc.gov/vocabulary/iso639-2/srp,iso639-2,,srp
+686,language,Kuanyama | Kwanyama,,http://id.loc.gov/vocabulary/iso639-2/kua,iso639-2,,kua
+687,language,Dogri,,http://id.loc.gov/vocabulary/iso639-2/doi,iso639-2,,doi
+688,language,"Creoles and pidgins, French-based",,http://id.loc.gov/vocabulary/iso639-2/cpf,iso639-2,,cpf
+689,language,Lushai,,http://id.loc.gov/vocabulary/iso639-2/lus,iso639-2,,lus
+690,language,Tetum,,http://id.loc.gov/vocabulary/iso639-2/tet,iso639-2,,tet
+691,language,Phoenician,,http://id.loc.gov/vocabulary/iso639-2/phn,iso639-2,,phn
+692,language,Pohnpeian,,http://id.loc.gov/vocabulary/iso639-2/pon,iso639-2,,pon
+693,language,Mende,,http://id.loc.gov/vocabulary/iso639-2/men,iso639-2,,men
+694,language,Crimean Tatar | Crimean Turkish,,http://id.loc.gov/vocabulary/iso639-2/crh,iso639-2,,crh
+695,language,Semitic languages,,http://id.loc.gov/vocabulary/iso639-2/sem,iso639-2,,sem
+696,language,Inari Sami,,http://id.loc.gov/vocabulary/iso639-2/smn,iso639-2,,smn
+697,language,Gothic,,http://id.loc.gov/vocabulary/iso639-2/got,iso639-2,,got
+698,language,Mandar,,http://id.loc.gov/vocabulary/iso639-2/mdr,iso639-2,,mdr
+699,language,Kurukh,,http://id.loc.gov/vocabulary/iso639-2/kru,iso639-2,,kru
+700,language,Zande languages,,http://id.loc.gov/vocabulary/iso639-2/znd,iso639-2,,znd
+701,language,Danish,,http://id.loc.gov/vocabulary/iso639-2/dan,iso639-2,,dan
+702,language,Otomian languages,,http://id.loc.gov/vocabulary/iso639-2/oto,iso639-2,,oto
+703,language,Russian,,http://id.loc.gov/vocabulary/iso639-2/rus,iso639-2,,rus
+704,language,Afro-Asiatic languages,,http://id.loc.gov/vocabulary/iso639-2/afa,iso639-2,,afa
+705,language,Uncoded languages,,http://id.loc.gov/vocabulary/iso639-2/mis,iso639-2,,mis
+706,language,Tagalog,,http://id.loc.gov/vocabulary/iso639-2/tgl,iso639-2,,tgl
+707,language,Cushitic languages,,http://id.loc.gov/vocabulary/iso639-2/cus,iso639-2,,cus
+708,language,Kumyk,,http://id.loc.gov/vocabulary/iso639-2/kum,iso639-2,,kum
+709,language,Batak languages,,http://id.loc.gov/vocabulary/iso639-2/btk,iso639-2,,btk
+710,language,Czech,,http://id.loc.gov/vocabulary/iso639-2/ces,iso639-2,,ces
+711,language,Tigre,,http://id.loc.gov/vocabulary/iso639-2/tig,iso639-2,,tig
+712,language,Walloon,,http://id.loc.gov/vocabulary/iso639-2/wln,iso639-2,,wln
+713,language,Interlingue | Occidental,,http://id.loc.gov/vocabulary/iso639-2/ile,iso639-2,,ile
+714,language,Moksha,,http://id.loc.gov/vocabulary/iso639-2/mdf,iso639-2,,mdf
+715,language,Germanic languages,,http://id.loc.gov/vocabulary/iso639-2/gem,iso639-2,,gem
+716,language,"Creoles and pidgins, English based",,http://id.loc.gov/vocabulary/iso639-2/cpe,iso639-2,,cpe
+717,language,Sasak,,http://id.loc.gov/vocabulary/iso639-2/sas,iso639-2,,sas
+718,language,Herero,,http://id.loc.gov/vocabulary/iso639-2/her,iso639-2,,her
+719,language,Kanuri,,http://id.loc.gov/vocabulary/iso639-2/kau,iso639-2,,kau
+720,language,Nias,,http://id.loc.gov/vocabulary/iso639-2/nia,iso639-2,,nia
+721,language,Marshallese,,http://id.loc.gov/vocabulary/iso639-2/mah,iso639-2,,mah
+722,language,Caddo,,http://id.loc.gov/vocabulary/iso639-2/cad,iso639-2,,cad
+723,language,Awadhi,,http://id.loc.gov/vocabulary/iso639-2/awa,iso639-2,,awa
+724,language,Lower Sorbian,,http://id.loc.gov/vocabulary/iso639-2/dsb,iso639-2,,dsb
+725,language,Tajik,,http://id.loc.gov/vocabulary/iso639-2/tgk,iso639-2,,tgk
+726,language,Swedish,,http://id.loc.gov/vocabulary/iso639-2/swe,iso639-2,,swe
+727,language,Hawaiian,,http://id.loc.gov/vocabulary/iso639-2/haw,iso639-2,,haw
+728,language,German,,http://id.loc.gov/vocabulary/iso639-2/deu,iso639-2,,deu
+729,language,Pedi | Sepedi | Northern Sotho,,http://id.loc.gov/vocabulary/iso639-2/nso,iso639-2,,nso
+730,language,Kabardian,,http://id.loc.gov/vocabulary/iso639-2/kbd,iso639-2,,kbd
+731,language,Kinyarwanda,,http://id.loc.gov/vocabulary/iso639-2/kin,iso639-2,,kin
+732,language,"German, Old High (ca.750-1050)",,http://id.loc.gov/vocabulary/iso639-2/goh,iso639-2,,goh
+733,language,Amharic,,http://id.loc.gov/vocabulary/iso639-2/amh,iso639-2,,amh
+734,language,Sandawe,,http://id.loc.gov/vocabulary/iso639-2/sad,iso639-2,,sad
+735,language,Udmurt,,http://id.loc.gov/vocabulary/iso639-2/udm,iso639-2,,udm
+736,language,Ganda,,http://id.loc.gov/vocabulary/iso639-2/lug,iso639-2,,lug
+737,language,Guarani,,http://id.loc.gov/vocabulary/iso639-2/grn,iso639-2,,grn
+738,language,Hiri Motu,,http://id.loc.gov/vocabulary/iso639-2/hmo,iso639-2,,hmo
+739,language,Sichuan Yi | Nuosu,,http://id.loc.gov/vocabulary/iso639-2/iii,iso639-2,,iii
+740,language,Breton,,http://id.loc.gov/vocabulary/iso639-2/bre,iso639-2,,bre
+741,language,Twi,,http://id.loc.gov/vocabulary/iso639-2/twi,iso639-2,,twi
+742,language,Achinese,,http://id.loc.gov/vocabulary/iso639-2/ace,iso639-2,,ace
+743,language,Sango,,http://id.loc.gov/vocabulary/iso639-2/sag,iso639-2,,sag
+744,language,Urdu,,http://id.loc.gov/vocabulary/iso639-2/urd,iso639-2,,urd
+745,language,Tupi languages,,http://id.loc.gov/vocabulary/iso639-2/tup,iso639-2,,tup
+746,language,Slovak,,http://id.loc.gov/vocabulary/iso639-2/slk,iso639-2,,slk
+747,language,Official Aramaic (700-300 BCE) | Imperial Aramaic (700-300 BCE),,http://id.loc.gov/vocabulary/iso639-2/arc,iso639-2,,arc
+748,language,Sogdian,,http://id.loc.gov/vocabulary/iso639-2/sog,iso639-2,,sog
+749,language,Kachin | Jingpho,,http://id.loc.gov/vocabulary/iso639-2/kac,iso639-2,,kac
+750,language,Balinese,,http://id.loc.gov/vocabulary/iso639-2/ban,iso639-2,,ban
+751,language,Mapudungun | Mapuche,,http://id.loc.gov/vocabulary/iso639-2/arn,iso639-2,,arn
+752,language,Khoisan languages,,http://id.loc.gov/vocabulary/iso639-2/khi,iso639-2,,khi
+753,language,Finno-Ugrian languages,,http://id.loc.gov/vocabulary/iso639-2/fiu,iso639-2,,fiu
+754,language,"Greek, Ancient (to 1453)",,http://id.loc.gov/vocabulary/iso639-2/grc,iso639-2,,grc
+755,language,Samoan,,http://id.loc.gov/vocabulary/iso639-2/smo,iso639-2,,smo
+756,language,Magahi,,http://id.loc.gov/vocabulary/iso639-2/mag,iso639-2,,mag
+757,language,Reserved for local use,,http://id.loc.gov/vocabulary/iso639-2/qaa-qtz,iso639-2,,qaa-qtz
+758,language,Berber languages,,http://id.loc.gov/vocabulary/iso639-2/ber,iso639-2,,ber
+759,language,Uighur | Uyghur,,http://id.loc.gov/vocabulary/iso639-2/uig,iso639-2,,uig
+760,language,Kazakh,,http://id.loc.gov/vocabulary/iso639-2/kaz,iso639-2,,kaz
+761,language,Timne,,http://id.loc.gov/vocabulary/iso639-2/tem,iso639-2,,tem
+762,language,Masai,,http://id.loc.gov/vocabulary/iso639-2/mas,iso639-2,,mas
+763,language,Zuni,,http://id.loc.gov/vocabulary/iso639-2/zun,iso639-2,,zun
+764,language,Umbundu,,http://id.loc.gov/vocabulary/iso639-2/umb,iso639-2,,umb
+765,language,"Dutch, Middle (ca.1050-1350)",,http://id.loc.gov/vocabulary/iso639-2/dum,iso639-2,,dum
+766,language,Rapanui,,http://id.loc.gov/vocabulary/iso639-2/rap,iso639-2,,rap
+767,language,French,,http://id.loc.gov/vocabulary/iso639-2/fra,iso639-2,,fra
+768,language,Nyoro,,http://id.loc.gov/vocabulary/iso639-2/nyo,iso639-2,,nyo
+769,language,Palauan,,http://id.loc.gov/vocabulary/iso639-2/pau,iso639-2,,pau
+770,language,Igbo,,http://id.loc.gov/vocabulary/iso639-2/ibo,iso639-2,,ibo
+771,language,Upper Sorbian,,http://id.loc.gov/vocabulary/iso639-2/hsb,iso639-2,,hsb
+772,language,Kirghiz | Kyrgyz,,http://id.loc.gov/vocabulary/iso639-2/kir,iso639-2,,kir
+773,language,Polish,,http://id.loc.gov/vocabulary/iso639-2/pol,iso639-2,,pol
+774,language,Kabyle,,http://id.loc.gov/vocabulary/iso639-2/kab,iso639-2,,kab
+775,language,Shan,,http://id.loc.gov/vocabulary/iso639-2/shn,iso639-2,,shn
+776,language,Fijian,,http://id.loc.gov/vocabulary/iso639-2/fij,iso639-2,,fij
+777,language,Yiddish,,http://id.loc.gov/vocabulary/iso639-2/yid,iso639-2,,yid
+778,language,Haida,,http://id.loc.gov/vocabulary/iso639-2/hai,iso639-2,,hai
+779,language,Lozi,,http://id.loc.gov/vocabulary/iso639-2/loz,iso639-2,,loz
+780,language,Hebrew,,http://id.loc.gov/vocabulary/iso639-2/heb,iso639-2,,heb
+781,language,Judeo-Arabic,,http://id.loc.gov/vocabulary/iso639-2/jrb,iso639-2,,jrb
+782,language,Siouan languages,,http://id.loc.gov/vocabulary/iso639-2/sio,iso639-2,,sio
+783,language,Yakut,,http://id.loc.gov/vocabulary/iso639-2/sah,iso639-2,,sah
+784,language,Xhosa,,http://id.loc.gov/vocabulary/iso639-2/xho,iso639-2,,xho
+785,language,Hmong | Mong,,http://id.loc.gov/vocabulary/iso639-2/hmn,iso639-2,,hmn
+786,language,Friulian,,http://id.loc.gov/vocabulary/iso639-2/fur,iso639-2,,fur
+787,language,Pushto | Pashto,,http://id.loc.gov/vocabulary/iso639-2/pus,iso639-2,,pus
+788,language,Swiss German | Alemannic | Alsatian,,http://id.loc.gov/vocabulary/iso639-2/gsw,iso639-2,,gsw
+789,language,Lamba,,http://id.loc.gov/vocabulary/iso639-2/lam,iso639-2,,lam
+790,language,Adangme,,http://id.loc.gov/vocabulary/iso639-2/ada,iso639-2,,ada
+791,language,Marathi,,http://id.loc.gov/vocabulary/iso639-2/mar,iso639-2,,mar
+792,language,Tonga (Nyasa),,http://id.loc.gov/vocabulary/iso639-2/tog,iso639-2,,tog
+793,language,Marwari,,http://id.loc.gov/vocabulary/iso639-2/mwr,iso639-2,,mwr
+794,language,Serer,,http://id.loc.gov/vocabulary/iso639-2/srr,iso639-2,,srr
+795,language,Albanian,,http://id.loc.gov/vocabulary/iso639-2/alb,iso639-2,,alb
+796,language,Gorontalo,,http://id.loc.gov/vocabulary/iso639-2/gor,iso639-2,,gor
+797,language,Klingon | tlhIngan-Hol,,http://id.loc.gov/vocabulary/iso639-2/tlh,iso639-2,,tlh
+798,language,Ekajuk,,http://id.loc.gov/vocabulary/iso639-2/eka,iso639-2,,eka
+799,language,"French, Middle (ca.1400-1600)",,http://id.loc.gov/vocabulary/iso639-2/frm,iso639-2,,frm
+800,language,Ijo languages,,http://id.loc.gov/vocabulary/iso639-2/ijo,iso639-2,,ijo
+801,language,Hausa,,http://id.loc.gov/vocabulary/iso639-2/hau,iso639-2,,hau
+802,language,"English, Middle (1100-1500)",,http://id.loc.gov/vocabulary/iso639-2/enm,iso639-2,,enm
+803,language,"Norwegian Nynorsk | Nynorsk, Norwegian",,http://id.loc.gov/vocabulary/iso639-2/nno,iso639-2,,nno
+804,language,Chechen,,http://id.loc.gov/vocabulary/iso639-2/che,iso639-2,,che
+805,language,Kannada,,http://id.loc.gov/vocabulary/iso639-2/kan,iso639-2,,kan
+806,language,Ainu,,http://id.loc.gov/vocabulary/iso639-2/ain,iso639-2,,ain
+807,language,Sidamo,,http://id.loc.gov/vocabulary/iso639-2/sid,iso639-2,,sid
+808,language,Karachay-Balkar,,http://id.loc.gov/vocabulary/iso639-2/krc,iso639-2,,krc
+809,language,Hittite,,http://id.loc.gov/vocabulary/iso639-2/hit,iso639-2,,hit
+810,language,Tlingit,,http://id.loc.gov/vocabulary/iso639-2/tli,iso639-2,,tli
+811,language,Northern Sami,,http://id.loc.gov/vocabulary/iso639-2/sme,iso639-2,,sme
+812,language,Abkhazian,,http://id.loc.gov/vocabulary/iso639-2/abk,iso639-2,,abk
+813,language,N'Ko,,http://id.loc.gov/vocabulary/iso639-2/nqo,iso639-2,,nqo
+814,language,"Bokmål, Norwegian | Norwegian Bokmål",,http://id.loc.gov/vocabulary/iso639-2/nob,iso639-2,,nob
+815,language,Niger-Kordofanian languages,,http://id.loc.gov/vocabulary/iso639-2/nic,iso639-2,,nic
+816,language,"Persian, Old (ca.600-400 B.C.)",,http://id.loc.gov/vocabulary/iso639-2/peo,iso639-2,,peo
+817,language,"Irish, Middle (900-1200)",,http://id.loc.gov/vocabulary/iso639-2/mga,iso639-2,,mga
+818,language,Lao,,http://id.loc.gov/vocabulary/iso639-2/lao,iso639-2,,lao
+819,language,Blin | Bilin,,http://id.loc.gov/vocabulary/iso639-2/byn,iso639-2,,byn
+820,language,Kamba,,http://id.loc.gov/vocabulary/iso639-2/kam,iso639-2,,kam
+821,language,Armenian,,http://id.loc.gov/vocabulary/iso639-2/arm,iso639-2,,arm
+822,language,Western Frisian,,http://id.loc.gov/vocabulary/iso639-2/fry,iso639-2,,fry
+823,language,Chipewyan | Dene Suline,,http://id.loc.gov/vocabulary/iso639-2/chp,iso639-2,,chp
+824,language,Tswana,,http://id.loc.gov/vocabulary/iso639-2/tsn,iso639-2,,tsn
+825,language,Shona,,http://id.loc.gov/vocabulary/iso639-2/sna,iso639-2,,sna
+826,language,Bikol,,http://id.loc.gov/vocabulary/iso639-2/bik,iso639-2,,bik
+827,language,Nyankole,,http://id.loc.gov/vocabulary/iso639-2/nyn,iso639-2,,nyn
+828,language,Tahitian,,http://id.loc.gov/vocabulary/iso639-2/tah,iso639-2,,tah
+829,language,Tuvalu,,http://id.loc.gov/vocabulary/iso639-2/tvl,iso639-2,,tvl
+830,language,Nahuatl languages,,http://id.loc.gov/vocabulary/iso639-2/nah,iso639-2,,nah
+831,language,Cree,,http://id.loc.gov/vocabulary/iso639-2/cre,iso639-2,,cre
+832,language,Arabic,,http://id.loc.gov/vocabulary/iso639-2/ara,iso639-2,,ara
+833,language,Ladino,,http://id.loc.gov/vocabulary/iso639-2/lad,iso639-2,,lad
+834,language,Irish,,http://id.loc.gov/vocabulary/iso639-2/gle,iso639-2,,gle
+835,language,Mon-Khmer languages,,http://id.loc.gov/vocabulary/iso639-2/mkh,iso639-2,,mkh
+836,language,Wakashan languages,,http://id.loc.gov/vocabulary/iso639-2/wak,iso639-2,,wak
+837,language,Aromanian | Arumanian | Macedo-Romanian,,http://id.loc.gov/vocabulary/iso639-2/rup,iso639-2,,rup
+838,language,Yapese,,http://id.loc.gov/vocabulary/iso639-2/yap,iso639-2,,yap
+839,language,Dakota,,http://id.loc.gov/vocabulary/iso639-2/dak,iso639-2,,dak
+840,language,Georgian,,http://id.loc.gov/vocabulary/iso639-2/geo,iso639-2,,geo
+841,language,Manx,,http://id.loc.gov/vocabulary/iso639-2/glv,iso639-2,,glv
+842,language,Komi,,http://id.loc.gov/vocabulary/iso639-2/kom,iso639-2,,kom
+843,language,Grebo,,http://id.loc.gov/vocabulary/iso639-2/grb,iso639-2,,grb
+844,language,Zenaga,,http://id.loc.gov/vocabulary/iso639-2/zen,iso639-2,,zen
+845,language,Yupik languages,,http://id.loc.gov/vocabulary/iso639-2/ypk,iso639-2,,ypk
+846,language,Bambara,,http://id.loc.gov/vocabulary/iso639-2/bam,iso639-2,,bam
+847,language,Choctaw,,http://id.loc.gov/vocabulary/iso639-2/cho,iso639-2,,cho
+848,language,Haitian | Haitian Creole,,http://id.loc.gov/vocabulary/iso639-2/hat,iso639-2,,hat
+849,language,"Norse, Old",,http://id.loc.gov/vocabulary/iso639-2/non,iso639-2,,non
+850,language,Susu,,http://id.loc.gov/vocabulary/iso639-2/sus,iso639-2,,sus
+851,language,Australian languages,,http://id.loc.gov/vocabulary/iso639-2/aus,iso639-2,,aus
+852,language,Oriya,,http://id.loc.gov/vocabulary/iso639-2/ori,iso639-2,,ori
+853,language,Bosnian,,http://id.loc.gov/vocabulary/iso639-2/bos,iso639-2,,bos
+854,language,Wolaitta | Wolaytta,,http://id.loc.gov/vocabulary/iso639-2/wal,iso639-2,,wal
+855,language,Pahlavi,,http://id.loc.gov/vocabulary/iso639-2/pal,iso639-2,,pal
+856,language,Telugu,,http://id.loc.gov/vocabulary/iso639-2/tel,iso639-2,,tel
+857,language,Tatar,,http://id.loc.gov/vocabulary/iso639-2/tat,iso639-2,,tat
+858,language,Standard Moroccan Tamazight,,http://id.loc.gov/vocabulary/iso639-2/zgh,iso639-2,,zgh
+859,language,Multiple languages,,http://id.loc.gov/vocabulary/iso639-2/mul,iso639-2,,mul
+860,language,Kara-Kalpak,,http://id.loc.gov/vocabulary/iso639-2/kaa,iso639-2,,kaa
+861,language,Siksika,,http://id.loc.gov/vocabulary/iso639-2/bla,iso639-2,,bla
+862,language,Kongo,,http://id.loc.gov/vocabulary/iso639-2/kon,iso639-2,,kon
+863,language,Nyamwezi,,http://id.loc.gov/vocabulary/iso639-2/nym,iso639-2,,nym
+864,language,Yao,,http://id.loc.gov/vocabulary/iso639-2/yao,iso639-2,,yao
+865,language,Slovenian,,http://id.loc.gov/vocabulary/iso639-2/slv,iso639-2,,slv
+866,language,Adyghe | Adygei,,http://id.loc.gov/vocabulary/iso639-2/ady,iso639-2,,ady
+867,language,Ossetian | Ossetic,,http://id.loc.gov/vocabulary/iso639-2/oss,iso639-2,,oss
+868,language,Mayan languages,,http://id.loc.gov/vocabulary/iso639-2/myn,iso639-2,,myn
+869,language,Divehi | Dhivehi | Maldivian,,http://id.loc.gov/vocabulary/iso639-2/div,iso639-2,,div
+870,language,"Turkish, Ottoman (1500-1928)",,http://id.loc.gov/vocabulary/iso639-2/ota,iso639-2,,ota
+871,language,Inuktitut,,http://id.loc.gov/vocabulary/iso639-2/iku,iso639-2,,iku
+872,language,Assamese,,http://id.loc.gov/vocabulary/iso639-2/asm,iso639-2,,asm
+873,language,Aymara,,http://id.loc.gov/vocabulary/iso639-2/aym,iso639-2,,aym
+874,language,Zaza | Dimili | Dimli | Kirdki | Kirmanjki | Zazaki,,http://id.loc.gov/vocabulary/iso639-2/zza,iso639-2,,zza
+875,language,Creoles and pidgins,,http://id.loc.gov/vocabulary/iso639-2/crp,iso639-2,,crp
+876,language,Iroquoian languages,,http://id.loc.gov/vocabulary/iso639-2/iro,iso639-2,,iro
+877,language,"English, Old (ca.450-1100)",,http://id.loc.gov/vocabulary/iso639-2/ang,iso639-2,,ang
+878,language,Sinhala | Sinhalese,,http://id.loc.gov/vocabulary/iso639-2/sin,iso639-2,,sin
+879,language,Javanese,,http://id.loc.gov/vocabulary/iso639-2/jav,iso639-2,,jav
+880,resource_types_dcmi,Dataset,"Data encoded in a defined structure.
+Examples include lists, tables, and databases.  A dataset may be useful for direct machine processing.",http://purl.org/dc/dcmitype/Dataset,dcmi_types,,Dataset
+881,resource_types_dcmi,Sound,"A resource primarily intended to be heard.
+Examples include a music playback file format, an audio compact disc, and recorded speech or sounds.",http://purl.org/dc/dcmitype/Sound,dcmi_types,,Sound
+882,resource_types_dcmi,Interactive Resource,"A resource requiring interaction from the user to be understood, executed, or experienced.
+Examples include forms on Web pages, applets, multimedia learning objects, chat services, or virtual reality environments.",http://purl.org/dc/dcmitype/InteractiveResource,dcmi_types,,InteractiveResource
+883,resource_types_dcmi,Service,"A system that provides one or more functions.
+Examples include a photocopying service, a banking service, an authentication service, interlibrary loans, a Z39.50 or Web server.",http://purl.org/dc/dcmitype/Service,dcmi_types,,Service
+884,resource_types_dcmi,Moving Image,"A series of visual representations imparting an impression of motion when shown in succession.
+Examples include animations, movies, television programs, videos, zoetropes, or visual output from a simulation.  Instances of the type Moving Image must also be describable as instances of the broader type Image.",http://purl.org/dc/dcmitype/MovingImage,dcmi_types,,MovingImage
+885,resource_types_dcmi,Physical Object,"An inanimate, three-dimensional object or substance.
+Note that digital representations of, or surrogates for, these objects should use Image, Text or one of the other types.",http://purl.org/dc/dcmitype/PhysicalObject,dcmi_types,,PhysicalObject
+886,resource_types_dcmi,Event,"A non-persistent, time-based occurrence.
+Metadata for an event provides descriptive information that is the basis for discovery of the purpose, location, duration, and responsible agents associated with an event. Examples include an exhibition, webcast, conference, workshop, open day, performance, battle, trial, wedding, tea party, conflagration.",http://purl.org/dc/dcmitype/Event,dcmi_types,,Event
+887,resource_types_dcmi,Still Image,"A static visual representation.
+Examples include paintings, drawings, graphic designs, plans and maps. Recommended best practice is to assign the type Text to images of textual materials. Instances of the type Still Image must also be describable as instances of the broader type Image.",http://purl.org/dc/dcmitype/StillImage,dcmi_types,,StillImage
+888,resource_types_dcmi,Software,"A computer program in source or compiled form.
+Examples include a C source file, MS-Windows .exe executable, or Perl script.",http://purl.org/dc/dcmitype/Software,dcmi_types,,Software
+889,resource_types_dcmi,Image,"A visual representation other than text.
+Examples include images and photographs of physical objects, paintings, prints, drawings, other images and graphics, animations and moving pictures, film, diagrams, maps, musical notation.  Note that Image may include both electronic and physical representations.",http://purl.org/dc/dcmitype/Image,dcmi_types,,Image
+890,resource_types_dcmi,Collection,"An aggregation of resources.
+A collection is described as a group; its parts may also be separately described.",http://purl.org/dc/dcmitype/Collection,dcmi_types,,Collection
+891,resource_types_dcmi,Text,"A resource consisting primarily of words for reading.
+Examples include books, letters, dissertations, poems, newspapers, articles, archives of mailing lists. Note that facsimiles or images of texts are still of the genre Text.",http://purl.org/dc/dcmitype/Text,dcmi_types,,Text

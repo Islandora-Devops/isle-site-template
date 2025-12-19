@@ -1,0 +1,91 @@
+uuid: 764f8645-1329-4a45-b970-288b19d53556
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: LCOjdcl0Qy7FvAdomH0a8Y8_acCMBcdHoXAPhK8_mHA
+id: islandora_hocr_und_7_0_0
+label: 'Language Undefined hOCR Field'
+minimum_solr_version: 7.0.0
+custom_code: islandora_hocr
+field_type_language_code: und
+domains: {  }
+field_type:
+  name: islandora_hocr_und
+  class: solr.TextField
+  storeOffsetsWithPositions: true
+  analyzers:
+    -
+      type: index
+      charFilters:
+        -
+          class: solrocr.OcrCharFilterFactory
+        -
+          class: solr.MappingCharFilterFactory
+          mapping: accents_und.txt
+      tokenizer:
+        class: solr.WhitespaceTokenizerFactory
+      filters:
+        -
+          class: solr.StopFilterFactory
+          ignoreCase: true
+          words: stopwords_und.txt
+        -
+          class: solr.WordDelimiterGraphFilterFactory
+          catenateNumbers: 1
+          generateNumberParts: 1
+          protected: protwords_und.txt
+          splitOnCaseChange: 0
+          generateWordParts: 1
+          preserveOriginal: 1
+          catenateAll: 0
+          catenateWords: 1
+        -
+          class: solr.LengthFilterFactory
+          min: 2
+          max: 100
+        -
+          class: solr.LowerCaseFilterFactory
+        -
+          class: solr.RemoveDuplicatesTokenFilterFactory
+    -
+      type: query
+      charFilters:
+        -
+          class: solr.MappingCharFilterFactory
+          mapping: accents_und.txt
+      tokenizer:
+        class: solr.WhitespaceTokenizerFactory
+      filters:
+        -
+          class: solr.SynonymGraphFilterFactory
+          ignoreCase: true
+          synonyms: synonyms_und.txt
+          expand: true
+        -
+          class: solr.StopFilterFactory
+          ignoreCase: true
+          words: stopwords_und.txt
+        -
+          class: solr.WordDelimiterGraphFilterFactory
+          catenateNumbers: 0
+          generateNumberParts: 1
+          protected: protwords_und.txt
+          splitOnCaseChange: 0
+          generateWordParts: 1
+          preserveOriginal: 1
+          catenateAll: 0
+          catenateWords: 0
+        -
+          class: solr.LengthFilterFactory
+          min: 2
+          max: 100
+        -
+          class: solr.LowerCaseFilterFactory
+        -
+          class: solr.RemoveDuplicatesTokenFilterFactory
+unstemmed_field_type: null
+spellcheck_field_type: null
+collated_field_type: null
+solr_configs: null
+text_files: {  }

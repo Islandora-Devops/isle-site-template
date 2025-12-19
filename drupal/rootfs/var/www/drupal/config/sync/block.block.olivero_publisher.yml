@@ -1,0 +1,36 @@
+uuid: c6fb4021-d567-482d-8f3a-331985a60092
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.publisher
+  module:
+    - context
+    - facets
+    - islandora
+  theme:
+    - olivero
+id: olivero_publisher
+theme: olivero
+region: sidebar
+weight: -11
+provider: null
+plugin: 'facet_block:publisher'
+settings:
+  id: 'facet_block:publisher'
+  label: Publisher
+  label_display: visible
+  provider: facets
+  context_mapping: {  }
+  block_id: olivero_publisher
+visibility:
+  view_inclusion:
+    id: view_inclusion
+    negate: false
+    view_inclusion:
+      view-solr_search_content-page_1: view-solr_search_content-page_1
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''

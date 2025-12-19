@@ -1,0 +1,46 @@
+uuid: 5e55832f-7ac8-4e4f-8f29-3efb87b24247
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.open_seadragon
+    - field.field.media.image.field_file_size
+    - field.field.media.image.field_height
+    - field.field.media.image.field_media_image
+    - field.field.media.image.field_media_of
+    - field.field.media.image.field_media_use
+    - field.field.media.image.field_mime_type
+    - field.field.media.image.field_original_name
+    - field.field.media.image.field_width
+    - media.type.image
+  module:
+    - openseadragon
+_core:
+  default_config_hash: gR-7blbYp7lcArjW4cg_S8RMu5ZeaN3lfh35Cjssgik
+id: media.image.open_seadragon
+targetEntityType: media
+bundle: image
+mode: open_seadragon
+content:
+  field_media_image:
+    type: openseadragon_image
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  field_file_size: true
+  field_gemini_uri: true
+  field_height: true
+  field_media_of: true
+  field_media_use: true
+  field_mime_type: true
+  field_original_name: true
+  field_width: true
+  langcode: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

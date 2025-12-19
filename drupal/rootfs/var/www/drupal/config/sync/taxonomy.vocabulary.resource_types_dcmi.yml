@@ -1,0 +1,9 @@
+uuid: 3c90cefa-7d65-4c5d-a316-139b88909bfc
+langcode: en
+status: true
+dependencies: {  }
+name: 'Resource Types (DCMI)'
+vid: resource_types_dcmi
+description: 'The DCMI Type Vocabulary'
+weight: 0
+new_revision: true

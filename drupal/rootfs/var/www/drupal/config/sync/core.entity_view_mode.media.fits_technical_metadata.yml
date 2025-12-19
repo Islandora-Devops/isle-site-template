@@ -1,0 +1,13 @@
+uuid: a2bb6595-7072-4217-95c3-45eeebf9d99e
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+_core:
+  default_config_hash: iSghNI9O-6dPp9cMQTGYgytj7Wb3c-PR9eUCvJcEMhk
+id: media.fits_technical_metadata
+label: 'FITS Technical Metadata'
+description: ''
+targetEntityType: media
+cache: true

@@ -1,0 +1,15 @@
+uuid: 904e4421-cdc6-4124-bef5-bb7695f55901
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+_core:
+  default_config_hash: lVY7W4LHB6_HxBHjyDxbIxWYuErh94oFaN3yE9IgtKM
+id: index_taxonomy_term_in_the_triplestore
+label: 'Index Taxonomy Term in the Triplestore'
+type: taxonomy_term
+plugin: emit_term_event
+configuration:
+  queue: islandora-indexing-triplestore-index
+  event: Update

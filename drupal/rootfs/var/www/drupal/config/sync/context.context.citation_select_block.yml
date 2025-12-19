@@ -1,0 +1,51 @@
+uuid: 34924fda-481b-4e40-b074-eff73eaefad7
+langcode: en
+status: true
+dependencies:
+  module:
+    - citation_select
+    - islandora
+label: 'Citation Select Block'
+name: citation_select_block
+group: Display
+description: 'If an Islandora node, and not a Collection, show Citation Select Block'
+requireAllConditions: true
+disabled: false
+conditions:
+  node_is_islandora_object:
+    id: node_is_islandora_object
+    negate: 0
+    uuid: 97898fc7-d3bd-4b37-940f-2240e41a11ef
+    context_mapping:
+      node: '@node.node_route_context:node'
+  node_has_term:
+    id: node_has_term
+    negate: true
+    uuid: 1fc2fcef-4975-4e9e-97f6-b8127a01f5c6
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'http://purl.org/dc/dcmitype/Collection'
+    logic: and
+reactions:
+  blocks:
+    id: blocks
+    uuid: 065ab74d-a9d4-4ce7-9b89-b1f1186f6c44
+    blocks:
+      c22706b2-3f26-4b40-aacc-856c6a87176e:
+        uuid: c22706b2-3f26-4b40-aacc-856c6a87176e
+        id: citation_select_block
+        label: 'Citation Select Block'
+        provider: citation_select
+        label_display: '0'
+        region: content
+        weight: '0'
+        custom_id: citation_select_block
+        theme: olivero
+        css_class: ''
+        unique: 0
+        context_id: citation_select_block
+        context_mapping: {  }
+        third_party_settings: {  }
+    include_default_blocks: 1
+    saved: false
+weight: -3

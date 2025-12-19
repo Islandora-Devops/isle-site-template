@@ -1,0 +1,20 @@
+uuid: e959f96a-ac3b-4d52-be5a-0360376aeefe
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.genre
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+_core:
+  default_config_hash: VmdFEQO4U_VCnBRprfVgzug_lf2GaieXc9xp8iUR8eE
+id: taxonomy_term.genre
+target_entity_type_id: taxonomy_term
+target_bundle: genre
+default_langcode: site_default
+language_alterable: true

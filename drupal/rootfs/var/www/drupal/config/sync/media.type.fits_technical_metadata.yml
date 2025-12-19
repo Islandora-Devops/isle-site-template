@@ -1,0 +1,18 @@
+uuid: 7bbafffd-2d3f-46f4-9f5b-fc24964ed0d7
+langcode: en
+status: true
+dependencies: null
+_core:
+  default_config_hash: Xf1Sv8e4LYwnDJEyZXzwfkPkiCUno_c1oDIaz1KeNjc
+id: fits_technical_metadata
+label: 'FITS Technical metadata'
+description: 'Display of transformed FITS xml'
+source: file
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_media_file
+field_map:
+  name: name
+  mimetype: field_mime_type
+  filesize: field_file_size

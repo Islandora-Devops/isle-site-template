@@ -1,0 +1,46 @@
+uuid: 93bf8c82-8519-470b-ac79-87620b2a39d4
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.solr_search_content
+  module:
+    - context
+    - islandora
+    - views
+  theme:
+    - olivero
+id: views_block__solr_search_content_block_1
+theme: olivero
+region: content
+weight: -9
+provider: null
+plugin: 'views_block:solr_search_content-block_1'
+settings:
+  id: 'views_block:solr_search_content-block_1'
+  label: ''
+  label_display: '0'
+  provider: views
+  views_label: ''
+  items_per_page: none
+visibility:
+  user_status:
+    id: user_status
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    user_status:
+      viewing_profile: '0'
+      logged_viewing_profile: '0'
+      own_page_true: '0'
+      field_value: '0'
+    user_fields: uid
+  context_all:
+    id: context_all
+    negate: null
+    values: collection
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''

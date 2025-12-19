@@ -1,0 +1,47 @@
+uuid: bc35c0c3-4c9a-40a9-801c-d07fb3e88024
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.year
+  module:
+    - context
+    - facets
+    - islandora
+  theme:
+    - olivero
+id: year
+theme: olivero
+region: sidebar
+weight: -1
+provider: null
+plugin: 'facet_block:year'
+settings:
+  id: 'facet_block:year'
+  label: Year
+  label_display: visible
+  provider: facets
+  context_mapping: {  }
+  block_id: year
+visibility:
+  user_status:
+    id: user_status
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    user_status:
+      viewing_profile: '0'
+      logged_viewing_profile: '0'
+      own_page_true: '0'
+      field_value: '0'
+    user_fields: uid
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: false
+    view_inclusion:
+      view-solr_search_content-page_1: view-solr_search_content-page_1

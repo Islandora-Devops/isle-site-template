@@ -1,0 +1,23 @@
+uuid: 1f4e9d5d-03d8-4212-888c-5e2b3eaea3f3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_copyright_date
+    - node.type.islandora_object
+  module:
+    - controlled_access_terms
+_core:
+  default_config_hash: tLzHU_CS3zWYHu8Pt-6CzkMmIWrVbmM3dWMqCzhgs90
+id: node.islandora_object.field_copyright_date
+field_name: field_copyright_date
+entity_type: node
+bundle: islandora_object
+label: 'Copyright Date'
+description: 'Date of copyright of the resource.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: edtf

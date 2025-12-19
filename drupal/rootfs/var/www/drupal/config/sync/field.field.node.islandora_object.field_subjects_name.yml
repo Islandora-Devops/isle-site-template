@@ -1,0 +1,35 @@
+uuid: a294a190-0263-495a-ab20-bcdd30f7aabb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_subjects_name
+    - node.type.islandora_object
+    - taxonomy.vocabulary.corporate_body
+    - taxonomy.vocabulary.family
+    - taxonomy.vocabulary.person
+_core:
+  default_config_hash: V-roMos0KYV0TJvFANJVrUxMdBjRJPVtnUUAXZySZ5U
+id: node.islandora_object.field_subjects_name
+field_name: field_subjects_name
+entity_type: node
+bundle: islandora_object
+label: 'Subject (Name)'
+description: 'Any new term added by typing it here will be added to the Person taxonomy. If you need to create a new Corporate Body or Family taxonomy term, do <i>Structure > Taxonomy > [the appropriate taxonomy] > Add terms</i> to add terms. You may need to save this form and reload it for your terms to be available here.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      corporate_body: corporate_body
+      family: family
+      person: person
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: person
+field_type: entity_reference

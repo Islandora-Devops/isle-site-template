@@ -1,0 +1,29 @@
+uuid: b4d00bc7-bfc4-4b93-a461-90b52c8bcb5f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_member_of
+    - node.type.islandora_object
+_core:
+  default_config_hash: pZJl3qsYONb8CqMy4xwlCFhZxlo6FGXrNZfaEGI8vj8
+id: node.islandora_object.field_member_of
+field_name: field_member_of
+entity_type: node
+bundle: islandora_object
+label: 'Member of'
+description: "This item's parent item in Islandora. Usually this will be a collection or compound object."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      islandora_object: islandora_object
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

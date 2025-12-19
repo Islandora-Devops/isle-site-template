@@ -1,0 +1,28 @@
+uuid: 35be59b7-0b13-4417-a75f-10d18b356849
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_authority_link
+    - taxonomy.vocabulary.language
+  module:
+    - controlled_access_terms
+_core:
+  default_config_hash: Axb5S_qqJda3eb1ZSCOQQ8PBTGil7FYvWVjzz8kse3w
+id: taxonomy_term.language.field_authority_link
+field_name: field_authority_link
+entity_type: taxonomy_term
+bundle: language
+label: 'Authority Sources'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  authority_sources:
+    iso639-2: 'ISO 639-2 Codes for the Representation of Names of Languages'
+    other: Other
+  title: 1
+  link_type: 16
+field_type: authority_link

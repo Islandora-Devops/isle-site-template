@@ -1,0 +1,13 @@
+uuid: f0db8ba1-c60b-4709-b596-2027ea66a183
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+_core:
+  default_config_hash: qFLXTd7sBpfQLcPgH68KJ9WK9FIx24hHbCQeg892PmY
+id: media.pdfjs
+label: PDFjs
+description: ''
+targetEntityType: media
+cache: true

@@ -1,0 +1,30 @@
+uuid: bf44de36-18b7-426e-8c68-277c55dcbb5d
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - file
+    - islandora
+    - media
+third_party_settings:
+  field_permissions:
+    permission_type: public
+_core:
+  default_config_hash: 3zCHO53sVHFazBT8_1zNElOM-Yy1B0bL7gEF51rbgYk
+id: media.field_track
+field_name: field_track
+entity_type: media
+type: media_track
+settings:
+  target_type: file
+  display_field: false
+  display_default: false
+  uri_scheme: fedora
+module: islandora
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

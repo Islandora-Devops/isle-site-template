@@ -1,0 +1,22 @@
+uuid: 2ef208a7-fbf7-4f6f-9d4a-69c2aadcbf63
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora_text_extraction
+_core:
+  default_config_hash: DwigXfPdx532Jo8glTH2t_c4Q1ae_WED-fPpdaLuvAk
+id: get_ocr_from_image
+label: 'Extract Text from Image or PDF'
+type: node
+plugin: generate_ocr_derivative
+configuration:
+  queue: islandora-connector-ocr
+  event: 'Generate Derivative'
+  source_term_uri: 'http://pcdm.org/use#OriginalFile'
+  derivative_term_uri: 'http://pcdm.org/use#ExtractedText'
+  mimetype: text/plain
+  args: ''
+  destination_media_type: extracted_text
+  scheme: public
+  path: '[date:custom:Y]-[date:custom:m]/[islandoratokens:media-original-file:filename]-[term:name].txt'

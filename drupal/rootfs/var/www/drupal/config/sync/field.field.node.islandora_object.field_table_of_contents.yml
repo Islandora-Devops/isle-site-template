@@ -1,0 +1,24 @@
+uuid: 609190f1-ca3d-4684-bb0d-a39bf16cd016
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_table_of_contents
+    - node.type.islandora_object
+  module:
+    - text
+_core:
+  default_config_hash: SLvcLqYeZBMQjvibeCpySjFklAyrSJ8U7palcdCHwhM
+id: node.islandora_object.field_table_of_contents
+field_name: field_table_of_contents
+entity_type: node
+bundle: islandora_object
+label: 'Table of Contents'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

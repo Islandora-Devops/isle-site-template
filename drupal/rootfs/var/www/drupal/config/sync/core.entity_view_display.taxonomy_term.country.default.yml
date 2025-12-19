@@ -1,0 +1,41 @@
+uuid: 3cc07ba3-6fa4-43ee-b73e-e6ce3c60f63d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.country.field_authority_link
+    - field.field.taxonomy_term.country.field_code
+    - taxonomy.vocabulary.country
+  module:
+    - controlled_access_terms
+    - text
+_core:
+  default_config_hash: CwK5rkemUZGOqxX5uiQ4zzbaTEZlqLVP3JU4duGdYm0
+id: taxonomy_term.country.default
+targetEntityType: taxonomy_term
+bundle: country
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_authority_link:
+    type: authority_formatter_default
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: _blank
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  field_code: true
+  langcode: true
+  search_api_excerpt: true

@@ -1,0 +1,49 @@
+uuid: 7b1d17e2-aa1a-4740-9c7c-d110f6f34b84
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.newspaper_issues_accordion_view
+  module:
+    - islandora
+    - views
+label: Newspaper
+name: newspaper
+group: Display
+description: "If a Newspaper, display the newspaper's children (issues) by date."
+requireAllConditions: false
+disabled: false
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: false
+    uuid: 0906379e-21e5-483f-9248-56ec7ef9eeba
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'https://schema.org/Newspaper'
+    logic: and
+reactions:
+  blocks:
+    id: blocks
+    uuid: 83998c46-0118-4deb-9c12-10e33d02b49b
+    blocks:
+      8a31d625-66c6-44ae-98b4-32b8789325b0:
+        uuid: 8a31d625-66c6-44ae-98b4-32b8789325b0
+        id: 'views_block:newspaper_issues_accordion_view-block_1'
+        label: ''
+        provider: views
+        label_display: '0'
+        region: content
+        weight: '0'
+        custom_id: views_block_newspaper_issues_accordion_view_block_1
+        theme: olivero
+        css_class: ''
+        unique: 0
+        context_id: newspaper
+        context_mapping: {  }
+        views_label: ''
+        items_per_page: none
+        third_party_settings: {  }
+    include_default_blocks: 1
+    saved: false
+weight: -7

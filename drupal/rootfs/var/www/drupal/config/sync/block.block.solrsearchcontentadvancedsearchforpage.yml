@@ -1,0 +1,38 @@
+uuid: 3abc4969-9a58-4135-a98b-f950b8377a42
+langcode: en
+status: true
+dependencies:
+  module:
+    - advanced_search
+    - context
+    - islandora
+  theme:
+    - olivero
+id: solrsearchcontentadvancedsearchforpage
+theme: olivero
+region: sidebar
+weight: -18
+provider: null
+plugin: 'advanced_search_block:solr_search_content__page_1'
+settings:
+  id: 'advanced_search_block:solr_search_content__page_1'
+  label: Search
+  label_display: visible
+  provider: advanced_search
+  fields:
+    - title_aggregated_fulltext
+    - abstract_description_fulltext
+    - linked_agent_name_fulltext
+    - field_publisher_fulltext
+  context_filter: null
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: false
+    view_inclusion:
+      view-solr_search_content-page_1: view-solr_search_content-page_1

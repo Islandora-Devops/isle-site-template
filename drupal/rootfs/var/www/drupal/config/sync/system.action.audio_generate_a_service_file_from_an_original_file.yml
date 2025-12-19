@@ -1,0 +1,22 @@
+uuid: 88efdd45-668f-4e8c-bb83-af53a1e8b970
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora_audio
+_core:
+  default_config_hash: W3X6j0tEV4Y9q5982YFXDxSH3uW73ElGwiMXUhlE43c
+id: audio_generate_a_service_file_from_an_original_file
+label: 'Audio - Generate a service file from an original file'
+type: node
+plugin: generate_audio_derivative
+configuration:
+  queue: islandora-connector-homarus
+  event: 'Generate Derivative'
+  destination_media_type: audio
+  source_term_uri: 'http://pcdm.org/use#OriginalFile'
+  derivative_term_uri: 'http://pcdm.org/use#ServiceFile'
+  mimetype: audio/mpeg
+  args: '-codec:a libmp3lame -q:a 5'
+  scheme: public
+  path: '[date:custom:Y]-[date:custom:m]/[islandoratokens:media-original-file:filename]-[term:name].mp3'

@@ -1,0 +1,31 @@
+uuid: f4bd5463-c7bb-47f8-a7a1-5cbf60f3c817
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_genre
+    - node.type.islandora_object
+    - taxonomy.vocabulary.genre
+_core:
+  default_config_hash: PI3UoNVeBb23r3Dt_dbXddoa4ihN89QS7mFHothrwp8
+id: node.islandora_object.field_genre
+field_name: field_genre
+entity_type: node
+bundle: islandora_object
+label: Genre
+description: 'A term or terms that designate a category characterizing a particular style, form, or content, such as artistic, musical, literary composition, etc.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      genre: genre
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

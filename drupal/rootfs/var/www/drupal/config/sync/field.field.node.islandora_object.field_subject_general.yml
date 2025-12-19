@@ -1,0 +1,39 @@
+uuid: f26314e3-da09-4b1a-a420-91dc26a0c3bf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_subject_general
+    - node.type.islandora_object
+    - taxonomy.vocabulary.corporate_body
+    - taxonomy.vocabulary.family
+    - taxonomy.vocabulary.geo_location
+    - taxonomy.vocabulary.person
+    - taxonomy.vocabulary.subject
+_core:
+  default_config_hash: xBfBj7o8-HPHLm3YJK867Vtkw7H4rpa-6sNpSFglfu8
+id: node.islandora_object.field_subject_general
+field_name: field_subject_general
+entity_type: node
+bundle: islandora_object
+label: Subject
+description: 'General subjects which may include topical, geographic, temporal, and genre elements. If you wish to manage these types of subjects separately, use the more specific Subject fields.<br/><br/>Any new term added by typing it here will be added to the Subject taxonomy. If you need to create a new term in another taxonomy, do <i>Structure > Taxonomy > [the appropriate taxonomy] > Add terms</i> to add terms. You may need to save this form and reload it for your terms to be available here.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      corporate_body: corporate_body
+      family: family
+      geo_location: geo_location
+      person: person
+      subject: subject
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: subject
+field_type: entity_reference

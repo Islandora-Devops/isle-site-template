@@ -1,0 +1,36 @@
+uuid: d558a755-bcde-4424-84ba-0b623d6a08cf
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+_core:
+  default_config_hash: 6RXlwQmbN073bHOiyMIfbdyUvCyjEXjfxpr65b_1ssg
+label: 'Taxonomy Terms'
+name: taxonomy_terms
+group: Indexing
+description: 'Index all taxonomy terms in Fedora and Blazegraph'
+requireAllConditions: false
+disabled: false
+conditions:
+  content_entity_type:
+    id: content_entity_type
+    negate: false
+    context_mapping:
+      taxonomy_term: '@islandora.taxonomy_term_route_context_provider:taxonomy_term'
+    types:
+      taxonomy_term: taxonomy_term
+reactions:
+  index:
+    id: index
+    saved: false
+    actions:
+      index_taxonomy_term_in_fedora: index_taxonomy_term_in_fedora
+      index_taxonomy_term_in_the_triplestore: index_taxonomy_term_in_the_triplestore
+  delete:
+    id: delete
+    saved: false
+    actions:
+      delete_taxonomy_term_in_fedora: delete_taxonomy_term_in_fedora
+      delete_taxonomy_term_in_triplestore: delete_taxonomy_term_in_triplestore
+weight: -4

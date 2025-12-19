@@ -1,0 +1,21 @@
+uuid: ae2933db-e700-48ed-bcb4-9f7eb783f497
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_mime_type
+    - media.type.image
+_core:
+  default_config_hash: 0BPru0UosRliILaltdnUM_bZyg_c0uD9EL-0OBAV-Ck
+id: media.image.field_mime_type
+field_name: field_mime_type
+entity_type: media
+bundle: image
+label: 'MIME type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

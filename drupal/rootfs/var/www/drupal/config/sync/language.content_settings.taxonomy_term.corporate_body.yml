@@ -1,0 +1,18 @@
+uuid: 44770722-ab1b-4625-92d9-a738aacf18da
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.corporate_body
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+_core:
+  default_config_hash: 1SOV1V5WQX0hepAsVvNtOpR2Ce1s4OxckNT3nYAEyks
+id: taxonomy_term.corporate_body
+target_entity_type_id: taxonomy_term
+target_bundle: corporate_body
+default_langcode: site_default
+language_alterable: false

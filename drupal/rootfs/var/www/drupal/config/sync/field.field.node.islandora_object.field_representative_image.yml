@@ -1,0 +1,29 @@
+uuid: ed07efe0-4ca9-4636-aafd-a65c7aa3ea4e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_representative_image
+    - media.type.image
+    - node.type.islandora_object
+id: node.islandora_object.field_representative_image
+field_name: field_representative_image
+entity_type: node
+bundle: islandora_object
+label: 'Representative Image'
+description: 'Here, you can optionally add a thumbnail image for this node. This will take precedence over the Islandora thumbnail wherever the "DGI Discovered Image" field is used.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

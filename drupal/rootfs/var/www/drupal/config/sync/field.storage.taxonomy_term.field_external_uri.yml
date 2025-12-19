@@ -1,0 +1,21 @@
+uuid: 9a4f09d3-366a-475c-9e13-baa5e2bd76a5
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - taxonomy
+_core:
+  default_config_hash: bOWBQIQagYnQFn4C9S7lRfypHE3qud1D_JIvATUkN4U
+id: taxonomy_term.field_external_uri
+field_name: field_external_uri
+entity_type: taxonomy_term
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

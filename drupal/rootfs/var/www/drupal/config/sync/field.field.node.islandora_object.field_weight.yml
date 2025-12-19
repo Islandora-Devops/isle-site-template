@@ -1,0 +1,25 @@
+uuid: 339c9253-b234-4de3-8805-fa22d9e83a8f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_weight
+    - node.type.islandora_object
+_core:
+  default_config_hash: EHVVAcnmzOz1JErmRFH7tmz3iYey5O_FFj7VKGBXNOk
+id: node.islandora_object.field_weight
+field_name: field_weight
+entity_type: node
+bundle: islandora_object
+label: 'Custom Sort Value'
+description: 'Enter numeric values to force a custom sort order within a collection of resources. See <a href="https://www.drupal.org/node/307797">external documentation for the <i>Weight</i> module</a>. '
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 1
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

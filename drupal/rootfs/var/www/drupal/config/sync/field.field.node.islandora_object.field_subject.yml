@@ -1,0 +1,31 @@
+uuid: d9a9d68d-42af-4f8c-9461-b744f9bb660a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_subject
+    - node.type.islandora_object
+    - taxonomy.vocabulary.subject
+_core:
+  default_config_hash: msexA-d3hr6T5z1Q95J9fTbD4aRmlR87b9W3tXc8Hvo
+id: node.islandora_object.field_subject
+field_name: field_subject
+entity_type: node
+bundle: islandora_object
+label: 'Subject (Topical)'
+description: 'If using separate fields to record topical, geographic, name, and temporal subjects, record topical subjects here. If not splitting subjects into to different fields, all subjects can be recorded in this field.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      subject: subject
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: subject
+field_type: entity_reference

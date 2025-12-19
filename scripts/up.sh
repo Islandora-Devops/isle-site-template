@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -e
+
+set -eou pipefail
 
 # 1. Load Environment Variables
 if [ -f .env ]; then

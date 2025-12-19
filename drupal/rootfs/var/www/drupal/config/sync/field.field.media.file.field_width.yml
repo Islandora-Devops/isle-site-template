@@ -1,0 +1,23 @@
+uuid: 50207121-ebf2-4493-8805-37e17cdce400
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_width
+    - media.type.file
+id: media.file.field_width
+field_name: field_width
+entity_type: media
+bundle: file
+label: Width
+description: 'For TIFF and JPEG2000 files, populated by the IIIF manifest generator as a performance improvement.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

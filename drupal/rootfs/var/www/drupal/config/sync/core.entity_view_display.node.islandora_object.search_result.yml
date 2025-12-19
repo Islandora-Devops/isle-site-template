@@ -1,0 +1,219 @@
+uuid: 0f9f6b23-0a1b-4d28-b9e7-cbded2204478
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.search_result
+    - field.field.node.islandora_object.field_abstract
+    - field.field.node.islandora_object.field_alt_title
+    - field.field.node.islandora_object.field_classification
+    - field.field.node.islandora_object.field_coordinates
+    - field.field.node.islandora_object.field_coordinates_text
+    - field.field.node.islandora_object.field_copyright_date
+    - field.field.node.islandora_object.field_date_captured
+    - field.field.node.islandora_object.field_date_modified
+    - field.field.node.islandora_object.field_date_valid
+    - field.field.node.islandora_object.field_description
+    - field.field.node.islandora_object.field_dewey_classification
+    - field.field.node.islandora_object.field_edition
+    - field.field.node.islandora_object.field_edtf_date
+    - field.field.node.islandora_object.field_edtf_date_created
+    - field.field.node.islandora_object.field_edtf_date_issued
+    - field.field.node.islandora_object.field_extent
+    - field.field.node.islandora_object.field_frequency
+    - field.field.node.islandora_object.field_full_title
+    - field.field.node.islandora_object.field_genre
+    - field.field.node.islandora_object.field_geographic_subject
+    - field.field.node.islandora_object.field_identifier
+    - field.field.node.islandora_object.field_isbn
+    - field.field.node.islandora_object.field_language
+    - field.field.node.islandora_object.field_lcc_classification
+    - field.field.node.islandora_object.field_linked_agent
+    - field.field.node.islandora_object.field_local_identifier
+    - field.field.node.islandora_object.field_member_of
+    - field.field.node.islandora_object.field_mode_of_issuance
+    - field.field.node.islandora_object.field_model
+    - field.field.node.islandora_object.field_note
+    - field.field.node.islandora_object.field_oclc_number
+    - field.field.node.islandora_object.field_physical_form
+    - field.field.node.islandora_object.field_pid
+    - field.field.node.islandora_object.field_place_published
+    - field.field.node.islandora_object.field_place_published_country
+    - field.field.node.islandora_object.field_publisher
+    - field.field.node.islandora_object.field_representative_image
+    - field.field.node.islandora_object.field_resource_type
+    - field.field.node.islandora_object.field_rights
+    - field.field.node.islandora_object.field_subject
+    - field.field.node.islandora_object.field_subject_general
+    - field.field.node.islandora_object.field_subjects_name
+    - field.field.node.islandora_object.field_table_of_contents
+    - field.field.node.islandora_object.field_temporal_subject
+    - field.field.node.islandora_object.field_viewer_override
+    - field.field.node.islandora_object.field_weight
+    - node.type.islandora_object
+  module:
+    - controlled_access_terms
+    - text
+    - user
+_core:
+  default_config_hash: 7nAsgKpklfcldz5UjF5QnwGQqa2f2zypALWMvnJ8PeI
+id: node.islandora_object.search_result
+targetEntityType: node
+bundle: islandora_object
+mode: search_result
+content:
+  field_abstract:
+    type: text_trimmed
+    label: inline
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_description:
+    type: basic_string
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_edition:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_edtf_date:
+    type: edtf_default
+    label: inline
+    settings:
+      date_separator: dash
+      date_order: big_endian
+      month_format: mm
+      day_format: dd
+      year_format: 'y'
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_edtf_date_created:
+    type: edtf_default
+    label: inline
+    settings:
+      date_separator: dash
+      date_order: big_endian
+      month_format: mm
+      day_format: dd
+      year_format: 'y'
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_edtf_date_issued:
+    type: edtf_default
+    label: inline
+    settings:
+      date_separator: dash
+      date_order: big_endian
+      month_format: mm
+      day_format: dd
+      year_format: 'y'
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_identifier:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_linked_agent:
+    type: typed_relation_default
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_member_of:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_resource_type:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  search_api_excerpt:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 11
+    region: content
+hidden:
+  did_image: true
+  display_media_entity_view_1: true
+  display_media_entity_view_2: true
+  display_media_entity_view_3: true
+  display_media_original_download: true
+  display_media_service_file: true
+  display_media_thumbnail: true
+  field_alt_title: true
+  field_classification: true
+  field_coordinates: true
+  field_coordinates_text: true
+  field_copyright_date: true
+  field_date_captured: true
+  field_date_modified: true
+  field_date_valid: true
+  field_dewey_classification: true
+  field_extent: true
+  field_frequency: true
+  field_full_title: true
+  field_gemini_uri: true
+  field_genre: true
+  field_geographic_subject: true
+  field_isbn: true
+  field_language: true
+  field_lcc_classification: true
+  field_local_identifier: true
+  field_mode_of_issuance: true
+  field_model: true
+  field_note: true
+  field_oclc_number: true
+  field_physical_form: true
+  field_pid: true
+  field_place_published: true
+  field_place_published_country: true
+  field_publisher: true
+  field_representative_image: true
+  field_rights: true
+  field_subject: true
+  field_subject_general: true
+  field_subjects_name: true
+  field_table_of_contents: true
+  field_temporal_subject: true
+  field_viewer_override: true
+  field_weight: true
+  islandora_fits_checksum: true
+  langcode: true
+  openseadragon_media_evas_entity_view_1: true
+  openseadragon_media_evas_entity_view_2: true
+  openseadragon_media_evas_service_file: true
+  pdfjs_media_evas_entity_view_1: true
+  pdfjs_media_evas_entity_view_2: true
+  pdfjs_media_evas_service_file: true
+  search_within_this_collection_link_entity_view_1: true

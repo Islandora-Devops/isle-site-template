@@ -1,0 +1,21 @@
+uuid: 303b0c1e-a923-45ff-9361-6fe14621bfb2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pid
+    - node.type.islandora_object
+_core:
+  default_config_hash: eeNrFc7RYXLAzcQwT2bKDRfdNDG8RSYmDOU9PZW4R2Q
+id: node.islandora_object.field_pid
+field_name: field_pid
+entity_type: node
+bundle: islandora_object
+label: PID
+description: 'PID of this object in Islandora 7.x (applies to migrated objects only)'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

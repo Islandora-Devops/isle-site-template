@@ -1,0 +1,19 @@
+uuid: a95427a7-00a5-4132-8444-ffc05e6e9791
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_code
+    - taxonomy.vocabulary.frequencies
+id: taxonomy_term.frequencies.field_code
+field_name: field_code
+entity_type: taxonomy_term
+bundle: frequencies
+label: Code
+description: 'Code in a controlled vocabulary such as the LC Publication Frequencies.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

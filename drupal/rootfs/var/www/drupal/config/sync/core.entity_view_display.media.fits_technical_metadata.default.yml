@@ -1,0 +1,63 @@
+uuid: a99c6379-32ad-4a01-9c4a-3fa4eba49872
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.fits_technical_metadata.field_complete
+    - field.field.media.fits_technical_metadata.field_file_size
+    - field.field.media.fits_technical_metadata.field_media_file
+    - field.field.media.fits_technical_metadata.field_media_of
+    - field.field.media.fits_technical_metadata.field_media_use
+    - field.field.media.fits_technical_metadata.field_mime_type
+    - field.field.media.fits_technical_metadata.fits_ois_file_information_md5che
+    - media.type.fits_technical_metadata
+  module:
+    - islandora_fits
+_core:
+  default_config_hash: eQIgNGtw_hfVQxGPLc_JeBC1l1whFSoMsEYYNx0vOv4
+id: media.fits_technical_metadata.default
+targetEntityType: media
+bundle: fits_technical_metadata
+mode: default
+content:
+  field_media_file:
+    type: fits_formatter
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_media_of:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_media_use:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_mime_type:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  created: true
+  field_complete: true
+  field_file_size: true
+  fits_ois_file_information_md5che: true
+  langcode: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

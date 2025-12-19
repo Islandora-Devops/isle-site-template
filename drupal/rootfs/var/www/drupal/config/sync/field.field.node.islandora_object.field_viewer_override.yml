@@ -1,0 +1,29 @@
+uuid: cea8100d-bf57-46dc-ac66-57cf66d9da38
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_viewer_override
+    - node.type.islandora_object
+    - taxonomy.vocabulary.islandora_display
+id: node.islandora_object.field_viewer_override
+field_name: field_viewer_override
+entity_type: node
+bundle: islandora_object
+label: 'Viewer Override'
+description: 'Select an alternate viewer, if desired for this resource.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      islandora_display: islandora_display
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

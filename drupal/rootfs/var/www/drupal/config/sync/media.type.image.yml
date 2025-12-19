@@ -1,0 +1,20 @@
+uuid: 1c1a986f-845e-40d9-ac3c-7478fc633ea0
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: mZCXfSxFVxcMkVMRAc7OwCRefT2wN1x-o4zNPvPg_64
+id: image
+label: Image
+description: 'An image file (other than TIFF and JP2 formats). Use "File" for TIFF or JP2 files.'
+source: image
+queue_thumbnail_downloads: false
+new_revision: true
+source_configuration:
+  source_field: field_media_image
+field_map:
+  name: name
+  mimetype: field_mime_type
+  filesize: field_file_size
+  width: field_width
+  height: field_height

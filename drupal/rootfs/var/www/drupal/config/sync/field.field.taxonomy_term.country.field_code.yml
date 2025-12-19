@@ -1,0 +1,19 @@
+uuid: ead413fe-f55d-4061-adac-2fe3d0ea8955
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_code
+    - taxonomy.vocabulary.country
+id: taxonomy_term.country.field_code
+field_name: field_code
+entity_type: taxonomy_term
+bundle: country
+label: Code
+description: 'Code in a controlled vocabulary such as MarcCountry.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

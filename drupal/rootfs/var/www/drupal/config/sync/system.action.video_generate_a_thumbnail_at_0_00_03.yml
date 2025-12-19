@@ -1,0 +1,20 @@
+uuid: fcdd7fbb-0caf-44da-9a60-01e97b90226e
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora_image
+id: video_generate_a_thumbnail_at_0_00_03
+label: 'Video - Generate a thumbnail at 0:00:03'
+type: node
+plugin: generate_image_derivative
+configuration:
+  queue: islandora-connector-homarus
+  event: 'Generate Derivative'
+  destination_media_type: image
+  source_term_uri: 'http://pcdm.org/use#OriginalFile'
+  derivative_term_uri: 'http://pcdm.org/use#ThumbnailImage'
+  mimetype: image/jpeg
+  args: '-ss 00:00:03.000 -frames 1 -vf scale=100:-2'
+  scheme: public
+  path: '[date:custom:Y]-[date:custom:m]/[islandoratokens:media-original-file:filename]-[term:name].jpg'

@@ -1,0 +1,30 @@
+uuid: 4a94371e-3218-4ac3-98c8-1b0450b013cf
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.temporal_subjects
+  module:
+    - taxonomy
+_core:
+  default_config_hash: nshQbtfQ9bsJROMb4hvPsxQexCN-8Trdf8Q8bvXYBUI
+id: taxonomy_term.temporal_subjects
+targetEntityType: taxonomy_term
+bundle: temporal_subjects
+types:
+  - 'schema:Thing'
+fieldMappings:
+  name:
+    properties:
+      - 'schema:name'
+  description:
+    properties:
+      - 'schema:description'
+  field_authority_link:
+    properties:
+      - 'schema:sameAs'
+  changed:
+    properties:
+      - 'schema:dateModified'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'

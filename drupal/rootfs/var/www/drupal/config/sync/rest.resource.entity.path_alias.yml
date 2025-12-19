@@ -1,0 +1,20 @@
+uuid: 21cb40f3-8f99-4c39-96d6-c135359c3ae5
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - path_alias
+    - serialization
+_core:
+  default_config_hash: 0r-35iLVN2FLQRixblPlVQ4an7iqytlPBB8Knp7ly8Q
+id: entity.path_alias
+plugin_id: 'entity:path_alias'
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - basic_auth

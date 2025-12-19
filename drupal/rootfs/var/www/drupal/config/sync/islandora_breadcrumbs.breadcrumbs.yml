@@ -1,0 +1,12 @@
+_core:
+  default_config_hash: p424-t2jPYKOLgjMqdWrVjbfAlvdkSGiSydbVfle7P8
+maxDepth: -1
+includeSelf: false
+referenceFields:
+  - field_member_of
+dependencies:
+  module:
+    - islandora
+  enforced:
+    module:
+      - islandora_breadcrumbs

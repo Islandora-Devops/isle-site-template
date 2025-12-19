@@ -1,0 +1,23 @@
+uuid: 50232f03-aff9-4b65-a316-f6ebaeda3ec7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_use
+    - media.type.fits_technical_metadata
+_core:
+  default_config_hash: EnP_zEWaW9ftTG-UqJU-BoWJ0c9vejH_tnGShd7r3Ug
+id: media.fits_technical_metadata.field_media_use
+field_name: field_media_use
+entity_type: media
+bundle: fits_technical_metadata
+label: 'Media Use'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings: {  }
+field_type: entity_reference

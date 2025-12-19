@@ -1,0 +1,36 @@
+uuid: 08089024-6810-4485-a89f-950a6f27102d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_authority_link
+    - taxonomy.vocabulary.corporate_body
+  module:
+    - controlled_access_terms
+_core:
+  default_config_hash: vzhiqtYF3W0dPgZRy1PcvJMQ92TABMhRMMuRJwUqcMQ
+id: taxonomy_term.corporate_body.field_authority_link
+field_name: field_authority_link
+entity_type: taxonomy_term
+bundle: corporate_body
+label: 'Authority Sources'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  authority_sources:
+    cash: 'Canadian Subject Headings'
+    lcshac: "Library of Congress Children's Subject Headings"
+    naf: 'NACO Authority File'
+    nad: 'NAD / ARK II Name Authority Database'
+    nal: 'National Agricultural Library subject headings'
+    rvm: 'Répertoire de vedettes-matière'
+    ulan: 'Union List of Artist Names'
+    viaf: 'Virtual International Authority File'
+    wiki: Wikidata
+    other: Other
+  title: 1
+  link_type: 16
+field_type: authority_link

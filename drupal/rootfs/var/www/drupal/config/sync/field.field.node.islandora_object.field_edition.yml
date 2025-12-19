@@ -1,0 +1,21 @@
+uuid: f117d31a-3e4a-4279-a552-254e8a20ec26
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_edition
+    - node.type.islandora_object
+_core:
+  default_config_hash: RZMKGbGrqQ9o4umnRD3Ar74MPJCrVenzoILIBxfR1lo
+id: node.islandora_object.field_edition
+field_name: field_edition
+entity_type: node
+bundle: islandora_object
+label: 'Edition Statement'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,24 @@
+uuid: cfc7a183-a2b8-4831-a111-3887e09ae1f1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_abstract
+    - node.type.islandora_object
+  module:
+    - text
+_core:
+  default_config_hash: r2tcw25l3BnD3JSUlKXj6NWsGJ0Ik6YdUiTqqGW0EwA
+id: node.islandora_object.field_abstract
+field_name: field_abstract
+entity_type: node
+bundle: islandora_object
+label: Abstract
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

@@ -53,18 +53,24 @@ traefik-certs: ## Generate mkcert certificates
 	@./scripts/generate-certs.sh
 	@echo "Certificates generated successfully."
 
-init:
+build: ## Build the drupal container
+	@docker compose build
+
+init: ## Generate secrets and certs needed for ISLE
+	@if [ ! -f .env ]; then cp sample.env .env; fi
+	@if [ -n "${ISLANDORA_TAG:-}" ]; then sed -i.bak "s|^ISLANDORA_TAG=.*|ISLANDORA_TAG=\"${ISLANDORA_TAG}\"|" .env && rm -f .env.bak; fi
 	@id -u > ./certs/UID
 	@docker compose run --rm init
-
-build:
-	@docker compose build drupal
+	@$(MAKE) build
 
 up: ## Start containers with smart port allocation
 	@./scripts/up.sh
 
-down:
+down:  ## Stop/remove the docker containers and network (safe operation)
 	@docker compose down
 
-setup:
-	@./scripts/setup.sh
+overwrite-starter-site: ## Keep site template's drupal install in sync with islandora-starter-site
+	@./scripts/overwrite-starter-site.sh
+
+create-starter-site-pr: ## Create a PR for islandora-starter-site updates
+	@./scripts/create-pr.sh

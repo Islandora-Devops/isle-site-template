@@ -1,0 +1,22 @@
+uuid: bfdeb0f2-d26a-498d-bea0-697ef862af67
+langcode: en
+status: true
+dependencies:
+  config:
+    - media.type.file
+_core:
+  default_config_hash: s1opVWRHwqmv__D85qw0HKtR6vy7vviXGcQp0fhS4FI
+id: media.file.uid
+field_name: uid
+entity_type: media
+bundle: file
+label: 'Authored by'
+description: 'The user ID of the author.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: 'Drupal\media\Entity\Media::getDefaultEntityOwner'
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference

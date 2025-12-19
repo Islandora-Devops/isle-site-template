@@ -1,0 +1,108 @@
+uuid: bf6b358a-55bf-47de-a39c-8dd73cb49a91
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.person.field_alternate_name
+    - field.field.taxonomy_term.person.field_authority_link
+    - field.field.taxonomy_term.person.field_cat_date_begin
+    - field.field.taxonomy_term.person.field_cat_date_end
+    - field.field.taxonomy_term.person.field_relationships
+    - taxonomy.vocabulary.person
+  module:
+    - controlled_access_terms
+    - path
+    - text
+_core:
+  default_config_hash: lJpvaB2FNcQ3KUo85b0QbrBtpeX38YpRlPXskVn8p5k
+id: taxonomy_term.person.default
+targetEntityType: taxonomy_term
+bundle: person
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 5
+    region: content
+    settings:
+      rows: 9
+      placeholder: ''
+    third_party_settings: {  }
+  field_alternate_name:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_authority_link:
+    type: authority_link_default
+    weight: 1
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_cat_date_begin:
+    type: edtf_default
+    weight: 7
+    region: content
+    settings:
+      strict_dates: false
+      intervals: false
+      sets: false
+    third_party_settings: {  }
+  field_cat_date_end:
+    type: edtf_default
+    weight: 8
+    region: content
+    settings:
+      strict_dates: false
+      intervals: false
+      sets: false
+    third_party_settings: {  }
+  field_relationships:
+    type: typed_relation_default
+    weight: 9
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 10
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  translation:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

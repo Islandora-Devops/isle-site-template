@@ -1,0 +1,52 @@
+uuid: dd97dd58-f360-444f-8c2a-9edbf8b85ce1
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.source
+    - field.field.media.audio.field_file_size
+    - field.field.media.audio.field_media_audio_file
+    - field.field.media.audio.field_media_of
+    - field.field.media.audio.field_media_use
+    - field.field.media.audio.field_mime_type
+    - field.field.media.audio.field_original_name
+    - field.field.media.audio.field_track
+    - media.type.audio
+  module:
+    - islandora_audio
+_core:
+  default_config_hash: WkacGkCcx7wkdncVI8sq5snOYKKAD2URkVHjFnqsXHE
+id: media.audio.source
+targetEntityType: media
+bundle: audio
+mode: source
+content:
+  field_gemini_uri:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+  field_media_audio_file:
+    type: islandora_file_audio
+    label: visually_hidden
+    settings:
+      controls: true
+      autoplay: false
+      loop: false
+      multiple_file_display_type: tags
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  field_file_size: true
+  field_media_of: true
+  field_media_use: true
+  field_mime_type: true
+  field_original_name: true
+  field_track: true
+  langcode: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

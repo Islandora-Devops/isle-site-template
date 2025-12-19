@@ -1,0 +1,46 @@
+uuid: 0602b11d-ba56-49fa-a84c-8071a1f3bada
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.creators_and_contributors_swc
+  module:
+    - context
+    - facets
+    - islandora
+  theme:
+    - olivero
+id: creatorsandcontributors_swc
+theme: olivero
+region: sidebar
+weight: -12
+provider: null
+plugin: 'facet_block:creators_and_contributors_swc'
+settings:
+  id: 'facet_block:creators_and_contributors_swc'
+  label: 'Creators and Contributors'
+  label_display: visible
+  provider: facets
+  context_mapping: {  }
+  block_id: creatorsandcontributors_swc
+visibility:
+  user_status:
+    id: user_status
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    user_status:
+      viewing_profile: '0'
+      logged_viewing_profile: '0'
+      own_page_true: '0'
+      field_value: '0'
+    user_fields: uid
+  context_all:
+    id: context_all
+    negate: null
+    values: collection
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
