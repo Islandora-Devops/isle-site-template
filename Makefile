@@ -28,12 +28,8 @@ traefik-certs: ## Generate mkcert certificates
 build: ## Build the drupal container
 	@docker compose build
 
-init: ## Generate secrets and certs needed for ISLE
-	@if [ ! -f .env ]; then cp sample.env .env; fi
-	@if [ -n "${ISLANDORA_TAG:-}" ]; then sed -i.bak "s|^ISLANDORA_TAG=.*|ISLANDORA_TAG=\"${ISLANDORA_TAG}\"|" .env && rm -f .env.bak; fi
-	@id -u > ./certs/UID
-	@docker compose run --rm init
-	@$(MAKE) build
+init: ## Get the host machine configured to run ISLE
+	@./scripts/init.sh
 
 up: ## Start docker compose project with smart port allocation
 	@./scripts/up.sh
