@@ -1,57 +1,45 @@
-# ISLE: Site Template <!-- omit in toc -->
+## ISLE: Site Template
 
 [![LICENSE](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](./LICENSE)
 
 - [Introduction](#introduction)
-  - [Forking Warning](#forking-warning)
   - [Assumptions](#assumptions)
 - [Requirements](#requirements)
-- [Automatic Setup](#automatic-setup)
-- [Manual Setup](#manual-setup)
-  - [Create a new repository](#create-a-new-repository)
-  - [Setup Islandora Starter Site](#setup-islandora-starter-site)
-- [Customizations](#customizations)
-  - [Set environment properties](#set-environment-properties)
-  - [Replace README.md with Template](#replace-readmemd-with-template)
-- [Next Steps](#next-steps)
+- [Quick Start](#quick-start)
+- [Commands](#commands)
+- [Configuration](#configuration)
+  - [Environment Variables](#environment-variables)
+  - [HTTPS & Certificates](#https--certificates)
+- [Docker Compose](#docker-compose)
+  - [Override](#override)
+  - [Pushing Docker Images](#pushing-docker-images)
+    - [Local Registry](#local-registry)
+    - [Remote Registry](#remote-registry)
+- [Development](#development)
+  - [Drupal Development](#drupal-development)
+    - [Adding a composer dependency](#adding-a-composer-dependency)
+  - [Docker Compose Override](#docker-compose-override)
+- [Production](#production)
+  - [Automated Certificate Generation](#automated-certificate-generation)
+  - [Setup as a systemd Service](#setup-as-a-systemd-service)
+- [Troubleshooting](#troubleshooting)
 
-# Introduction
+## Introduction
 
 Template for building and customizing your institution's Islandora installation,
-for use as both a development and production environment for your institution.
+for use as both a development and production environment.
 
-After confirming that [assumptions](#assumptions) match your use case, and you
-have the appropriate [requirements
-](#requirements), follow the
-[instructions](#instructions) to set up your institution's Islandora
-installation from this template.
+This repository is intended to be used as a template. You can click the "Use this template" button on GitHub to create a new repository with the same directory structure and files.
 
-## Forking Warning
+### Assumptions
 
-This is not intended to be an upstream fork that your institution will be
-pulling changes from. Instead this repository acts as a template. The
-intention is to make a new Git repository from it by copying the contents of
-this repository into your institution's Git repository, for which your
-institution will then be responsible.
-
-This is for a few reasons. Primarily, we can't guarantee forward compatibility
-with the changes made by your institution to a fork of this Git repository.
-Your institution must be responsible for it's own configuration, as changes to
-configuration **cannot** easily be shared across Drupal sites.
-
-## Assumptions
-
-This template assumes you'll be running your site in Docker
-on a **single server**. If that is not your intention you may want to ask
-in the Islandora Slack about existing examples for your chosen infrastructure.
+This template assumes you'll be running your site in Docker on a **single server**.
 
 This template is set up for a single site installation and isn't configured for a
-[Drupal multisite](https://www.drupal.org/docs/multisite-drupal). It is possible
-to add the functionality for that later, but it is left to the implementer to do
-those additional changes.
+[Drupal multisite](https://www.drupal.org/docs/multisite-drupal).
 
 While Islandora can be setup to use a wide variety of databases, tools and
-configurations this template is set up for the following.
+configurations this template is set up for the following:
 
  - `blazegraph` is included by default.
  - `crayfish` services are included by default.
@@ -59,184 +47,172 @@ configurations this template is set up for the following.
  - `fits` is included by default.
  - `mariadb` is used for the backend database (rather than `postgresql`).
  - `solr` is included by default.
- - etc.
 
-> N.B. Although alternate components and configurations are supported by
-> Islandora, for simplicities sake the most common use-case is shown. For
-> example `mariadb` is used rather than `postgresql`.
+## Requirements
 
-See the [customizations](#customizations) steps afterwards about removing unwanted features.
-
-# Requirements
-
-- [Docker 24.0+](https://docs.docker.com/get-docker/) **Referring to the Docker Engine version, not Docker Desktop**.
+- [Docker 24.0+](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/linux/) **Already included in OSX with Docker**
+- `Make` (Standard on Linux/OSX, use WSL on Windows)
 - `cURL` and `git`
 
-# Automatic Setup
+## Quick Start
 
-After installing the [requirements](#requirements), run the following command
-for an automated setup. It is roughly equivalent to the
-[Manual Setup](#manual-setup).
+1. In GitHub click the green `Use this template` button to create this same repository in your GitHub Organization
+2. Clone your new repository:
+    ```bash
+    git clone https://github.com/INSTITUTION/SITE_NAME.git
+    cd SITE_NAME
+    ```
 
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Islandora-Devops/isle-site-template/main/setup.sh)"
+3.  Initialize the environment:
+    ```bash
+    make init
+    ```
+    This command prepares your host machine, creates the `.env` file from `sample.env` if it doesn't exist, generates necessary secrets and certificates, and builds the Docker images.
+
+4.  Start the services:
+    ```bash
+    make up
+    ```
+    This brings up the stack using smart port allocation. The URL for your site will be displayed in the output and automatically opened in your browser if possible.
+
+    Default URL: [http://islandora.traefik.me](http://islandora.traefik.me) (maps to 127.0.0.1)
+
+    *Note: The first start will take several minutes as Drupal installs.*
+
+## Commands
+
+This project uses a `Makefile` to simplify common tasks.
+
+```
+$ make help
+Usage: make [target]
+
+Available targets:
+  help                 Show this help message
+  status               Show the current status of the development environment
+  traefik-http         Switch to HTTP mode (default)
+  traefik-https-mkcert Switch to HTTPS mode using mkcert self-signed certificates
+  traefik-https-acme   Switch to HTTPS mode using Let's Encrypt ACME
+  traefik-certs        Generate mkcert certificates
+  build                Build the drupal container
+  init                 Get the host machine configured to run ISLE
+  up                   Start docker compose project with smart port allocation
+  down                 Stop/remove the docker compose project's containers and network.
+  overwrite-starter-site Keep site template's drupal install in sync with islandora-starter-site
+  create-starter-site-pr Create a PR for islandora-starter-site updates
 ```
 
-You should now have a folder with the `SITE_NAME` you provided to the above
-script with the basics completed for you.
+## Configuration
 
-On your platform of choice ([GitHub], [GitLab], etc), create a new Git repository
-for your new site. This step allows you to persist your customizations to this
-repository. It is not necessary for a throwaway development instance. 
+### Environment Variables
 
-In the following sections the [GitHub], [GitLab], etc; organization will be
-referred to as `INSTITUTION`, and the Git repository will be referred to as
-`SITE_NAME`.
+The `.env` file contains environment variables for configuring the Docker Compose project.
+Edit this file to customize your setup.
 
-Push the automatically generated repository to your remote (*For example with [GitHub]*):
+Key variables:
+- `COMPOSE_PROJECT_NAME`: Unique name for your project.
+- `ISLANDORA_TAG`: Version of [Isle Buildkit](https://github.com/Islandora-Devops/isle-buildkit) images.
+- `DOMAIN`: The domain name for your site (default: `islandora.traefik.me`).
+- `REPOSITORY`: Docker registry for pushing/pulling images.
 
+### HTTPS & Certificates
+
+By default, the environment runs over **HTTP** to simplify local development.
+
+To switch to **HTTPS** for local development:
+1.  Ensure you have [mkcert](https://github.com/FiloSottile/mkcert) installed and trusted on your host.
+2.  Run:
+    ```bash
+    make traefik-https-mkcert
+    make up
+    ```
+
+To switch back to **HTTP**:
 ```bash
-cd SITE-NAME
-git remote add origin git@github.com:INSTITUTION/SITE-NAME.git
-git push
+make traefik-http
+make up
 ```
 
-You can now continue on to [customizations](#customizations).
 
-# Manual Setup
+## Docker Compose
 
-## Create a new repository
+There are a number of `docker-compose.yml` files provided by this repository:
 
-On your platform of choice [GitHub], [GitLab], etc. Create a new Git repository
-for your new site. Having these files in Git will make future steps possible.
+| File                                                       | Description                                                                                                                  |
+| :--------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
+| [docker-compose.yml](docker-compose.yml)                   | Defines all  services.                                                                                                       |
+| [docker-compose.sample.yml](docker-compose.sample.yml)     | Customizations for local development environment. Copy to docker-compose.override.yml to take effect. And change as desired. |
+| [docker-compose.registry.yml](docker-compose.registry.yml) | Used for creating a local registry for testing multi-arch builds, etc. Can typically be ignored.                             |
 
-In the following sections the [GitHub], [GitLab], etc; organization will be
-referred to as `INSTITUTION`, and the Git repository will be referred to as
-`SITE_NAME`.
+### Override
 
-1. Clone a copy locally (*For example with [GitHub]*):
+This git repository does not track `docker-compose.override.yml` which will
+be included in all `docker compose` commands you invoke.
 
-```bash
-git clone git@github.com:INSTITUTION/SITE-NAME.git
-cd SITE-NAME
-```
+Any changes that are for your local / development environment can
+be added to `docker-compose.override.yml` because that file is not under version control.
 
-At this point it should be an empty folder.
+A sample `docker-compose.override.yml` is provided at [docker-compose.sample.yml](docker-compose.sample.yml) which you can `cp docker-compose.sample.yml docker-compose.override.yml` to take effect.
 
-2. Unpack this repository into that empty folder, using the `main` branch (or the latest
-   release, if you [alter what comes after `refs`](https://docs.github.com/en/repositories/working-with-files/using-files/downloading-source-code-archives#source-code-archive-urls)).
 
-```bash
-curl -L https://github.com/Islandora-Devops/isle-site-template/archive/refs/heads/main.tar.gz | tar -xz --strip-components=1
-```
+| Credentials | Value    |
+| :---------- | :------- |
+| Username    | admin    |
+| Password    | `cat ./secrets/DRUPAL_DEFAULT_ACCOUNT_PASSWORD` |
 
-3. Remove .github folder and setup.sh
+If you have the domain in your `.env` set to `islandora.traefik.me` (default), you can
+access all the services at the following URLs.
 
-```bash
-rm -fr .github setup.sh
-```
+| Service    | URL                                       |
+| :--------- | :---------------------------------------- |
+| Drupal     | http://islandora.traefik.me                     |
+| ActiveMQ   | http://activemq.islandora.traefik.me            |
+| Blazegraph | http://blazegraph.islandora.traefik.me/bigdata/ |
+| Cantaloupe | http://islandora.traefik.me/cantaloupe          |
+| Fedora     | http://fcrepo.islandora.traefik.me/fcrepo/rest/ |
+| Solr       | http://solr.islandora.traefik.me                |
+| Traefik    | http://traefik.islandora.traefik.me             |
 
-4. Create the first commit:
+### Pushing Docker Images
 
-```bash
-git add .
-git commit -am "First commit, added isle-site-template."
-```
+Pushing requires setting up either a [Local Registry](#local-registry), or a
+[Remote Registry](#remote-registry). Though you may want to use both concurrently.
 
-5. Push your changes to your institution's repository:
+Additionally the command to build & push changes if you need multi-platform
+support, i.e. if you need to be able to run on ARM (Apple M1, etc) as well as
+x86 (Intel / AMD) CPUs.
 
-```bash
-git push
-```
+#### Local Registry
 
-## Setup Islandora Starter Site
+To test multi-platform builds locally requires setting up a local registry.
 
-Just as this repository is not intended to be an upstream fork, neither is the
-[islandora-starter-site]. It is a starting point from which your institution
-will customize and manage Drupal for your Islandora installation.
+This can be done with the assistance of [isle-builder] repository.
 
-1. Unpack the [islandora-starter-site] using the `main` branch (or the latest
-   release, if you alter what comes after `refs`).
-   Run this command from the root of your repository.
+> N.B. Alternatively you can push directly to a remote registry like
+> [DockerHub], though that can be slow as it needs to upload your image over the
+> network.
 
-```bash
-curl -L https://github.com/Islandora-Devops/islandora-starter-site/archive/refs/heads/main.tar.gz \
-    | tar --strip-components=1 -C drupal/rootfs/var/www/drupal -xz
-```
-
-This will place the contents in [drupal/rootfs/var/www/drupal].
-
-2. Remove unneeded files (from the root of your repository):
+Now you can perform the build locally by pushing to the local registry:
 
 ```bash
-rm -fr \
-  drupal/rootfs/var/www/drupal/.github
+REPOSITORY=islandora.io docker buildx bake --pull --builder isle-builder --push
 ```
 
-3. Revert the content of
-   [drupal/rootfs/var/www/drupal/assets/patches/default_settings.txt] to what
-   was originally there.
+> N.B. If you **do not** override `REPOSITORY` environment variable, the value
+> provided by [.env] is used, which will typically be the remote registry you
+> intended to use.
 
-```bash
-git checkout drupal/rootfs/var/www/drupal/assets/patches/default_settings.txt
-```
+#### Remote Registry
 
-3. Create the second commit:
+First you must choose a Docker image registry provider such as [DockerHub].
 
-```bash
-git add .
-git commit -am "Second commit, added islandora-starter-site."
-```
+Assuming your are logged into your remote repository, i.e. you've done
+`docker login` with the appropriate arguments and credentials for your chosen
+remote Docker image repository.
 
-4. Push your changes to your institution's repository:
-
-```bash
-git push
-```
-
-5. Create a custom `.env` file from the provided sample and a docker compose override file:
-
-```bash
-cp sample.env .env
-git mv docker-compose.sample.yml docker-compose.override.yml
-```
-
-6. For a development server, generate certs and secrets.
-```bash
-./generate-certs.sh
-./generate-secrets.sh
-```
-
-Continue on to [Customizations](#customizations).
-
-# Customizations
-
-The previous sections will have set you up with a Git repository to start from,
-but more customization is likely needed.
-
-Read through each following sections and follow the steps if you deem them
-applicable to your institution's situation.
-
-## Set environment properties
-
-Edit [.env] and replace the following line with a name derived from your site
-name. If you have multiple sites on the same host, these must be unique.
-
-```bash
-COMPOSE_PROJECT_NAME=isle-site-template
-```
-
-`ISLANDORA_TAG` tells Docker what version of [Isle Buildkit](https://github.com/Islandora-Devops/isle-buildkit) 
-to use for the images. You should set this to the most 
-[recent release](https://github.com/Islandora-Devops/isle-buildkit/releases) number, 
-unless you have a reason to use older images.
-
-> [!WARNING]
-> You should not use `ISLANDORA_TAG=main` in production.
-
-If setting up your own images on a remote Docker image registry like [DockerHub],
-set the following line to your use your image registry:
+You must then replace the following line in [.env] to match the repository you
+have created with your chosen registry provider:
 
 ```bash
 # The Docker image repository, to push/pull custom images from.
@@ -244,67 +220,95 @@ set the following line to your use your image registry:
 REPOSITORY=islandora.io
 ```
 
-If using a purchased a domain name for your production site, set the following line
-to your new domain:
+If you do not need to build multi-platform images, you can then push to the
+remote repository using `docker compose`:
 
 ```bash
-# The domain at which your production site is hosted.
-DOMAIN=islandora.dev
+docker compose push drupal
 ```
-Lastly update the default email to that of your site's administrator:
+
+If you do need produce multi-platform images, you'll need to setup a builder
+which is covered under the [Local Registry](#local-registry) section.
 
 ```bash
-# The email to use for admin users and Lets Encrypt.
-EMAIL=postmaster@example.com
+docker buildx bake --pull --builder isle-builder --push
 ```
 
-> N.B. This is required to property generate certificates automatically!
+> N.B. In this example `REPOSITORY` **is not** overridden, so the value provided
+> by [.env] is used.
 
-## Replace README.md with Template
+## Development
 
-Since this `README.md` is meant as a guide for creating your institution's
-Islandora installation, it is not useful after that point. Instead a template
-[README.template.md](./README.template.md) is provided from which you can then
-customize. This template includes instructions on how to build and start up your
-containers, as well as how to customize your Islandora installation. Please read
-it after completing the steps in this `README.md`.
+### Drupal Development
 
-1. Replace this README.md with the template:
+For local development, the Drupal codebase at `drupal/rootfs/var/www/drupal` is bind-mounted into the container.
+Changes made in the following directories will persist in your Git repository:
 
+- `assets/`
+- `config/`
+- `web/modules/custom/`
+- `web/themes/custom/`
+
+Other changes, such as those in `vendor/` or installed modules, are managed via `composer` inside the container or during build.
+
+#### Adding a composer dependency
+
+To add a composer dependency to your running instance you can
+
+```
+docker compose exec drupal composer require drupal/module
+```
+
+### Docker Compose Override
+
+Create a `docker-compose.override.yml` file for local customizations that should not be committed to version control. This file is automatically loaded by Docker Compose.
+
+## Production
+
+### Automated Certificate Generation
+
+For production, Traefik can automatically generate valid SSL certificates using Let's Encrypt.
+
+1.  Update `DOMAIN` in `.env` to your production domain (e.g., `my-islandora.org`).
+2.  Update `ACME_EMAIL` in `.env` for Let's Encrypt notifications.
+3.  Ensure your DNS records (A Records) for `${DOMAIN}` and `fcrepo.${DOMAIN}` point to your server's IP.
+4.  Switch to ACME mode:
 ```bash
-mv README.template.md README.md
+make traefik-https-acme
 ```
-
-2. Customize the README.md:
-
-Replace instances of `INSTITUTION` and `SITE-NAME` with appropriate values and
-add any additional information you see fit.
-
-3. Commit your changes:
-
+3.  Restart traefik:
 ```bash
-git commit -am "Replaced README.md from provided template."
+docker compose down traefik
+make up
 ```
 
-4. Push your changes to your institution's repository:
+### Setup as a systemd Service
 
-```bash
-git push
+For production process management, you can use a `systemd` unit file.
+
+```ini
+[Unit]
+Description=Islandora
+PartOf=docker.service
+After=docker.service
+
+[Service]
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/opt/SITE_NAME
+ExecStart=/usr/bin/docker compose up
+ExecStop=/usr/bin/docker compose down
+
+[Install]
+WantedBy=multi-user.target
 ```
-# Next Steps
 
-Follow the rest of the instructions for setting up Islandora in
-[README.md](./README.template.md) (formerly README.template.md).
+## Troubleshooting
 
-[.env]: .env
-[DockerHub]: https://hub.docker.com/
-[drupal/rootfs/var/www/drupal]: drupal/rootfs/var/www/drupal
-[drupal/rootfs/var/www/drupal/assets/patches/default_settings.txt]: drupal/rootfs/var/www/drupal/assets/patches/default_settings.txt
-[GitHub]: https://github.com/
-[GitLab]: https://gitlab.com/
+**Windows Users:**
+It is highly recommended to use **WSL 2** (Windows Subsystem for Linux) for running this stack. The `Makefile` and shell scripts are designed for a Unix-like environment.
+
+**Status Check:**
+Run `make status` to check for common misconfigurations or issues.
+
 [Islandora Slack]: https://islandora.slack.com/
-[islandora-playbook]: https://github.com/Islandora-Devops/islandora-playbook
-[islandora-starter-site]: https://github.com/Islandora-Devops/islandora-starter-site
-[isle-dc]: https://github.com/Islandora-Devops/isle-dc
-[lets-encrypt]: https://letsencrypt.org/
-[mkcert]: https://github.com/FiloSottile/mkcert

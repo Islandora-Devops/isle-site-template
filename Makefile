@@ -1,4 +1,4 @@
-.PHONY: help init up down build setup traefik-http traefik-https-mkcert traefik-https-acme traefik-certs overwrite-starter-site create-starter-site-pr status
+.PHONY: help pull init up down build setup traefik-http traefik-https-mkcert traefik-https-acme traefik-certs overwrite-starter-site create-starter-site-pr status
 
 PROJECT_NAME=$(shell grep '^COMPOSE_PROJECT_NAME=' .env | cut -d= -f2 | tr -d '"' || basename $(CURDIR))
 DEFAULT_HTTP=80
@@ -25,7 +25,10 @@ traefik-https-acme: ## Switch to HTTPS mode using Let's Encrypt ACME
 traefik-certs: ## Generate mkcert certificates
 	@./scripts/generate-certs.sh
 
-build: ## Build the drupal container
+pull:
+	@docker compose pull --ignore-buildable --ignore-pull-failures
+
+build: pull ## Build the drupal container
 	@docker compose build
 
 init: ## Get the host machine configured to run ISLE
