@@ -21,7 +21,7 @@ http:
 {{- end }}
 
     cantaloupe:
-      rule: Host(`{{ env "DOMAIN" }}`) && PathPrefix(`/cantaloupe`)
+      rule: PathPrefix(`/cantaloupe`)
       middlewares:
         - cantaloupe
       service: cantaloupe
@@ -33,7 +33,7 @@ http:
 {{- end }}
 
     drupal:
-      rule: Host(`{{ env "DOMAIN" }}`)
+      rule: PathPrefix(`/`)
       service: drupal
 {{- if eq (env "ENABLE_HTTPS") "true" }}
       tls: {}
