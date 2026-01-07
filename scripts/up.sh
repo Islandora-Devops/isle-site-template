@@ -48,8 +48,13 @@ echo "---------------------------------------------------"
 echo "🚀 Site starting at: $URL"
 echo "---------------------------------------------------"
 
-# don't open the URL is we're in GHA
+# don't open the URL if we're in GHA
 if [ "${GITHUB_ACTIONS:-}" != "" ]; then
+  exit 0
+fi
+
+# don't open the URL if we're in an SSH session
+if [ -n "${SSH_CONNECTION:-}" ] || [ -n "${SSH_CLIENT:-}" ] || [ -n "${SSH_TTY:-}" ]; then
   exit 0
 fi
 
