@@ -283,9 +283,10 @@ services:
       --api.insecure=${DEVELOPMENT_ENVIRONMENT:-false}
       --api.dashboard=${DEVELOPMENT_ENVIRONMENT:-false}
       --api.debug=${DEVELOPMENT_ENVIRONMENT:-false}
+      --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
+      --certificatesresolvers.letsencrypt.acme.caserver=${ACME_URL}
     environment:
       ENABLE_ACME: "${ENABLE_ACME:-false}"
-      ACME_EMAIL: "${ACME_EMAIL}"
       ENABLE_HTTPS: "${ENABLE_HTTPS:-false}"
       DEVELOPMENT_ENVIRONMENT: "${DEVELOPMENT_ENVIRONMENT:-false}"
       DOMAIN: ${DOMAIN}
@@ -314,13 +315,5 @@ services:
           - ${DOMAIN}
           - solr.${DOMAIN}
     depends_on:
-      activemq:
-        condition: service_healthy
-      blazegraph:
-        condition: service_started
       drupal:
-        condition: service_healthy
-      fcrepo:
-        condition: service_healthy
-      solr:
         condition: service_healthy
