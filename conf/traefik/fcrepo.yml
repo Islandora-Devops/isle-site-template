@@ -1,3 +1,4 @@
+{{- if (eq (env "DEVELOPMENT_ENVIRONMENT") "true") }}
 http:
   middlewares:
     fcrepo-strip-suffix:
@@ -20,4 +21,5 @@ http:
         certResolver: letsencrypt
 {{- else if (eq (env "URI_SCHEME") "https") }}
       tls: {}
+{{- end }}
 {{- end }}

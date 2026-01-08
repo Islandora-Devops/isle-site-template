@@ -1,0 +1,31 @@
+# example docker compose override for local development
+# allowing editing custom themes/modules from host machine
+services:
+  drupal:
+    volumes:
+      - ./drupal/rootfs/var/www/drupal/assets:/var/www/drupal/assets:z,rw,${CONSISTENCY}
+      - ./drupal/rootfs/var/www/drupal/composer.json:/var/www/drupal/composer.json:z,rw,${CONSISTENCY}
+      - ./drupal/rootfs/var/www/drupal/composer.lock:/var/www/drupal/composer.lock:z,rw,${CONSISTENCY}
+      - ./drupal/rootfs/var/www/drupal/config:/var/www/drupal/config:z,rw,${CONSISTENCY}
+      - ./drupal/rootfs/var/www/drupal/web/modules/custom:/var/www/drupal/web/modules/custom:z,rw,${CONSISTENCY}
+      - ./drupal/rootfs/var/www/drupal/web/themes/custom:/var/www/drupal/web/themes/custom:z,rw,${CONSISTENCY}
+  mariadb:
+    ports:
+      - "3306:3306"
+  traefik:
+    command: >-
+      --ping=true
+      --log.level=INFO
+      --entryPoints.http.address=:80
+      --entryPoints.http.transport.respondingTimeouts.readTimeout=60
+      --entryPoints.https.address=:443
+      --entryPoints.https.transport.respondingTimeouts.readTimeout=60
+      --entryPoints.http.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
+      --entryPoints.https.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
+      --providers.file.directory=/etc/traefik/dynamic
+      --providers.docker=true
+      --providers.docker.network=default
+      --providers.docker.exposedByDefault=false
+      --api.insecure=${DEVELOPMENT_ENVIRONMENT:-false}
+      --api.dashboard=${DEVELOPMENT_ENVIRONMENT:-false}
+      --api.debug=${DEVELOPMENT_ENVIRONMENT:-false}

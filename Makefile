@@ -46,6 +46,9 @@ down:  ## Stop/remove the docker compose project's containers and network.
 down-%:  ## Stop/remove a specific service (e.g., make down-traefik)
 	@docker compose down $*
 
+logs-%:  ## Look at logs for a specific service (e.g., make logs-drupal)
+	@docker compose logs $* --tail 20 -f
+
 clean:  ## Delete all stateful data.
 	@./scripts/clean.sh
 

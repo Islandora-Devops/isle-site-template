@@ -93,12 +93,14 @@ Available targets:
   status               Show the current status of the development environment
   traefik-http         Switch to HTTP mode (default)
   traefik-https-mkcert Switch to HTTPS mode using mkcert self-signed certificates
-  traefik-https-letsencrypt   Switch to HTTPS mode using Let's Encrypt ACME
+  traefik-https-letsencrypt Switch to HTTPS mode using Let's Encrypt ACME
   traefik-certs        Generate mkcert certificates
   build                Build the drupal container
   init                 Get the host machine configured to run ISLE
   up                   Start docker compose project with smart port allocation
   down                 Stop/remove the docker compose project's containers and network.
+  clean                Delete all stateful data.
+  ping                 Ensure site is available.
   overwrite-starter-site Keep site template's drupal install in sync with islandora-starter-site
   create-starter-site-pr Create a PR for islandora-starter-site updates
 ```
@@ -123,10 +125,10 @@ By default, the environment runs over **HTTP** to simplify local development.
 To switch to **HTTPS** for local development:
 1.  Ensure you have [mkcert](https://github.com/FiloSottile/mkcert) installed and trusted on your host.
 2.  Run:
-    ```bash
-    make traefik-https-mkcert
-    make up
-    ```
+```bash
+make traefik-https-mkcert
+make up
+```
 
 To switch back to **HTTP**:
 ```bash
@@ -142,27 +144,54 @@ There are a number of `docker-compose.yml` files provided by this repository:
 | File                                                       | Description                                                                                                                  |
 | :--------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
 | [docker-compose.yml](docker-compose.yml)                   | Defines all  services.                                                                                                       |
-| [docker-compose.sample.yml](docker-compose.sample.yml)     | Customizations for local development environment. Copy to docker-compose.override.yml to take effect. And change as desired. |
+| [docker-compose.dev.yml](docker-compose.dev.yml)           | Customizations for local development environment. Copy to docker-compose.override.yml to take effect. And change as desired. |
 | [docker-compose.registry.yml](docker-compose.registry.yml) | Used for creating a local registry for testing multi-arch builds, etc. Can typically be ignored.                             |
 
 ### Override
 
-This git repository does not track `docker-compose.override.yml` which will
-be included in all `docker compose` commands you invoke.
+This git repository does not track `docker-compose.override.yml`. If that file exists, its service overrides will
+be merged into the main definitions in `docker-compose.yml`.
 
 Any changes that are for your local / development environment can
 be added to `docker-compose.override.yml` because that file is not under version control.
 
-A sample `docker-compose.override.yml` is provided at [docker-compose.sample.yml](docker-compose.sample.yml) which you can `cp docker-compose.sample.yml docker-compose.override.yml` to take effect.
+A sample `docker-compose.override.yml` is provided at [docker-compose.dev.yml](docker-compose.dev.yml) which you can `ln -s docker-compose.dev.yml docker-compose.override.yml` to take effect.
 
+#### Host-specific overrides
+
+If you have multiple site environments/VMs, you can create multiple `docker-compose.*.yml` files for the specific host for any specific overrides needed.
+
+You can track the override files in version control in this repo using any `docker-compose.*.yml` naming convention you'd like. e.g. if you have a dev/stage/prod stack you could create three override files that are under version control:
+
+```
+docker-compose.dev.yml
+docker-compose.stage.yml
+docker-compose.prod.yml
+```
+
+Then on each environment, just symlink the host-specific overrides as `docker-compose.override.yml` so running `docker compose` on those hosts will include those overrides.
+
+```bash
+ssh dev.isle.io cd /path/to/isle/site/template; ln -s docker-compose.dev.yml docker-compose.override.yml
+ssh stage.isle.io cd /path/to/isle/site/template; ln -s docker-compose.stage.yml docker-compose.override.yml
+ssh prod.isle.io cd /path/to/isle/site/template; ln -s docker-compose.prod.yml docker-compose.override.yml
+```
+
+### Settings
 
 | Credentials | Value    |
 | :---------- | :------- |
 | Username    | admin    |
 | Password    | `cat ./secrets/DRUPAL_DEFAULT_ACCOUNT_PASSWORD` |
 
-If you have the domain in your `.env` set to `islandora.traefik.me` (default), you can
-access all the services at the following URLs.
+If you have these default values in your `.env` file
+
+```
+URI_SCHEME=http
+DOMAIN=islandora.traefik.me
+DEVELOPMENT_ENVIRONMENT=true
+```
+you can access all the services at the following URLs.
 
 | Service    | URL                                       |
 | :--------- | :---------------------------------------- |
@@ -173,6 +202,9 @@ access all the services at the following URLs.
 | Fedora     | http://fcrepo.islandora.traefik.me/fcrepo/rest/ |
 | Solr       | http://solr.islandora.traefik.me                |
 | Traefik    | http://traefik.islandora.traefik.me             |
+
+> [!IMPORTANT]
+> DEVELOPMENT_ENVIRONMENT should never be set to `true` for sites available on the public internet
 
 ### Pushing Docker Images
 
@@ -278,8 +310,7 @@ make traefik-https-letsencrypt
 ```
 3.  Restart traefik:
 ```bash
-docker compose down traefik
-make up
+make down-traefik up
 ```
 
 ### Setup as a systemd Service

@@ -287,8 +287,8 @@ services:
     environment:
       TLS_PROVIDER: "${TLS_PROVIDER:-self-managed}"
       URI_SCHEME: "${URI_SCHEME:-http}"
-      DEVELOPMENT_ENVIRONMENT: "${DEVELOPMENT_ENVIRONMENT:-false}"
       DOMAIN: ${DOMAIN}
+      DEVELOPMENT_ENVIRONMENT: "${DEVELOPMENT_ENVIRONMENT:-false}"
     secrets:
       - source: CERT_PUBLIC_KEY
       - source: CERT_PRIVATE_KEY
