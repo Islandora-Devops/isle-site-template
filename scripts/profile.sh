@@ -142,9 +142,9 @@ set_https() {
   local enable=$1
 
   if [ "$enable" = "true" ]; then
-    sed -i.bak 's/DRUPAL_ENABLE_HTTPS: "false"/DRUPAL_ENABLE_HTTPS: "true"/' docker-compose.yml && rm -f docker-compose.yml.bak
+    sed -i.bak 's/^DRUPAL_ENABLE_HTTPS:.*/DRUPAL_ENABLE_HTTPS: "true"/' docker-compose.yml && rm -f docker-compose.yml.bak
   else
-    sed -i.bak 's/DRUPAL_ENABLE_HTTPS: "true"/DRUPAL_ENABLE_HTTPS: "false"/' docker-compose.yml && rm -f docker-compose.yml.bak
+    sed -i.bak 's/^DRUPAL_ENABLE_HTTPS:.*/DRUPAL_ENABLE_HTTPS: "false"/' docker-compose.yml && rm -f docker-compose.yml.bak
   fi
 }
 
@@ -152,10 +152,13 @@ set_https() {
 set_letsencrypt_config() {
   local enable=$1
 
+  sed -i.bak 's/^TLS_PROVIDER=.*/TLS_PROVIDER="self-managed"/' .env && rm -f .env.bak
   sed -i.bak '/--certificatesresolvers.letsencrypt.acme/d' docker-compose.yml && rm -f docker-compose.yml.bak
   sed -i.bak '/--entrypoints.https.http.tls.certResolver/d' docker-compose.yml && rm -f docker-compose.yml.bak
 
   if [ "$enable" = "true" ]; then
+    sed -i.bak 's/^TLS_PROVIDER=.*/TLS_PROVIDER="letsencrypt"/' .env && rm -f .env.bak
+
     # shellcheck disable=SC2016
     sed -i.bak '/command: >-/a\
       --entrypoints.https.http.tls.certResolver=letsencrypt\

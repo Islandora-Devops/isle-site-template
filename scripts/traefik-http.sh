@@ -10,14 +10,10 @@ echo "${BLUE}Switching to HTTP mode...${RESET}"
 sed -i.bak 's/^ENABLE_HTTPS=.*/ENABLE_HTTPS="false"/' .env && rm -f .env.bak
 sed -i.bak 's/^URI_SCHEME=.*/URI_SCHEME="http"/' .env && rm -f .env.bak
 sed -i.bak 's/^ENABLE_ACME=.*/ENABLE_ACME="false"/' .env && rm -f .env.bak
-if grep -q '^DOMAIN=islandora.dev' .env; then
-    sed -i.bak 's/^DOMAIN=.*/DOMAIN=islandora.traefik.me/' .env && rm -f .env.bak
-    echo "Domain changed from islandora.dev to islandora.traefik.me"
-fi
 
 set_https "false"
 set_letsencrypt_config "false"
 
-echo "Done! HTTP mode enabled. Run:"
+echo "Site will be available at: ${GREEN}${URI_SCHEME}://${DOMAIN}${RESET}"
+echo "Run this for the changes to take effect:"
 echo "${BLUE}make down-traefik up${RESET}"
-echo "for changes to take effect."

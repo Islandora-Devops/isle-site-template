@@ -42,7 +42,7 @@ While Islandora can be setup to use a wide variety of databases, tools and
 configurations this template is set up for the following:
 
  - `blazegraph` is included by default.
- - `crayfish` services are included by default.
+ - `scyllaridae` services are included by default.
  - `fcrepo` is included by default.
  - `fits` is included by default.
  - `mariadb` is used for the backend database (rather than `postgresql`).
@@ -54,27 +54,24 @@ configurations this template is set up for the following:
 - [Docker Compose](https://docs.docker.com/compose/install/linux/) **Already included in OSX with Docker**
 - `Make` (Standard on Linux/OSX, use WSL on Windows)
 - `cURL` and `git`
+- [mkcert](https://github.com/FiloSottile/mkcert) (optional, for local development certificates)
 
 ## Quick Start
 
 1. In GitHub click the green `Use this template` button to create this same repository in your GitHub Organization
 2. Clone your new repository:
-    ```bash
-    git clone https://github.com/INSTITUTION/SITE_NAME.git
-    cd SITE_NAME
-    ```
+```bash
+git clone https://github.com/INSTITUTION/SITE_NAME.git
+cd SITE_NAME
+```
 
-3.  Initialize the environment:
-    ```bash
-    make init
-    ```
+3. Start the services:
+```bash
+make up
+```
     This command prepares your host machine, creates the `.env` file from `sample.env` if it doesn't exist, generates necessary secrets and certificates, and builds the Docker images.
 
-4.  Start the services:
-    ```bash
-    make up
-    ```
-    This brings up the stack using smart port allocation. The URL for your site will be displayed in the output and automatically opened in your browser if possible.
+    Then brings up the ISLE stack using smart port allocation. The URL for your site will be displayed in the output and automatically opened in your browser if possible.
 
     Default URL: [http://islandora.traefik.me](http://islandora.traefik.me) (maps to 127.0.0.1)
 
@@ -127,15 +124,14 @@ To switch to **HTTPS** for local development:
 2.  Run:
 ```bash
 make traefik-https-mkcert
-make up
+make down-traefik up
 ```
 
 To switch back to **HTTP**:
 ```bash
 make traefik-http
-make up
+make down-traefik up
 ```
-
 
 ## Docker Compose
 
@@ -144,13 +140,13 @@ There are a number of `docker-compose.yml` files provided by this repository:
 | File                                                       | Description                                                                                                                  |
 | :--------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
 | [docker-compose.yml](docker-compose.yml)                   | Defines all  services.                                                                                                       |
-| [docker-compose.dev.yml](docker-compose.dev.yml)           | Customizations for local development environment. Copy to docker-compose.override.yml to take effect. And change as desired. |
+| [docker-compose.dev.yml](docker-compose.dev.yml)           | Customizations for local development environment. Copy or symlink to docker-compose.override.yml to take effect.             |
 | [docker-compose.registry.yml](docker-compose.registry.yml) | Used for creating a local registry for testing multi-arch builds, etc. Can typically be ignored.                             |
 
-### Override
+### Docker Compose Overrides
 
 This git repository does not track `docker-compose.override.yml`. If that file exists, its service overrides will
-be merged into the main definitions in `docker-compose.yml`.
+be merged into the main definitions in `docker-compose.yml`. See [https://docs.docker.com/compose/how-tos/multiple-compose-files/merge/](https://docs.docker.com/compose/how-tos/multiple-compose-files/merge/) for more information
 
 Any changes that are for your local / development environment can
 be added to `docker-compose.override.yml` because that file is not under version control.
@@ -287,19 +283,15 @@ Other changes, such as those in `vendor/` or installed modules, are managed via 
 
 To add a composer dependency to your running instance you can
 
-```
+```bash
 docker compose exec drupal composer require drupal/module
 ```
-
-### Docker Compose Override
-
-Create a `docker-compose.override.yml` file for local customizations that should not be committed to version control. This file is automatically loaded by Docker Compose.
 
 ## Production
 
 ### Automated Certificate Generation
 
-For production, Traefik can automatically generate valid SSL certificates using Let's Encrypt.
+For production, Traefik can automatically generate valid TLS certificates using Let's Encrypt.
 
 1.  Update `DOMAIN` in `.env` to your production domain (e.g., `my-islandora.org`).
 2.  Update `ACME_EMAIL` in `.env` for Let's Encrypt notifications.

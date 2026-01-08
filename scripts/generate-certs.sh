@@ -36,8 +36,6 @@ if [ ! -f "${PROGDIR}/certs/rootCA.pem" ]; then
 fi
 
 "${MKCERT}" -cert-file certs/cert.pem -key-file certs/privkey.pem \
-  "*.islandora.dev" \
-  "islandora.dev" \
   "*.islandora.io" \
   "islandora.io" \
   "*.islandora.info" \

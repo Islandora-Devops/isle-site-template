@@ -22,18 +22,20 @@ NEW_EMAIL=${NEW_EMAIL:-$CURRENT_EMAIL}
 
 echo
 echo "Updating .env with:"
+echo "  ${GREEN}URI_SCHEME=https"
 echo "  DOMAIN=${NEW_DOMAIN}"
 echo "  ACME_EMAIL=${NEW_EMAIL}"
+echo "  DEVELOPMENT_ENVIRONMENT=false${RESET}"
 echo
 
 # Update .env file
-sed -i.bak 's/^URI_SCHEME=.*/URI_SCHEME="https"/' .env && rm -f .env.bak
-sed -i.bak 's/^TLS_PROVIDER=.*/TLS_PROVIDER="letsencrypt"/' .env && rm -f .env.bak
+sed -i.bak 's|^DEVELOPMENT_ENVIRONMENT=.*|DEVELOPMENT_ENVIRONMENT="false"|' .env && rm -f .env.bak
 sed -i.bak "s|^DOMAIN=.*|DOMAIN=${NEW_DOMAIN}|" .env && rm -f .env.bak
 sed -i.bak "s|^ACME_EMAIL=.*|ACME_EMAIL=${NEW_EMAIL}|" .env && rm -f .env.bak
 
 set_https "true"
 set_letsencrypt_config "true"
 
-echo "Configuration updated successfully!"
-echo "Run ${BLUE}make down-traefik up${RESET} for changes to take effect."
+echo "Site will be available at: ${GREEN}${URI_SCHEME}://${DOMAIN}${RESET}"
+echo "Run this for the changes to take effect:"
+echo "${BLUE}make down-traefik up${RESET}"
