@@ -30,11 +30,3 @@ http:
         scheme: https
         permanent: true
 {{- end }}
-{{- if (eq (env "TLS_PROVIDER") "letsencrypt") }}
-certificatesResolvers:
-  letsencrypt:
-    acme:
-      storage: /acme/acme.json
-      httpChallenge:
-        entryPoint: http
-{{- end }}

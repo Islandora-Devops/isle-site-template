@@ -9,6 +9,7 @@ if [ -f .env ]; then
 else
   echo "Error: .env file not found." >&2
   ./scripts/init.sh
+  # shellcheck disable=SC1091
   source .env
 fi
 
