@@ -15,7 +15,9 @@ if grep -q '^DOMAIN=islandora.dev' .env; then
     echo "Domain changed from islandora.dev to islandora.traefik.me"
 fi
 
+set_https "false"
+set_letsencrypt_config "false"
+
 echo "Done! HTTP mode enabled. Run:"
-echo "${BLUE}docker compose down traefik"
-echo "${BLUE}make up{RESET}"
+echo "${BLUE}make down-traefik up${RESET}"
 echo "for changes to take effect."

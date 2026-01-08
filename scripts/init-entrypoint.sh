@@ -19,4 +19,3 @@ chmod +x /usr/local/bin/mkcert
 
 ./scripts/generate-certs.sh
 ./scripts/generate-secrets.sh
-

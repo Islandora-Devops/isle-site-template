@@ -1,0 +1,23 @@
+http:
+  middlewares:
+    fcrepo-strip-suffix:
+      replacePathRegex:
+        regex: "^(.*/fcrepo/rest/[^.]*)/fcr:metadata$"
+        replacement: "$1"
+  services:
+    fcrepo:
+      loadBalancer:
+        servers:
+          - url: http://fcrepo:8080
+  routers:
+    fcrepo:
+      rule: Host(`fcrepo.{{ env "DOMAIN" }}`)
+      middlewares:
+        - fcrepo-strip-suffix
+      service: fcrepo
+{{- if (eq (env "TLS_PROVIDER") "letsencrypt") }}
+      tls:
+        certResolver: letsencrypt
+{{- else if (eq (env "URI_SCHEME") "https") }}
+      tls: {}
+{{- end }}

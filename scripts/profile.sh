@@ -25,15 +25,15 @@ find_port() {
         # Check if anything is listening on TCP at this port
         local pids
         pids=$(lsof -PiTCP:"$port" -sTCP:LISTEN -t 2>/dev/null || true)
-        
+
         if [ -z "$pids" ]; then
             break # Port is completely free
         fi
-        
+
         # If port is busy, check if it's our own docker project
         local container_id
         container_id=$(docker ps -q --filter "publish=$port" || true)
-        
+
         if [ -n "$container_id" ]; then
             local our_project
             our_project=$(docker inspect "$container_id" --format '{{ index .Config.Labels "com.docker.compose.project" }}' 2>/dev/null || echo "")
@@ -49,7 +49,7 @@ find_port() {
           port=8443
         else
           port=$((port + 1))
-        fi 
+        fi
 
         echo_e "${YELLOW}Trying $port...${RESET}" >&2
     done
@@ -71,9 +71,17 @@ print_warning_header() {
 if [ -f .env ]; then
     # Use || true to prevent set -e from exiting if grep finds nothing
     DEV_ENV_VALUE=$(grep '^DEVELOPMENT_ENVIRONMENT=' .env | cut -d'=' -f2 | tr -d '"' || echo "not_set")
-    ENABLE_HTTPS=$(grep '^ENABLE_HTTPS=' .env | cut -d'=' -f2 | tr -d '"' || echo "not_set")
+    TLS_PROVIDER=$(grep '^TLS_PROVIDER=' .env | cut -d'=' -f2 | tr -d '"' || echo "not_set")
     URI_SCHEME=$(grep '^URI_SCHEME=' .env | cut -d'=' -f2 | tr -d '"' || echo "not_set")
-    ENABLE_ACME=$(grep '^ENABLE_ACME=' .env | cut -d'=' -f2 | tr -d '"' || echo "not_set")
+    ENABLE_ACME="false"
+    if [ "${TLS_PROVIDER}" = "letsencrypt" ]; then
+        ENABLE_ACME="true"
+    fi
+    ENABLE_HTTPS="false"
+    if [ "${URI_SCHEME}" = "https" ]; then
+        ENABLE_HTTPS="true"
+    fi
+
     ACME_EMAIL=$(grep '^ACME_EMAIL=' .env | cut -d'=' -f2 | tr -d '"' || echo "")
     DOMAIN=$(grep '^DOMAIN=' .env | cut -d'=' -f2 | tr -d '"' || echo "localhost")
     ISLANDORA_TAG=$(grep '^ISLANDORA_TAG=' .env | cut -d'=' -f2 | tr -d '"' || echo "unknown")
@@ -102,11 +110,11 @@ is_prod_mode() {
 }
 
 is_https_enabled() {
-    status_dev || [ "${ENABLE_HTTPS:-}" = "true" ]
+    status_dev || [ "${URI_SCHEME:-}" = "https" ]
 }
 
 is_acme_enabled() {
-    status_dev || [ "${ENABLE_ACME:-}" = "true" ]
+    status_dev || [ "${TLS_PROVIDER:-}" = "letsencrypt" ]
 }
 
 is_acme_using_default_email() {
@@ -127,4 +135,32 @@ has_no_docker_override() {
 
 is_using_non_standard_ports() {
     status_dev || [ "${HTTP_PORT:-80}" != "80" ] || [ "${HTTPS_PORT:-443}" != "443" ]
+}
+
+# Set HTTPS with sed
+set_https() {
+  local enable=$1
+
+  if [ "$enable" = "true" ]; then
+    sed -i.bak 's/DRUPAL_ENABLE_HTTPS: "false"/DRUPAL_ENABLE_HTTPS: "true"/' docker-compose.yml && rm -f docker-compose.yml.bak
+  else
+    sed -i.bak 's/DRUPAL_ENABLE_HTTPS: "true"/DRUPAL_ENABLE_HTTPS: "false"/' docker-compose.yml && rm -f docker-compose.yml.bak
+  fi
+}
+
+# Function to set Let's Encrypt config
+set_letsencrypt_config() {
+  local enable=$1
+
+  if [ "$enable" = "true" ]; then
+    # Remove if exists first
+    sed -i.bak '/--certificatesresolvers.letsencrypt.acme/d' docker-compose.yml && rm -f docker-compose.yml.bak
+    # shellcheck disable=SC2016
+    sed -i.bak '/--providers\.file\.filename=.*\.yml/a\
+      --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}\
+      --certificatesresolvers.letsencrypt.acme.caserver=${ACME_URL}\
+' docker-compose.yml && rm -f docker-compose.yml.bak
+  else
+    sed -i.bak '/--certificatesresolvers.letsencrypt.acme/d' docker-compose.yml && rm -f docker-compose.yml.bak
+  fi
 }

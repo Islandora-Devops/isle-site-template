@@ -27,11 +27,13 @@ echo "  ACME_EMAIL=${NEW_EMAIL}"
 echo
 
 # Update .env file
-sed -i.bak 's/^ENABLE_HTTPS=.*/ENABLE_HTTPS="true"/' .env && rm -f .env.bak
 sed -i.bak 's/^URI_SCHEME=.*/URI_SCHEME="https"/' .env && rm -f .env.bak
-sed -i.bak 's/^ENABLE_ACME=.*/ENABLE_ACME="true"/' .env && rm -f .env.bak
+sed -i.bak 's/^TLS_PROVIDER=.*/TLS_PROVIDER="letsencrypt"/' .env && rm -f .env.bak
 sed -i.bak "s|^DOMAIN=.*|DOMAIN=${NEW_DOMAIN}|" .env && rm -f .env.bak
 sed -i.bak "s|^ACME_EMAIL=.*|ACME_EMAIL=${NEW_EMAIL}|" .env && rm -f .env.bak
 
+set_https "true"
+set_letsencrypt_config "true"
+
 echo "Configuration updated successfully!"
-echo "Run ${BLUE}docker compose down traefik && make up${RESET} for changes to take effect."
+echo "Run ${BLUE}make down-traefik up${RESET} for changes to take effect."

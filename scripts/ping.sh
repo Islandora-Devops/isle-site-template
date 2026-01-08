@@ -2,11 +2,14 @@
 
 set -eou pipefail
 
-MAX_RETRIES=20
+# shellcheck disable=SC1091
+source "${BASH_SOURCE[0]%/*}/profile.sh"
+
+MAX_RETRIES=10
 SLEEP_INCREMENT=5
 RETRIES=0
 while true; do
-    timeout 5 curl -vfs http://islandora.traefik.me/ | grep Islandora && break || exit_code=$?
+    timeout 5 curl -vfs "$URI_SCHEME://$DOMAIN/" | grep Islandora && break || exit_code=$?
 
     RETRIES=$((RETRIES + 1))
     if [ "$RETRIES" -ge "$MAX_RETRIES" ]; then

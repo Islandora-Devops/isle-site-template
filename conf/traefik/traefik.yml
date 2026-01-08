@@ -9,19 +9,12 @@ entryPoints:
     address: ":80"
     transport:
       respondingTimeouts:
-        readTimeout: 60
+        readTimeout: "60"
   https:
     address: ":443"
     transport:
       respondingTimeouts:
-        readTimeout: 60
-
-certificatesResolvers:
-  letsencrypt:
-    acme:
-      storage: /acme/acme.json
-      httpChallenge:
-        entryPoint: http
+        readTimeout: "60"
 
 providers:
   # load our main traefik conf which has dynamic content

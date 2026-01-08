@@ -24,8 +24,8 @@ if is_using_non_standard_ports; then
 fi
 
 echo_e "DOMAIN: ${GREEN}${DOMAIN}${RESET}"
-echo_e "ENABLE_HTTPS: ${GREEN}${ENABLE_HTTPS}${RESET}"
-echo_e "ENABLE_ACME: ${GREEN}${ENABLE_ACME}${RESET}"
+echo_e "URL: ${GREEN}${URI_SCHEME}://${DOMAIN}${RESET}"
+echo_e "TLS_PROVIDER: ${GREEN}${TLS_PROVIDER}${RESET}"
 if is_acme_enabled; then
     color=$GREEN
     if is_acme_using_default_email; then
@@ -98,7 +98,7 @@ fi
 # Check 2: ACME in Development
 if is_dev_mode && is_https_enabled && is_acme_enabled; then
     print_warning_header
-    echo_e "\t${YELLOW}Insecure Configuration${RESET}: DEVELOPMENT_ENVIRONMENT=${RED}true${RESET} and ENABLE_ACME=${RED}true${RESET}"
+    echo_e "\t${YELLOW}Insecure Configuration${RESET}: DEVELOPMENT_ENVIRONMENT=${RED}true${RESET} and TLS_PROVIDER=${RED}letsencrypt${RESET}"
     echo_e "\tThis is unusual for local development unless you are on a remote VM"
     echo_e "\tYou should not set DEVELOPMENT_ENVIRONMENT=true on production VMs to ensure the container filesystem is read only\n"
 fi
@@ -118,13 +118,13 @@ if is_prod_mode && is_https_enabled; then
         if is_acme_using_default_email; then
             print_warning_header
             echo_e "\t${YELLOW}Bad default setting{$RESET}: ${RED}ACME_EMAIL=postmaster@example.com${RESET}"
-            echo_e "Update it to a real email for certificate issuance\n"
+            echo_e "\tUpdate it to a real email for certificate issuance\n"
         fi
     else
         print_warning_header
         echo_e "\t${YELLOW}ACME is disabled${RESET} To get valid certificates, you should either:"
-        echo_e "\t1. Enable ACME (make traefik-https-acme) and configure ACME_EMAIL in .env"
-        echo_e "\t2. Place your public (cert.pem) and private (privkey.pem) certificates in the ./certs/ directory and set ENABLE_ACME=false in .env"
+        echo_e "\t1. Enable ACME (make traefik-https-letsencrypt) and configure ACME_EMAIL in .env"
+        echo_e "\t2. Place your public (cert.pem) and private (privkey.pem) certificates in the ./certs/ directory and set TLS_PROVIDER=self-managed in .env"
     fi
 fi
 

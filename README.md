@@ -93,7 +93,7 @@ Available targets:
   status               Show the current status of the development environment
   traefik-http         Switch to HTTP mode (default)
   traefik-https-mkcert Switch to HTTPS mode using mkcert self-signed certificates
-  traefik-https-acme   Switch to HTTPS mode using Let's Encrypt ACME
+  traefik-https-letsencrypt   Switch to HTTPS mode using Let's Encrypt ACME
   traefik-certs        Generate mkcert certificates
   build                Build the drupal container
   init                 Get the host machine configured to run ISLE
@@ -274,7 +274,7 @@ For production, Traefik can automatically generate valid SSL certificates using 
 3.  Ensure your DNS records (A Records) for `${DOMAIN}` and `fcrepo.${DOMAIN}` point to your server's IP.
 4.  Switch to ACME mode:
 ```bash
-make traefik-https-acme
+make traefik-https-letsencrypt
 ```
 3.  Restart traefik:
 ```bash

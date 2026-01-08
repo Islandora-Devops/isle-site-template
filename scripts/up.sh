@@ -5,7 +5,6 @@ set -eou pipefail
 # shellcheck disable=SC1091
 source "${BASH_SOURCE[0]%/*}/profile.sh"
 
-# 1. Load Environment Variables
 if [ -f .env ]; then
   # Export variables so docker-compose and this script can see them
   # shellcheck disable=SC1091
@@ -15,20 +14,16 @@ else
   exit 1
 fi
 
-# 2. Set Defaults
 HTTP_PORT=80
 HTTPS_PORT=443
 
-# 3. Resolve Ports
 HOST_INSECURE_PORT=$(find_port $HTTP_PORT "HTTP")
 HOST_SECURE_PORT=$(find_port $HTTPS_PORT "HTTPS")
 export HOST_INSECURE_PORT HOST_SECURE_PORT
 
-# 4. Start Docker Compose
 docker compose up --remove-orphans -d
 
-# 5. Determine URL and Port
-if [ "$ENABLE_HTTPS" = "true" ]; then
+if [ "$URI_SCHEME" = "https" ]; then
     PROTOCOL="https"
     FINAL_PORT="$HOST_SECURE_PORT"
     DEFAULT_P=443
@@ -38,14 +33,24 @@ else
     DEFAULT_P=80
 fi
 
-# Build the URL
 URL="$PROTOCOL://$DOMAIN"
 if [ "$FINAL_PORT" != "$DEFAULT_P" ]; then
     URL="$URL:$FINAL_PORT"
 fi
 
+echo "Waiting for installation..."
+docker compose logs -f drupal 2>&1 | { \
+    while read -r line; do \
+        echo "$line"; \
+        if echo "$line" | grep -q "Install Completed"; then \
+            pkill -f "docker compose logs -f drupal" || true; \
+            exit 0; \
+        fi; \
+    done; \
+} || true
+
 echo "---------------------------------------------------"
-echo "🚀 Site starting at: $URL"
+echo "🚀 Site available at: $URL"
 echo "---------------------------------------------------"
 
 # don't open the URL if we're in GHA
@@ -58,8 +63,6 @@ if [ -n "${SSH_CONNECTION:-}" ] || [ -n "${SSH_CLIENT:-}" ] || [ -n "${SSH_TTY:-
   exit 0
 fi
 
-sleep 10
-
 # 6. Open in Browser (Cross-Platform)
 case "$(uname -s)" in
     Darwin*)    open "$URL" ;;
@@ -69,6 +72,5 @@ case "$(uname -s)" in
                     xdg-open "$URL" # Standard Linux
                 fi ;;
     CYGWIN*|MINGW*|MSYS*) start "$URL" ;; # Windows Native
-    *)          echo "Please open $URL in your browser." ;;
+    *)          echo "You can open $URL in your browser." ;;
 esac
-

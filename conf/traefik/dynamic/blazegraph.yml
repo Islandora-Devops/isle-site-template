@@ -1,0 +1,16 @@
+http:
+  services:
+    blazegraph:
+      loadBalancer:
+        servers:
+          - url: http://blazegraph:8080
+  routers:
+    blazegraph:
+      rule: Host(`blazegraph.{{ env "DOMAIN" }}`)
+      service: blazegraph
+{{- if (eq (env "TLS_PROVIDER") "letsencrypt") }}
+      tls:
+        certResolver: letsencrypt
+{{- else if (eq (env "URI_SCHEME") "https") }}
+      tls: {}
+{{- end }}

@@ -1,4 +1,4 @@
-.PHONY: help pull init up down build setup traefik-http traefik-https-mkcert traefik-https-acme traefik-certs overwrite-starter-site create-starter-site-pr status
+.PHONY: help pull init up down build setup traefik-http traefik-https-mkcert traefik-https-letsencrypt traefik-certs overwrite-starter-site create-starter-site-pr status clean ping
 
 PROJECT_NAME=$(shell grep '^COMPOSE_PROJECT_NAME=' .env | cut -d= -f2 | tr -d '"' || basename $(CURDIR))
 DEFAULT_HTTP=80
@@ -19,8 +19,8 @@ traefik-http: ## Switch to HTTP mode (default)
 traefik-https-mkcert: traefik-certs ## Switch to HTTPS mode using mkcert self-signed certificates
 	@./scripts/traefik-https-mkcert.sh
 
-traefik-https-acme: ## Switch to HTTPS mode using Let's Encrypt ACME
-	@./scripts/traefik-https-acme.sh
+traefik-https-letsencrypt: ## Switch to HTTPS mode using Let's Encrypt ACME
+	@./scripts/traefik-https-letsencrypt.sh
 
 traefik-certs: ## Generate mkcert certificates
 	@./scripts/generate-certs.sh
@@ -37,8 +37,20 @@ init: ## Get the host machine configured to run ISLE
 up: ## Start docker compose project with smart port allocation
 	@./scripts/up.sh
 
+up-%:  ## Start a specific service (e.g., make up-drupal)
+	@docker compose up $* -d
+
 down:  ## Stop/remove the docker compose project's containers and network.
 	@docker compose down
+
+down-%:  ## Stop/remove a specific service (e.g., make down-traefik)
+	@docker compose down $*
+
+clean:  ## Delete all stateful data.
+	@./scripts/clean.sh
+
+ping:  ## Ensure site is available.
+	@./scripts/ping.sh
 
 overwrite-starter-site: ## Keep site template's drupal install in sync with islandora-starter-site
 	@./scripts/overwrite-starter-site.sh

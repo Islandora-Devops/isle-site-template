@@ -48,6 +48,4 @@ fi
   "127.0.0.1" \
   "::1"
 
-printf '%s' "$(id -u)" > ./certs/UID
-
 echo "Certificates generated successfully."

@@ -1,15 +1,15 @@
-name: 'Setup ISLE Composite'
-description: 'Sets up the ISLE environment'
+name: "Setup ISLE Composite"
+description: "Sets up the ISLE environment"
 inputs:
   buildkit-tag:
-    description: 'islandora-devops/isle-buildkit docker tag to pull'
-    default: 'main'
+    description: "islandora-devops/isle-buildkit docker tag to pull"
+    default: "main"
   starter-site-owner:
-    description: 'islandora-starter-site github owner'
-    default: 'Islandora-Devops'
+    description: "islandora-starter-site github owner"
+    default: "Islandora-Devops"
   starter-site-ref:
-    description: 'islandora-starter-site ref to checkout'
-    default: 'heads/main'
+    description: "islandora-starter-site ref to checkout"
+    default: "heads/main"
 runs:
   using: "composite"
   steps:
@@ -49,3 +49,5 @@ runs:
     - name: make sure traefik is serving traffic
       shell: bash
       run: ./scripts/ping.sh
+      env:
+        TERM: xterm-256color
