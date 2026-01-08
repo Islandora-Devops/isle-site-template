@@ -79,10 +79,6 @@ services:
     <<: *common
     image: islandora/alpaca:${ISLANDORA_TAG}
     secrets:
-      - source: CERT_PUBLIC_KEY
-      - source: CERT_PRIVATE_KEY
-      - source: CERT_AUTHORITY
-      - source: UID
       - source: ALPACA_JMS_PASSWORD
     depends_on:
       activemq:
