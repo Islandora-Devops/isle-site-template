@@ -1,26 +1,16 @@
----
-ping: {}
-
-log:
-  level: INFO
-
-entryPoints:
-  http:
-    address: ":80"
-    transport:
-      respondingTimeouts:
-        readTimeout: "60"
-  https:
-    address: ":443"
-    transport:
-      respondingTimeouts:
-        readTimeout: "60"
-
-providers:
-  # load our main traefik conf which has dynamic content
-  # see https://doc.traefik.io/traefik/reference/install-configuration/providers/others/file/
-  file:
-    directory: /etc/traefik/dynamic
-  docker:
-    network: default
-    exposedByDefault: false
+http:
+  services:
+    traefik:
+      loadBalancer:
+        servers:
+          - url: http://traefik:8080
+  routers:
+    traefik:
+      rule: Host(`traefik.{{ env "DOMAIN" }}`)
+      service: traefik
+{{- if (eq (env "TLS_PROVIDER") "letsencrypt") }}
+      tls:
+        certResolver: letsencrypt
+{{- else if (eq (env "URI_SCHEME") "https") }}
+      tls: {}
+{{- end }}

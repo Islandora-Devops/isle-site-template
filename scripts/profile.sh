@@ -152,18 +152,18 @@ set_https() {
 set_letsencrypt_config() {
   local enable=$1
 
+  sed -i.bak '/--certificatesresolvers.letsencrypt.acme/d' docker-compose.yml && rm -f docker-compose.yml.bak
+  sed -i.bak '/--entrypoints.https.http.tls.certResolver/d' docker-compose.yml && rm -f docker-compose.yml.bak
+
   if [ "$enable" = "true" ]; then
-    # Remove if exists first
-    sed -i.bak '/--certificatesresolvers.letsencrypt.acme/d' docker-compose.yml && rm -f docker-compose.yml.bak
     # shellcheck disable=SC2016
     sed -i.bak '/command: >-/a\
+      --entrypoints.https.http.tls.certResolver=letsencrypt\
       --certificatesresolvers.letsencrypt.acme.httpchallenge=true\
       --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=http\
       --certificatesresolvers.letsencrypt.acme.storage=/acme/acme.json\
       --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}\
       --certificatesresolvers.letsencrypt.acme.caserver=${ACME_URL}
 ' docker-compose.yml && rm -f docker-compose.yml.bak
-  else
-    sed -i.bak '/--certificatesresolvers.letsencrypt.acme/d' docker-compose.yml && rm -f docker-compose.yml.bak
   fi
 }
