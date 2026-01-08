@@ -44,7 +44,7 @@ runs:
       env:
         ISLANDORA_TAG: ${{ inputs.buildkit-tag }}
         TERM: xterm-256color
-      run: make init up
+      run: make up
 
     - name: make sure traefik is serving traffic
       shell: bash
