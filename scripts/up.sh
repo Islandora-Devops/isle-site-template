@@ -40,16 +40,20 @@ if [ "$FINAL_PORT" != "$DEFAULT_P" ]; then
     URL="$URL:$FINAL_PORT"
 fi
 
-echo "Waiting for installation..."
-docker compose logs -f drupal 2>&1 | { \
-    while read -r line; do \
-        echo "$line"; \
-        if echo "$line" | grep -q "Install Completed"; then \
-            pkill -f "docker compose logs -f drupal" || true; \
-            exit 0; \
-        fi; \
-    done; \
-} || true
+export MAX_RETRIES=3
+WAIT_FOR_INSTALL=$(./scripts/ping.sh || echo "yes")
+if [ "$WAIT_FOR_INSTALL" = "yes" ]; then
+    echo "Site install in progress..."
+    docker compose logs -f --since 20s drupal 2>&1 | { \
+        while read -r line; do \
+            echo "$line"; \
+            if echo "$line" | grep -q "Install Completed"; then \
+                pkill -f "docker compose logs -f" || true; \
+                exit 0; \
+            fi; \
+        done; \
+    } || true;
+fi
 
 echo "---------------------------------------------------"
 echo "🚀 Site available at: $URL"

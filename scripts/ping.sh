@@ -5,11 +5,11 @@ set -eou pipefail
 # shellcheck disable=SC1091
 source "${BASH_SOURCE[0]%/*}/profile.sh"
 
-MAX_RETRIES=10
+MAX_RETRIES=${MAX_RETRIES:-10}
 SLEEP_INCREMENT=5
 RETRIES=0
 while true; do
-    timeout 5 curl -vfs "$URI_SCHEME://$DOMAIN/" | grep Islandora && break || exit_code=$?
+    timeout 5 curl -fs "$URI_SCHEME://$DOMAIN/" | grep Islandora && break || exit_code=$?
 
     RETRIES=$((RETRIES + 1))
     if [ "$RETRIES" -ge "$MAX_RETRIES" ]; then
@@ -18,8 +18,6 @@ while true; do
     fi
 
     SLEEP=$(( SLEEP_INCREMENT * RETRIES ))
-    echo "We're not live yet (Exit code: $exit_code). Retrying in $SLEEP seconds... (Attempt $RETRIES/$MAX_RETRIES)" >&2
+    echo "Site is not live yet. Retrying in $SLEEP seconds... (Attempt $RETRIES/$MAX_RETRIES)" >&2
     sleep "$SLEEP"
 done
-
-echo "We're live 🚀"
