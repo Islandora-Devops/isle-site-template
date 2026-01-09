@@ -11,5 +11,5 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 fi
 
 docker compose down -v
-rm -f ./certs/* ./secrets/*
-cp sample.env .env
+rm -f ./certs/* ./secrets/* .env
+
