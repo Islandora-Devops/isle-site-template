@@ -267,16 +267,24 @@ services:
 
   traefik:
     <<: *common
-    image: traefik:v3.6.5@sha256:2979bff651c98e70345dd886186a7a15ee3ce18b636af208d4ccbf2d56dbdddd
+    image: traefik:v3.6.6@sha256:2979bff651c98e70345dd886186a7a15ee3ce18b636af208d4ccbf2d56dbdddd
     command: >-
       --ping=true
       --log.level=INFO
       --entryPoints.http.address=:80
+      --entryPoints.http.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
+      --entryPoints.http.http.encodedCharacters.allowEncodedSlash=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedPercent=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedQuestionMark=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedHash=true
       --entryPoints.http.transport.respondingTimeouts.readTimeout=60
       --entryPoints.https.address=:443
-      --entryPoints.https.transport.respondingTimeouts.readTimeout=60
-      --entryPoints.http.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
       --entryPoints.https.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
+      --entryPoints.http.http.encodedCharacters.allowEncodedSlash=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedPercent=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedQuestionMark=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedHash=true
+      --entryPoints.https.transport.respondingTimeouts.readTimeout=60
       --providers.file.directory=/etc/traefik/dynamic
       --providers.docker=true
       --providers.docker.network=default
