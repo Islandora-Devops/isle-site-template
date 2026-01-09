@@ -1,5 +1,8 @@
 .PHONY: help pull init up down build setup traefik-http traefik-https-mkcert traefik-https-letsencrypt traefik-certs overwrite-starter-site create-starter-site-pr status clean ping
 
+# If custom.makefile exists include it.
+-include custom.Makefile
+
 PROJECT_NAME=$(shell grep '^COMPOSE_PROJECT_NAME=' .env | cut -d= -f2 | tr -d '"' || basename $(CURDIR))
 DEFAULT_HTTP=80
 DEFAULT_HTTPS=443
