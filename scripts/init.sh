@@ -2,8 +2,6 @@
 
 set -eou pipefail
 
-find drupal/rootfs -type d -exec chmod 755 {} \;
-
 if [ ! -f .env ]; then
   cp sample.env .env;
 fi

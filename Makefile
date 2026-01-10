@@ -32,7 +32,7 @@ pull:
 	@docker compose pull --ignore-buildable --ignore-pull-failures
 
 build: pull ## Build the drupal container
-	@docker compose build
+	@./scripts/build.sh
 
 init: ## Get the host machine configured to run ISLE
 	@./scripts/init.sh
