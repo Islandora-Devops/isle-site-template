@@ -1,0 +1,28 @@
+uuid: 28a8d830-8559-4e06-8cc3-5dfd1d81e956
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_authority_link
+    - taxonomy.vocabulary.temporal_subjects
+  module:
+    - controlled_access_terms
+_core:
+  default_config_hash: w7jMx1KFgcy983Zm9iAMXKmG8dQly3c4fgXhkT1DB98
+id: taxonomy_term.temporal_subjects.field_authority_link
+field_name: field_authority_link
+entity_type: taxonomy_term
+bundle: temporal_subjects
+label: 'Authority Sources'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  authority_sources:
+    lcsh: 'Library of Congress Subject Headings'
+    other: Other
+  title: 1
+  link_type: 16
+field_type: authority_link

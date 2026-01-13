@@ -1,0 +1,21 @@
+uuid: 2c35bc46-c35b-405e-82f8-8a67f59552d6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_mime_type
+    - media.type.file
+_core:
+  default_config_hash: M4fmG1BYu2hErFm9UvXV5zAhBgtiExjztr-UwaO6EBQ
+id: media.file.field_mime_type
+field_name: field_mime_type
+entity_type: media
+bundle: file
+label: 'MIME type'
+description: 'MIME type of the underlying file'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

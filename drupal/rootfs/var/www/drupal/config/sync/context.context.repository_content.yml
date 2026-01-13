@@ -1,0 +1,43 @@
+uuid: f23608eb-477d-4532-816a-8bcbf13b83e2
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+_core:
+  default_config_hash: o5KHcnyibXt-7SXqNpNyHTd8qYFOrDh1bk5I4aQo91Y
+label: Content
+name: repository_content
+group: Indexing
+description: 'Index all Islandora nodes in Fedora and Blazegraph.'
+requireAllConditions: false
+disabled: false
+conditions:
+  node_is_islandora_object:
+    id: node_is_islandora_object
+    negate: 0
+    uuid: ce7f5b47-6998-4ddf-bbf5-87401bcc145b
+    context_mapping:
+      node: '@node.node_route_context:node'
+reactions:
+  index:
+    id: index
+    saved: false
+    actions:
+      index_node_in_fedora: index_node_in_fedora
+      index_node_in_triplestore: index_node_in_triplestore
+  delete:
+    id: delete
+    saved: false
+    actions:
+      delete_node_from_fedora: delete_node_from_fedora
+      delete_node_from_triplestore: delete_node_from_triplestore
+  islandora_map_uri_predicate:
+    id: islandora_map_uri_predicate
+    saved: false
+    drupal_uri_predicate: 'schema:sameAs'
+  alter_jsonld_type:
+    id: alter_jsonld_type
+    saved: false
+    source_field: field_model
+weight: -5

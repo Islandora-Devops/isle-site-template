@@ -1,0 +1,23 @@
+uuid: ee5837ca-6e64-41d8-bbf9-d22167d0ec87
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_date_captured
+    - node.type.islandora_object
+  module:
+    - controlled_access_terms
+_core:
+  default_config_hash: b6PQWQgWsPtva8l0QqWucImMDIKKZAEvGXq2Lz80BZw
+id: node.islandora_object.field_date_captured
+field_name: field_date_captured
+entity_type: node
+bundle: islandora_object
+label: 'Date Captured'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: edtf

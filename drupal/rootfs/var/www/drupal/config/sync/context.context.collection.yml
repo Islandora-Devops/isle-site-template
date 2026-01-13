@@ -1,0 +1,29 @@
+uuid: a936e30e-a520-47c8-a872-ee479fda3493
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+_core:
+  default_config_hash: vH6Z5udf5Ab9cLW3Zl2-6VCbT0hagmZfalNjb654KVs
+label: Collection
+name: collection
+group: Display
+description: 'If a Collection or Compound, display a block of children'
+requireAllConditions: false
+disabled: false
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'http://purl.org/dc/dcmitype/Collection,http://vocab.getty.edu/aat/300242735'
+    logic: or
+reactions:
+  blocks:
+    id: blocks
+    blocks: {  }
+    include_default_blocks: 1
+    saved: false
+weight: -9

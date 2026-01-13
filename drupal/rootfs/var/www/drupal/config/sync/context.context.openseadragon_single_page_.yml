@@ -1,0 +1,49 @@
+uuid: 66e22d20-c039-4d35-920b-632fa8815ee6
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.media_display_blocks
+  module:
+    - islandora
+    - views
+label: 'OpenSeadragon - Single-page item'
+name: openseadragon_single_page_
+group: Display
+description: 'Displays the Service File or Original File in the OpenSeadragon view mode'
+requireAllConditions: true
+disabled: false
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: false
+    uuid: 736da07f-f22c-4128-be42-f424bd03a4e1
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'http://openseadragon.github.io'
+    logic: and
+reactions:
+  blocks:
+    id: blocks
+    uuid: 3621ea31-c78a-4b28-91fc-5a269060e536
+    blocks:
+      0f25f3b0-308e-4aac-ab47-172956207f37:
+        uuid: 0f25f3b0-308e-4aac-ab47-172956207f37
+        id: 'views_block:media_display_blocks-openseadragon'
+        label: ''
+        provider: views
+        label_display: '0'
+        region: content_above
+        weight: '0'
+        custom_id: views_block_media_display_blocks_openseadragon
+        theme: olivero
+        css_class: ''
+        unique: 0
+        context_id: openseadragon_single_page_
+        context_mapping: {  }
+        views_label: ''
+        items_per_page: none
+        third_party_settings: {  }
+    include_default_blocks: 1
+    saved: false
+weight: -6

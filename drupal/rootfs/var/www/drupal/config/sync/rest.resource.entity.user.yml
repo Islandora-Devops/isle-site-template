@@ -1,0 +1,20 @@
+uuid: 59b49800-0d49-4c2b-8eea-752577ce5919
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - serialization
+    - user
+_core:
+  default_config_hash: 7l1NBsFqG818aOmd_bqTDa_oWi3EpV75Vf4wpkoxppo
+id: entity.user
+plugin_id: 'entity:user'
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - basic_auth

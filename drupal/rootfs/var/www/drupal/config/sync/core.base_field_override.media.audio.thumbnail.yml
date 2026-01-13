@@ -1,0 +1,39 @@
+uuid: 709ffa76-6cc1-4266-bd33-3777f35205a0
+langcode: en
+status: true
+dependencies:
+  config:
+    - media.type.audio
+  module:
+    - image
+_core:
+  default_config_hash: MwkcFHeT_--p0X0a3XB34tzrewKmSVFogJP6rhr33-Y
+id: media.audio.thumbnail
+field_name: thumbnail
+entity_type: media
+bundle: audio
+label: Thumbnail
+description: 'The thumbnail of the media item.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: default
+  handler_settings: {  }
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'png gif jpg jpeg'
+  max_filesize: ''
+  max_resolution: ''
+  min_resolution: ''
+  alt_field: true
+  alt_field_required: true
+  title_field: false
+  title_field_required: false
+  default_image:
+    uuid: null
+    alt: ''
+    title: ''
+    width: null
+    height: null
+field_type: image

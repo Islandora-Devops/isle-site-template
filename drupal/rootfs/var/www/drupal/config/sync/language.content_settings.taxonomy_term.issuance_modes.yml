@@ -1,0 +1,18 @@
+uuid: 0fbe6e0b-7b45-44d2-acc9-89d6aae29399
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.issuance_modes
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+_core:
+  default_config_hash: ZZp5R5GMUDvE_eoHBMhk3hNdShNxKk8K7MxI-fdsWJs
+id: taxonomy_term.issuance_modes
+target_entity_type_id: taxonomy_term
+target_bundle: issuance_modes
+default_langcode: site_default
+language_alterable: false

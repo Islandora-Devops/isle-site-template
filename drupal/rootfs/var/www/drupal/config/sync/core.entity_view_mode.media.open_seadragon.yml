@@ -1,0 +1,13 @@
+uuid: d51600e8-bdec-4710-ba31-28bd7d2fdc46
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+_core:
+  default_config_hash: Psm3qxSAE17ncDreigYEVbFKSAvxxwqGUFp_MrebIyo
+id: media.open_seadragon
+label: 'Open Seadragon'
+description: ''
+targetEntityType: media
+cache: true

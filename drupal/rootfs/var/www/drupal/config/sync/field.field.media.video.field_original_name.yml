@@ -1,0 +1,21 @@
+uuid: 6cd4e831-6d98-4f7d-8a86-481875f3cdf1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_original_name
+    - media.type.video
+_core:
+  default_config_hash: BiGfmIIgL79cf8MjbsvdJI5_4A2WPYm5bAFAskD-rho
+id: media.video.field_original_name
+field_name: field_original_name
+entity_type: media
+bundle: video
+label: 'Original Name'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

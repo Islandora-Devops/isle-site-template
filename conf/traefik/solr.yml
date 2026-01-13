@@ -1,0 +1,18 @@
+{{- if (eq (env "DEVELOPMENT_ENVIRONMENT") "true") }}
+http:
+  services:
+    solr:
+      loadBalancer:
+        servers:
+          - url: http://solr:8983
+  routers:
+    solr:
+      rule: Host(`solr.{{ env "DOMAIN" }}`)
+      service: solr
+{{- if (eq (env "TLS_PROVIDER") "letsencrypt") }}
+      tls:
+        certResolver: letsencrypt
+{{- else if (eq (env "URI_SCHEME") "https") }}
+      tls: {}
+{{- end }}
+{{- end }}

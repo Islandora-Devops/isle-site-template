@@ -1,0 +1,30 @@
+uuid: 579c2116-df88-474e-8096-1cabca0d0e59
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+_core:
+  default_config_hash: XtBYoGhM0h6E6KN_OfmCVMN8ey6inC6fdogp7FuSQPE
+label: 'FITS derivatives'
+name: technical_metadata_on_ingest
+group: Derivatives
+description: 'FITS derivatives for all original files'
+requireAllConditions: false
+disabled: false
+conditions:
+  media_has_term:
+    id: media_has_term
+    negate: false
+    uuid: b270cb14-b960-4494-9ccf-1c9433092837
+    context_mapping:
+      media: '@islandora.media_route_context_provider:media'
+    uri: 'http://pcdm.org/use#OriginalFile'
+    logic: and
+reactions:
+  derivative:
+    id: derivative
+    saved: false
+    actions:
+      generate_a_technical_metadata_derivative: generate_a_technical_metadata_derivative
+weight: 0

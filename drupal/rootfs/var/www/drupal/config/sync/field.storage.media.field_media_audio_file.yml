@@ -1,0 +1,25 @@
+uuid: 315bacec-7c91-4faf-b9a7-56212ee48431
+langcode: en
+status: true
+dependencies:
+  module:
+    - file
+    - media
+_core:
+  default_config_hash: iTxgIfCzyDceYyI-KMmq2OFKyXpu6jVPZ_KCEykhHY4
+id: media.field_media_audio_file
+field_name: field_media_audio_file
+entity_type: media
+type: file
+settings:
+  target_type: file
+  display_field: false
+  display_default: false
+  uri_scheme: fedora
+module: file
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

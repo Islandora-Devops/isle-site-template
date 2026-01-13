@@ -1,0 +1,28 @@
+uuid: 1d59211b-7d55-4b80-b76c-1eff5833066d
+langcode: en
+status: true
+dependencies:
+  module:
+    - controlled_access_terms
+    - field_permissions
+    - node
+third_party_settings:
+  field_permissions:
+    permission_type: public
+_core:
+  default_config_hash: FLTLpzIsQMk1kAEQuyyQrI2OgK-p_18YvxlUZv20qfM
+id: node.field_copyright_date
+field_name: field_copyright_date
+entity_type: node
+type: edtf
+settings:
+  max_length: 128
+  case_sensitive: false
+  is_ascii: false
+module: controlled_access_terms
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

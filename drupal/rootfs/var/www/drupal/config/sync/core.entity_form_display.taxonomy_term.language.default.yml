@@ -1,0 +1,77 @@
+uuid: a9581693-7ee5-4564-b793-c0a045f92068
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.language.field_authority_link
+    - field.field.taxonomy_term.language.field_code
+    - taxonomy.vocabulary.language
+  module:
+    - controlled_access_terms
+    - path
+    - text
+_core:
+  default_config_hash: C56opIwc14F8xGc0jbrPwVD4KSyLuhoBDfJT-3VUCUw
+id: taxonomy_term.language.default
+targetEntityType: taxonomy_term
+bundle: language
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_authority_link:
+    type: authority_link_default
+    weight: 2
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_code:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 4
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 7
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  translation:
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

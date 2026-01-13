@@ -1,0 +1,46 @@
+uuid: d967c8ef-8d1d-45bc-a320-d269ecf1666c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.file_download
+    - field.field.media.audio.field_file_size
+    - field.field.media.audio.field_media_audio_file
+    - field.field.media.audio.field_media_of
+    - field.field.media.audio.field_media_use
+    - field.field.media.audio.field_mime_type
+    - field.field.media.audio.field_original_name
+    - field.field.media.audio.field_track
+    - media.type.audio
+  module:
+    - filehash
+_core:
+  default_config_hash: 2FZ_TcS2MGA5tQMskHrjKwJ_ucnDEdIfsnMG5MHhjyA
+id: media.audio.file_download
+targetEntityType: media
+bundle: audio
+mode: file_download
+content:
+  field_media_audio_file:
+    type: filehash_table
+    label: visually_hidden
+    settings:
+      algo: sha1
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  field_file_size: true
+  field_gemini_uri: true
+  field_media_of: true
+  field_media_use: true
+  field_mime_type: true
+  field_original_name: true
+  field_track: true
+  langcode: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

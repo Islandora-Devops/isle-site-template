@@ -1,0 +1,50 @@
+uuid: 8d5dff96-4f1a-4958-bf0f-ba83de62986e
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+_core:
+  default_config_hash: 0ipt7H647M0BLxXJETg1ktGLwD1IsWRJvjveTP-PCKA
+label: 'All Media'
+name: all_media
+group: Indexing
+description: 'Index all media bundles in Fedora and Blazegraph'
+requireAllConditions: false
+disabled: false
+conditions:
+  islandora_entity_bundle:
+    id: islandora_entity_bundle
+    negate: false
+    context_mapping:
+      media: '@islandora.media_route_context_provider:media'
+    bundles:
+      audio: audio
+      document: document
+      extracted_text: extracted_text
+      file: file
+      fits_technical_metadata: fits_technical_metadata
+      image: image
+      remote_video: remote_video
+      video: video
+reactions:
+  alter_jsonld_type:
+    id: alter_jsonld_type
+    saved: false
+    source_field: field_media_use
+  islandora_map_uri_predicate:
+    id: islandora_map_uri_predicate
+    saved: false
+    drupal_uri_predicate: 'iana:describedby'
+  index:
+    id: index
+    saved: false
+    actions:
+      index_media_in_fedora: index_media_in_fedora
+      index_media_in_triplestore: index_media_in_triplestore
+  delete:
+    id: delete
+    saved: false
+    actions:
+      delete_media_from_triplestore: delete_media_from_triplestore
+weight: -8

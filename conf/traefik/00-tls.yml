@@ -1,0 +1,32 @@
+tls:
+  certificates:
+    - certFile: /run/secrets/CERT_PUBLIC_KEY
+      keyFile: /run/secrets/CERT_PRIVATE_KEY
+  options:
+    default:
+      minVersion: VersionTLS12
+      cipherSuites:
+        - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+        - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+        - TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
+
+{{- if (eq (env "URI_SCHEME") "https") }}
+http:
+  routers:
+    http-redirect:
+      entryPoints:
+        - http
+      rule: HostRegexp(`.*`)
+      middlewares:
+        - https-redirect
+      service: noop@internal
+      priority: 1
+
+  middlewares:
+    https-redirect:
+      redirectScheme:
+        scheme: https
+        permanent: true
+{{- end }}

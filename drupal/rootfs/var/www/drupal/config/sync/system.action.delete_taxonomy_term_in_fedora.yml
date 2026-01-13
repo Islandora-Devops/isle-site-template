@@ -1,0 +1,15 @@
+uuid: f1899a33-1e84-41a0-b0a5-341b641ec5cf
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+_core:
+  default_config_hash: CiLaoHgKlvF6ak3al8DAOpYKEDKR0CAk6DMiCBamWd8
+id: delete_taxonomy_term_in_fedora
+label: 'Delete Taxonomy Term in Fedora'
+type: taxonomy_term
+plugin: emit_term_event
+configuration:
+  queue: islandora-indexing-fcrepo-delete
+  event: Delete

@@ -1,0 +1,81 @@
+uuid: 3fda8e47-f957-476c-8737-4e01d71d74a7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.person.field_alternate_name
+    - field.field.taxonomy_term.person.field_authority_link
+    - field.field.taxonomy_term.person.field_cat_date_begin
+    - field.field.taxonomy_term.person.field_cat_date_end
+    - field.field.taxonomy_term.person.field_relationships
+    - taxonomy.vocabulary.person
+  module:
+    - controlled_access_terms
+    - text
+_core:
+  default_config_hash: '-KViCNNPm8unAlNoDOlCV3TXc7sXbpeK7gRW5vD_ypA'
+id: taxonomy_term.person.default
+targetEntityType: taxonomy_term
+bundle: person
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_alternate_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_authority_link:
+    type: authority_formatter_default
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: _blank
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_cat_date_begin:
+    type: edtf_default
+    label: above
+    settings:
+      date_separator: space
+      date_order: little_endian
+      month_format: mmm
+      day_format: dd
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_cat_date_end:
+    type: edtf_default
+    label: above
+    settings:
+      date_separator: space
+      date_order: little_endian
+      month_format: mmm
+      day_format: dd
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_relationships:
+    type: typed_relation_default
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

@@ -1,0 +1,25 @@
+uuid: 00485647-e99d-4744-81d1-a04ba1b59f0e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_complete
+    - media.type.fits_technical_metadata
+_core:
+  default_config_hash: J9VO6DNaeBvhft0mHZoCyTNiKRLD-OgFXlkLufgQCVU
+id: media.fits_technical_metadata.field_complete
+field_name: field_complete
+entity_type: media
+bundle: fits_technical_metadata
+label: Complete
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Complete
+  off_label: Incomplete
+field_type: boolean

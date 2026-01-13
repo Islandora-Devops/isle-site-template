@@ -1,0 +1,5 @@
+_core:
+  default_config_hash: NCzOnzkSw_H5SbPJb-EOzzJby1pQ8JI6IzZJckM7WOU
+iiif_server: 'https://127.0.0.1:8080/cantaloupe/iiif/2'
+use_relative_paths: false
+show_title: node

@@ -1,0 +1,30 @@
+uuid: e99583b4-6e68-40e0-905d-59d5e9fbb91d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_authority_link
+    - taxonomy.vocabulary.resource_types
+  module:
+    - controlled_access_terms
+_core:
+  default_config_hash: fFgIbbfq71u98DtB8bkd9HOnh8b_Kzy_-tJV8jtpiCE
+id: taxonomy_term.resource_types.field_authority_link
+field_name: field_authority_link
+entity_type: taxonomy_term
+bundle: resource_types
+label: 'Authority Sources'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  authority_sources:
+    marc_resource_types: 'MARC Resource Types'
+    resourceTypes: 'Library of Congress Resource Types Scheme'
+    bibo: 'Bibliographic Ontology'
+    other: Other
+  title: 1
+  link_type: 16
+field_type: authority_link

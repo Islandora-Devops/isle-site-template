@@ -1,0 +1,49 @@
+uuid: 75541242-a4c1-41c6-87ca-1cf5675f44b9
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.media_display_blocks
+  module:
+    - islandora
+    - views
+label: 'Default Media Display'
+name: default_media_display
+group: Display
+description: 'Displays the Service File or Original File in its "Source" view mode'
+requireAllConditions: true
+disabled: false
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: true
+    uuid: 79121791-57c8-47e5-89a2-27ee1884cc6e
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'http://openseadragon.github.io,http://mozilla.github.io/pdf.js,https://projectmirador.org'
+    logic: or
+reactions:
+  blocks:
+    id: blocks
+    uuid: 8c6ca09f-08f0-493c-8e1b-445011a8ccaa
+    blocks:
+      661cf4da-b979-4478-8333-db01a1746d64:
+        uuid: 661cf4da-b979-4478-8333-db01a1746d64
+        id: 'views_block:media_display_blocks-source'
+        label: ''
+        provider: views
+        label_display: '0'
+        region: content_above
+        weight: '0'
+        custom_id: views_block_media_display_blocks_source
+        theme: olivero
+        css_class: ''
+        unique: 0
+        context_id: default_media_display
+        context_mapping: {  }
+        views_label: ''
+        items_per_page: none
+        third_party_settings: {  }
+    include_default_blocks: 1
+    saved: false
+weight: -4

@@ -1,0 +1,34 @@
+uuid: 0913dd70-8444-46ff-8bd2-27cf89748cee
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+_core:
+  default_config_hash: 5SUy4U9p47y_Ke10LfvsOR2RVkjpRjPQ5tgAG4Fs1wk
+label: 'External Files'
+name: external_files
+group: Indexing
+description: 'Index files not in Fedora in Fedora and Blazegraph'
+requireAllConditions: false
+disabled: false
+conditions:
+  file_uses_filesystem:
+    id: file_uses_filesystem
+    negate: false
+    context_mapping:
+      file: '@islandora.file_route_context_provider:file'
+    filesystems:
+      public: public
+reactions:
+  index:
+    id: index
+    saved: false
+    actions:
+      index_file_as_fedora_external_content: index_file_as_fedora_external_content
+  delete:
+    id: delete
+    saved: false
+    actions:
+      delete_file_as_fedora_external_content: delete_file_as_fedora_external_content
+weight: -7

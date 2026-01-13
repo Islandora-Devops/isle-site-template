@@ -1,0 +1,49 @@
+uuid: d5cb2c16-4125-49d7-8a52-3f493b6a1f3e
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.subject
+  module:
+    - context
+    - facets
+    - islandora
+  theme:
+    - olivero
+_core:
+  default_config_hash: 8CNTurKBSOQZRTrWiaCmfAwseQyzXZOb8gJohUvIBFw
+id: subject
+theme: olivero
+region: sidebar
+weight: -7
+provider: null
+plugin: 'facet_block:subject'
+settings:
+  id: 'facet_block:subject'
+  label: Subject
+  label_display: visible
+  provider: facets
+  context_mapping: {  }
+  block_id: subject
+visibility:
+  user_status:
+    id: user_status
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    user_status:
+      viewing_profile: '0'
+      logged_viewing_profile: '0'
+      own_page_true: '0'
+      field_value: '0'
+    user_fields: uid
+  view_inclusion:
+    id: view_inclusion
+    negate: false
+    view_inclusion:
+      view-solr_search_content-page_1: view-solr_search_content-page_1
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''

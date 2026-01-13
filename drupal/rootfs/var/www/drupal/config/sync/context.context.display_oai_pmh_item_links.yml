@@ -1,0 +1,55 @@
+uuid: 6aec9511-76fc-43c1-bea6-eb9bab0d990f
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.oai_pmh_item_links
+  module:
+    - islandora
+    - views
+label: 'Display OAI-PMH Item Links'
+name: display_oai_pmh_item_links
+group: Display
+description: 'If an Islandora node, and not a Collection, show OAI-PMH Item Record Links (MODS, DC)'
+requireAllConditions: true
+disabled: false
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: true
+    uuid: 52390830-adb8-47da-8dca-7017f36377a3
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'http://purl.org/dc/dcmitype/Collection'
+    logic: and
+  node_is_islandora_object:
+    id: node_is_islandora_object
+    negate: 0
+    uuid: 8f5d786a-c538-4505-b3ad-4c613143d4fd
+    context_mapping:
+      node: '@node.node_route_context:node'
+reactions:
+  blocks:
+    id: blocks
+    uuid: 4fbfa7a6-f1d5-4220-994f-db705a50993b
+    blocks:
+      554b31f0-bd04-420f-aac3-6e3b71889f59:
+        uuid: 554b31f0-bd04-420f-aac3-6e3b71889f59
+        id: 'views_block:oai_pmh_item_links-block_1'
+        label: ''
+        provider: views
+        label_display: '0'
+        region: content
+        weight: '0'
+        custom_id: views_block_oai_pmh_item_links_block_1
+        theme: olivero
+        css_class: ''
+        unique: 0
+        context_id: display_oai_pmh_item_links
+        context_mapping: {  }
+        views_label: ''
+        items_per_page: none
+        third_party_settings: {  }
+    include_default_blocks: 0
+    saved: false
+weight: -2

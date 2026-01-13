@@ -1,0 +1,11 @@
+uuid: bffd952e-2cc2-4203-9fe7-3c1d44796b61
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.resource_types_dcmi
+id: taxonomy_term.resource_types_dcmi
+target_entity_type_id: taxonomy_term
+target_bundle: resource_types_dcmi
+default_langcode: site_default
+language_alterable: false

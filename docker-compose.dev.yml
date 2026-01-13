@@ -1,0 +1,34 @@
+# example docker compose override for local development
+# allowing editing custom themes/modules from host machine
+services:
+  drupal:
+    volumes:
+      - ./drupal/rootfs/var/www/drupal:/var/www/drupal:z,rw,${CONSISTENCY}
+  mariadb:
+    ports:
+      - "3306:3306"
+  traefik:
+    command: >-
+      --ping=true
+      --log.level=INFO
+      --entryPoints.http.address=:80
+      --entryPoints.http.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
+      --entryPoints.http.http.encodedCharacters.allowEncodedSlash=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedPercent=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedQuestionMark=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedHash=true
+      --entryPoints.http.transport.respondingTimeouts.readTimeout=60
+      --entryPoints.https.address=:443
+      --entryPoints.https.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
+      --entryPoints.http.http.encodedCharacters.allowEncodedSlash=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedPercent=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedQuestionMark=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedHash=true
+      --entryPoints.https.transport.respondingTimeouts.readTimeout=60
+      --providers.file.directory=/etc/traefik/dynamic
+      --providers.docker=true
+      --providers.docker.network=default
+      --providers.docker.exposedByDefault=false
+      --api.insecure=${DEVELOPMENT_ENVIRONMENT:-false}
+      --api.dashboard=${DEVELOPMENT_ENVIRONMENT:-false}
+      --api.debug=${DEVELOPMENT_ENVIRONMENT:-false}

@@ -1,0 +1,31 @@
+uuid: f5555792-2d53-441a-b8ce-0d027735281b
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.basic_html
+    - rest.resource.oai_pmh
+  module:
+    - comment
+    - contact
+    - filter
+    - media
+    - rest
+    - shortcut
+    - system
+_core:
+  default_config_hash: I44QAB4es39lNzMQWiJLq2dfjX7VRSOzT_5KzAcUq_M
+id: authenticated
+label: 'Authenticated user'
+weight: 1
+is_admin: false
+permissions:
+  - 'access comments'
+  - 'access content'
+  - 'access shortcuts'
+  - 'access site-wide contact form'
+  - 'post comments'
+  - 'restful get oai_pmh'
+  - 'skip comment approval'
+  - 'use text format basic_html'
+  - 'view media'

@@ -1,0 +1,31 @@
+uuid: 98d7bb6e-bac8-43f9-a029-f5725a3eb32c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_physical_form
+    - node.type.islandora_object
+    - taxonomy.vocabulary.physical_form
+_core:
+  default_config_hash: ilcgC7dzbD3x-ZH6rBl4hn00B8032vM0Cs2tvFmaq0A
+id: node.islandora_object.field_physical_form
+field_name: field_physical_form
+entity_type: node
+bundle: islandora_object
+label: Form
+description: 'The physical format of the original resource being described. If the resource is a physical object, the physical form is recorded here. If the resource is born-digital, the original digital form is recorded here. Details of the formats of resource representations stored in Islandora should be recorded on the relevant Media files. '
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      physical_form: physical_form
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

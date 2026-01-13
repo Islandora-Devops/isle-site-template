@@ -1,0 +1,26 @@
+csl_map:
+  field_model:
+    - type
+  field_description:
+    - abstract
+  field_genre:
+    - genre
+  field_publisher:
+    - publisher
+  field_place_published:
+    - publisher-place
+  title:
+    - title
+  'current url':
+    - URL
+  field_language:
+    - language
+  field_edtf_date_issued:
+    - issued
+  field_linked_agent:
+    - author
+typed_relation_map:
+  'relators:aut': author
+  'relators:ctb': contributor
+  'relators:edt': editor
+reference_type_field_map: {  }

@@ -1,0 +1,48 @@
+uuid: 5616d2b2-191d-43cb-bf5f-d0e3503d9373
+langcode: en
+status: true
+dependencies:
+  module:
+    - advanced_search
+    - context
+    - islandora
+    - system
+  theme:
+    - olivero
+id: search
+theme: olivero
+region: primary_menu
+weight: -11
+provider: null
+plugin: search_block
+settings:
+  id: search_block
+  label: Search
+  label_display: '0'
+  provider: advanced_search
+  block_id: search
+  search_view_machine_name: view.solr_search_content.page_1
+  search_textfield_label: Keyword
+  search_placeholder: ''
+  search_submit_label: Search
+visibility:
+  user_status:
+    id: user_status
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    user_status:
+      viewing_profile: '0'
+      logged_viewing_profile: '0'
+      own_page_true: '0'
+      field_value: '0'
+    user_fields: uid
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  request_path:
+    id: request_path
+    negate: true
+    pages: /search

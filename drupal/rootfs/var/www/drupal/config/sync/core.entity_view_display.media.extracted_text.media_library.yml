@@ -1,0 +1,42 @@
+uuid: f0b085a8-086a-43eb-a315-cf235d62862e
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.media_library
+    - field.field.media.extracted_text.field_edited_text
+    - field.field.media.extracted_text.field_media_file
+    - field.field.media.extracted_text.field_media_of
+    - field.field.media.extracted_text.field_media_use
+    - field.field.media.extracted_text.field_mime_type
+    - image.style.medium
+    - media.type.extracted_text
+  module:
+    - image
+id: media.extracted_text.media_library
+targetEntityType: media
+bundle: extracted_text
+mode: media_library
+content:
+  thumbnail:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: medium
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  field_edited_text: true
+  field_media_file: true
+  field_media_of: true
+  field_media_use: true
+  field_mime_type: true
+  langcode: true
+  name: true
+  search_api_excerpt: true
+  uid: true

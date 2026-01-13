@@ -1,0 +1,25 @@
+uuid: 3bfe2b2e-0870-4809-bbcd-0aa3516e606a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_authority_link
+    - taxonomy.vocabulary.resource_types_dcmi
+  module:
+    - controlled_access_terms
+id: taxonomy_term.resource_types_dcmi.field_authority_link
+field_name: field_authority_link
+entity_type: taxonomy_term
+bundle: resource_types_dcmi
+label: 'Authority Sources'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  authority_sources:
+    dcmi_types: 'DCMI Type Vocabulary'
+  title: 1
+  link_type: 16
+field_type: authority_link

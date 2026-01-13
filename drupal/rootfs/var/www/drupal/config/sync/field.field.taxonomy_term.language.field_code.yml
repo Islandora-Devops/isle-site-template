@@ -1,0 +1,19 @@
+uuid: ec344494-8fa9-407d-b884-657c0024a45c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_code
+    - taxonomy.vocabulary.language
+id: taxonomy_term.language.field_code
+field_name: field_code
+entity_type: taxonomy_term
+bundle: language
+label: Code
+description: 'Code in a controlled vocabulary such as ISO629-2.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,28 @@
+uuid: 252a842b-a335-468b-b3b6-0d5ad075e44a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_authority_link
+    - taxonomy.vocabulary.issuance_modes
+  module:
+    - controlled_access_terms
+_core:
+  default_config_hash: _L6Iby5EKxhqCCfAggp9czWf8xVEFfUu3PihNyQAiQI
+id: taxonomy_term.issuance_modes.field_authority_link
+field_name: field_authority_link
+entity_type: taxonomy_term
+bundle: issuance_modes
+label: 'Authority Link'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  authority_sources:
+    issuance: 'MARC Issuance List'
+    other: Other
+  title: 1
+  link_type: 16
+field_type: authority_link

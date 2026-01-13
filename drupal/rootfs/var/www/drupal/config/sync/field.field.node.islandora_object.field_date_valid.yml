@@ -1,0 +1,23 @@
+uuid: e56640fa-bf91-43b0-8eef-8fad324a745f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_date_valid
+    - node.type.islandora_object
+  module:
+    - controlled_access_terms
+_core:
+  default_config_hash: g1IRNnmkaVGyZbhPbJKkcaQcFCYBbUCPFa_G5shat74
+id: node.islandora_object.field_date_valid
+field_name: field_date_valid
+entity_type: node
+bundle: islandora_object
+label: 'Date Valid'
+description: 'Date (often a range) of validity of a resource.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: edtf

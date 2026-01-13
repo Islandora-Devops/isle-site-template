@@ -1,0 +1,35 @@
+uuid: 8f1357a4-a6b2-40d5-b846-10c8b742cb78
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.publisher_swc
+  module:
+    - context
+    - facets
+    - islandora
+  theme:
+    - olivero
+id: olivero_publisherswc
+theme: olivero
+region: sidebar
+weight: -10
+provider: null
+plugin: 'facet_block:publisher_swc'
+settings:
+  id: 'facet_block:publisher_swc'
+  label: Publisher
+  label_display: visible
+  provider: facets
+  context_mapping: {  }
+  block_id: olivero_publisherswc
+visibility:
+  context_all:
+    id: context_all
+    negate: false
+    values: collection
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''

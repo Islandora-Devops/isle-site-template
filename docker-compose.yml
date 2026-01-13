@@ -1,568 +1,318 @@
 ---
 # Common to all services
 x-common: &common
-    restart: unless-stopped
-    tty: true # Required for non-root users with selinux enabled.
-    security_opt:
-        - label=type:container_runtime_t # Required for selinux to access the docker socket and bind mount files.
-
-x-dev: &dev
-    profiles: [dev]
-    secrets:
-        - source: CERT_PUBLIC_KEY
-        - source: CERT_PRIVATE_KEY
-        - source: CERT_AUTHORITY
-        - source: UID
-
-# Will override what is in x-dev, x-common.
-x-prod: &prod
-    profiles: [prod]
-    secrets: [] # Development certificates are only needed for development environments.
-
-x-traefik-enable: &traefik-enable
-    traefik.enable: true
-
-# Used to override dev configuration.
-x-traefik-disable: &traefik-disable
-    traefik.enable: false
-
-x-traefik-https-redirect-middleware: &traefik-https-redirect-middleware
-    traefik.http.middlewares.https-redirect.redirectscheme.permanent: true
-    traefik.http.middlewares.https-redirect.redirectscheme.scheme: https
-
-x-traefik-https-redirect: &traefik-https-redirect https-redirect
-
-x-traefik-certresolver: &traefik-certresolver resolver
-
-x-traefik-drupal-labels: &traefik-drupal-labels
-    traefik.http.routers.drupal_http.entrypoints: http
-    traefik.http.routers.drupal_http.middlewares: *traefik-https-redirect
-    traefik.http.routers.drupal_http.service: drupal
-    traefik.http.routers.drupal_https.entrypoints: https
-    traefik.http.routers.drupal_https.service: drupal
-    traefik.http.routers.drupal_https.tls: true
-    traefik.http.services.drupal.loadbalancer.server.port: 80
-
-x-secrets-jwt-public: &secrets-jwt-public
-    - source: JWT_ADMIN_TOKEN
-    - source: JWT_PUBLIC_KEY
-
-networks:
+  restart: unless-stopped
+  tty: true # Required for non-root users with selinux enabled.
+  security_opt:
+    - label=type:container_runtime_t # Required for selinux to access the docker socket and bind mount files.
+  networks:
     default:
+networks:
+  default:
 
 volumes:
-    activemq-data: {}
-    blazegraph-data: {}
-    cantaloupe-data: {}
-    drupal-private-files: {}
-    drupal-public-files: {}
-    drupal-solr-config: {}
-    fcrepo-data: {}
-    mariadb-data: {}
-    solr-data: {}
+  acme-data: {}
+  activemq-data: {}
+  blazegraph-data: {}
+  cantaloupe-data: {}
+  drupal-private-files: {}
+  drupal-public-files: {}
+  drupal-solr-config: {}
+  fcrepo-data: {}
+  mariadb-data: {}
+  solr-data: {}
 
 secrets:
-    # Certificates are only used for development environments.
-    # In production the expectation is to use lets encrypt, etc.
-    # See README.md for how to generate them.
-    CERT_PUBLIC_KEY:
-        file: ./certs/cert.pem
-    CERT_PRIVATE_KEY:
-        file: ./certs/privkey.pem
-    CERT_AUTHORITY:
-        file: ./certs/rootCA.pem
-    # UID is used to map the nginx user id number to that of the host to prevent
-    # problems when bind mounting files from this repository into the container
-    # for development purposes.
-    UID:
-        file: ./certs/UID
-    # Production secrets:
-    #
-    # Unless otherwise specified the following command can be used to generate
-    # passwords, wherein:
-    # The range passed to grep is the valid characters
-    #   - '[!-~]' to include special characters or
-    # . - [A-Za-z0-9]'
-    # The number passed to head is the length of the password.
-    #
-    # grep -ao '[A-Za-z0-9]' </dev/urandom | head -32 | tr -d '\n' > ./secrets/PASSWORD
-    ACTIVEMQ_PASSWORD:
-        file: "./secrets/ACTIVEMQ_PASSWORD"
-    ACTIVEMQ_WEB_ADMIN_PASSWORD:
-        file: "./secrets/ACTIVEMQ_WEB_ADMIN_PASSWORD"
-    ALPACA_JMS_PASSWORD:
-        file: "./secrets/ACTIVEMQ_PASSWORD"
-    DB_ROOT_PASSWORD:
-        file: "./secrets/DB_ROOT_PASSWORD"
-    DRUPAL_DEFAULT_ACCOUNT_PASSWORD:
-        file: "./secrets/DRUPAL_DEFAULT_ACCOUNT_PASSWORD"
-    DRUPAL_DEFAULT_DB_PASSWORD:
-        file: "./secrets/DRUPAL_DEFAULT_DB_PASSWORD"
-    # The salt should use the following character range: 'A-Za-z0-9-_'.
-    # And be 74 characters long.
-    DRUPAL_DEFAULT_SALT:
-        file: "./secrets/DRUPAL_DEFAULT_SALT"
-    FCREPO_DB_PASSWORD:
-        file: "./secrets/FCREPO_DB_PASSWORD"
-    JWT_ADMIN_TOKEN:
-        file: "./secrets/JWT_ADMIN_TOKEN"
-    # First generate the private key below.
-    # Then generate with openssl
-    # openssl rsa -pubout -in ./secrets/JWT_PRIVATE_KEY -out ./secrets/JWT_PUBLIC_KEY &>/dev/null
-    JWT_PUBLIC_KEY:
-        file: "./secrets/JWT_PUBLIC_KEY"
-    # Generate with openssl:
-    # openssl genrsa -out ./secrets/JWT_PRIVATE_KEY 2048 &>/dev/null
-    JWT_PRIVATE_KEY:
-        file: "./secrets/JWT_PRIVATE_KEY"
+  # Certificates are only used for development environments.
+  CERT_PUBLIC_KEY:
+    file: ./certs/cert.pem
+  CERT_PRIVATE_KEY:
+    file: ./certs/privkey.pem
+  CERT_AUTHORITY:
+    file: ./certs/rootCA.pem
+  # Production secrets:
+  ACTIVEMQ_PASSWORD:
+    file: "./secrets/ACTIVEMQ_PASSWORD"
+  ACTIVEMQ_WEB_ADMIN_PASSWORD:
+    file: "./secrets/ACTIVEMQ_WEB_ADMIN_PASSWORD"
+  ALPACA_JMS_PASSWORD:
+    file: "./secrets/ACTIVEMQ_PASSWORD"
+  DB_ROOT_PASSWORD:
+    file: "./secrets/DB_ROOT_PASSWORD"
+  DRUPAL_DEFAULT_ACCOUNT_PASSWORD:
+    file: "./secrets/DRUPAL_DEFAULT_ACCOUNT_PASSWORD"
+  DRUPAL_DEFAULT_DB_PASSWORD:
+    file: "./secrets/DRUPAL_DEFAULT_DB_PASSWORD"
+  DRUPAL_DEFAULT_SALT:
+    file: "./secrets/DRUPAL_DEFAULT_SALT"
+  FCREPO_DB_PASSWORD:
+    file: "./secrets/FCREPO_DB_PASSWORD"
+  JWT_ADMIN_TOKEN:
+    file: "./secrets/JWT_ADMIN_TOKEN"
+  JWT_PUBLIC_KEY:
+    file: "./secrets/JWT_PUBLIC_KEY"
+  JWT_PRIVATE_KEY:
+    file: "./secrets/JWT_PRIVATE_KEY"
 
 services:
-    alpaca-dev: &alpaca
-        <<: [*dev, *common]
-        image: ${ISLANDORA_REPOSITORY}/alpaca:${ISLANDORA_TAG}
-        networks:
-            default:
-                aliases: # Allow access without using the `-dev` or `-prod` suffix.
-                    - alpaca
-        depends_on:
-            activemq-dev:
-                condition: service_healthy
-    alpaca-prod:
-        <<: [*prod, *alpaca]
-        secrets:
-            - source: ALPACA_JMS_PASSWORD
-        depends_on:
-            activemq-prod:
-                condition: service_healthy
-    crayfits-dev: &crayfits
-        <<: [*dev, *common]
-        image: ${ISLANDORA_REPOSITORY}/crayfits:${ISLANDORA_TAG}
-        networks:
-            default:
-                aliases: # Allow access without using the `-dev` or `-prod` suffix.
-                    - crayfits
-    crayfits-prod:
-        <<: [*prod, *crayfits]
-        secrets: *secrets-jwt-public
-    fits-dev: &fits
-        <<: [*dev, *common]
-        image: ${ISLANDORA_REPOSITORY}/fits:${ISLANDORA_TAG}
-        networks:
-            default:
-                aliases: # Allow access without using the `-dev` or `-prod` suffix.
-                    - fits
-    fits-prod:
-        <<: [*prod, *fits]
-    homarus-dev: &homarus
-        <<: [*dev, *common]
-        image: ${ISLANDORA_REPOSITORY}/homarus:${ISLANDORA_TAG}
-        networks:
-            default:
-                aliases: # Allow access without using the `-dev` or `-prod` suffix.
-                    - homarus
-    homarus-prod:
-        <<: [*prod, *homarus]
-        secrets: *secrets-jwt-public
-    houdini-dev: &houdini
-        <<: [*dev, *common]
-        image: ${ISLANDORA_REPOSITORY}/houdini:${ISLANDORA_TAG}
-        networks:
-            default:
-                aliases: # Allow access without using the `-dev` or `-prod` suffix.
-                    - houdini
-    houdini-prod:
-        <<: [*prod, *houdini]
-        secrets: *secrets-jwt-public
-    hypercube-dev: &hypercube
-        <<: [*dev, *common]
-        image: ${ISLANDORA_REPOSITORY}/hypercube:${ISLANDORA_TAG}
-        networks:
-            default:
-                aliases: # Allow access without using the `-dev` or `-prod` suffix.
-                    - hypercube
-    hypercube-prod:
-        <<: [*prod, *hypercube]
-        secrets: *secrets-jwt-public
-    mariadb-dev: &mariadb
-        <<: [*dev, *common]
-        image: ${ISLANDORA_REPOSITORY}/mariadb:${ISLANDORA_TAG}
-        volumes:
-            - mariadb-data:/var/lib/mysql:rw
-        networks:
-            default:
-                aliases: # Allow access without using the `-dev` or `-prod` suffix.
-                    - mariadb
-    mariadb-prod:
-        <<: [*prod, *mariadb]
-        secrets:
-            - source: DB_ROOT_PASSWORD
-    milliner-dev: &milliner
-        <<: [*dev, *common]
-        image: ${ISLANDORA_REPOSITORY}/milliner:${ISLANDORA_TAG}
-        networks:
-            default:
-                aliases: # Allow access without using the `-dev` or `-prod` suffix.
-                    - milliner
-        environment:
-            MILLINER_FEDORA6: ${FEDORA_6}
-    milliner-prod:
-        <<: [*prod, *milliner]
-        secrets: *secrets-jwt-public
-    activemq-dev: &activemq
-        <<: [*dev, *common]
-        image: ${ISLANDORA_REPOSITORY}/activemq:${ISLANDORA_TAG}
-        labels: &activemq-labels
-            <<: [*traefik-enable, *traefik-https-redirect-middleware]
-            traefik.http.routers.activemq_http.entrypoints: http
-            traefik.http.routers.activemq_http.middlewares: *traefik-https-redirect
-            traefik.http.routers.activemq_http.rule: &traefik-host-activemq-dev Host(`activemq.${DOMAIN}`)
-            traefik.http.routers.activemq_http.service: activemq
-            traefik.http.routers.activemq_https.entrypoints: https
-            traefik.http.routers.activemq_https.rule: *traefik-host-activemq-dev
-            traefik.http.routers.activemq_https.tls: true
-            traefik.http.services.activemq.loadbalancer.server.port: 8161
-            traefik.subdomain: activemq
-        volumes:
-            - activemq-data:/opt/activemq/data:rw
-        networks:
-            default:
-                aliases: # Allow access without using the `-dev` or `-prod` suffix.
-                    - activemq
-    activemq-prod:
-        <<: [*prod, *activemq]
-        labels:
-            <<: [*traefik-disable, *activemq-labels]
-        secrets:
-            - source: ACTIVEMQ_PASSWORD
-            - source: ACTIVEMQ_WEB_ADMIN_PASSWORD
-    blazegraph-dev: &blazegraph
-        <<: [*dev, *common]
-        image: ${ISLANDORA_REPOSITORY}/blazegraph:${ISLANDORA_TAG}
-        labels: &blazegraph-labels
-            <<: [*traefik-enable, *traefik-https-redirect-middleware]
-            traefik.http.routers.blazegraph_http.entrypoints: http
-            traefik.http.routers.blazegraph_http.middlewares: *traefik-https-redirect
-            traefik.http.routers.blazegraph_http.rule: &traefik-host-blazegraph-dev Host(`blazegraph.${DOMAIN}`)
-            traefik.http.routers.blazegraph_http.service: blazegraph
-            traefik.http.routers.blazegraph_https.entrypoints: https
-            traefik.http.routers.blazegraph_https.rule: *traefik-host-blazegraph-dev
-            traefik.http.routers.blazegraph_https.tls: true
-            traefik.http.services.blazegraph.loadbalancer.server.port: 8080
-        volumes:
-            - blazegraph-data:/data:rw
-        networks:
-            default:
-                aliases: # Allow access without using the `-dev` or `-prod` suffix.
-                    - blazegraph
-    blazegraph-prod:
-        <<: [*prod, *blazegraph]
-        labels:
-            <<: [*traefik-disable, *blazegraph-labels]
-    cantaloupe-dev: &cantaloupe
-        <<: [*dev, *common]
-        image: ${ISLANDORA_REPOSITORY}/cantaloupe:${ISLANDORA_TAG}
-        labels: &cantaloupe-labels
-            <<: [*traefik-enable, *traefik-https-redirect-middleware]
-            traefik.http.middlewares.cantaloupe-custom-request-headers.headers.customrequestheaders.X-Forwarded-Path: /cantaloupe
-            traefik.http.middlewares.cantaloupe-strip-prefix.stripprefix.prefixes: /cantaloupe
-            traefik.http.middlewares.cantaloupe.chain.middlewares: cantaloupe-strip-prefix,cantaloupe-custom-request-headers
-            traefik.http.routers.cantaloupe_http.entrypoints: http
-            traefik.http.routers.cantaloupe_http.middlewares: *traefik-https-redirect
-            traefik.http.routers.cantaloupe_http.rule: &traefik-host-cantaloupe-dev Host(`${DOMAIN}`) && PathPrefix(`/cantaloupe`)
-            traefik.http.routers.cantaloupe_http.service: cantaloupe
-            traefik.http.routers.cantaloupe_https.middlewares: cantaloupe
-            traefik.http.routers.cantaloupe_https.entrypoints: https
-            traefik.http.routers.cantaloupe_https.rule: *traefik-host-cantaloupe-dev
-            traefik.http.routers.cantaloupe_https.tls: true
-            traefik.http.services.cantaloupe.loadbalancer.server.port: 8182
-        volumes:
-            - cantaloupe-data:/data:rw
-        networks:
-            default:
-                aliases: # Allow access without using the `-dev` or `-prod` suffix.
-                    - cantaloupe
-    cantaloupe-prod:
-        <<: [*prod, *cantaloupe]
-        labels:
-            <<: [*cantaloupe-labels]
-            traefik.http.routers.cantaloupe_http.rule: &traefik-host-cantaloupe-prod Host(`${DOMAIN}`) && PathPrefix(`/cantaloupe`)
-            traefik.http.routers.cantaloupe_https.rule: *traefik-host-cantaloupe-prod
-            traefik.http.routers.cantaloupe_https.tls.certresolver: *traefik-certresolver
-    drupal-dev: &drupal
-        <<: [*dev, *common]
-        image: ${REPOSITORY}/${COMPOSE_PROJECT_NAME}:${TAG}
-        build:
-            context: ./drupal
-            args:
-                REPOSITORY: ${ISLANDORA_REPOSITORY}
-                TAG: ${ISLANDORA_TAG}
-            x-bake:
-                platforms: [linux/amd64, linux/arm64]
-                cache-from:
-                    - type=registry,ref=${REPOSITORY}/${COMPOSE_PROJECT_NAME}:${TAG}
-                    - type=registry,ref=${REPOSITORY}/${COMPOSE_PROJECT_NAME}:latest
-                cache-to:
-                    - type=inline
-        environment: &drupal-environment
-            DEVELOPMENT_ENVIRONMENT: true
-            DRUPAL_DEFAULT_BROKER_URL: "tcp://activemq:61613"
-            DRUPAL_DEFAULT_CANTALOUPE_URL: "https://${DOMAIN}/cantaloupe/iiif/2"
-            DRUPAL_DEFAULT_CONFIGDIR: "/var/www/drupal/config/sync"
-            DRUPAL_DEFAULT_FCREPO_HOST: "fcrepo"
-            DRUPAL_DEFAULT_FCREPO_PORT: 8080
-            DRUPAL_DEFAULT_FCREPO_URL: "https://fcrepo.${DOMAIN}/fcrepo/rest/"
-            DRUPAL_DEFAULT_INSTALL_EXISTING_CONFIG: "true"
-            DRUPAL_DEFAULT_NAME: "Islandora Digital Collections"
-            DRUPAL_DEFAULT_PROFILE: "minimal"
-            DRUPAL_DEFAULT_SITE_URL: "${DOMAIN}"
-            DRUPAL_DEFAULT_SOLR_CORE: "default"
-            DRUSH_OPTIONS_URI: "https://${DOMAIN}" # Used by docker/drupal/rootfs/usr/local/share/custom/install.sh
-        labels:
-            <<: [*traefik-enable, *traefik-https-redirect-middleware, *traefik-drupal-labels]
-            traefik.http.routers.drupal_http.rule: &traefik-host-drupal-prod Host(`${DOMAIN}`)
-            traefik.http.routers.drupal_https.rule: *traefik-host-drupal-prod
-            traefik.http.routers.drupal_https.tls.certresolver: *traefik-certresolver
-        volumes:
-            - &drupal-public-files
-              type: volume
-              source: drupal-public-files
-              target: /var/www/drupal/web/sites/default/files
-              read_only: false
-            - &drupal-private-files
-              type: volume
-              source: drupal-private-files
-              target: /var/www/drupal/private
-              read_only: false
-            - ./drupal/rootfs/var/www/drupal/assets:/var/www/drupal/assets:z,rw,${CONSISTENCY}
-            - ./drupal/rootfs/var/www/drupal/composer.json:/var/www/drupal/composer.json:z,rw,${CONSISTENCY}
-            - ./drupal/rootfs/var/www/drupal/composer.lock:/var/www/drupal/composer.lock:z,rw,${CONSISTENCY}
-            - ./drupal/rootfs/var/www/drupal/config:/var/www/drupal/config:z,rw,${CONSISTENCY}
-            - ./drupal/rootfs/var/www/drupal/web/modules/custom:/var/www/drupal/web/modules/custom:z,rw,${CONSISTENCY}
-            - ./drupal/rootfs/var/www/drupal/web/themes/custom:/var/www/drupal/web/themes/custom:z,rw,${CONSISTENCY}
-            - &drupal-solr-config drupal-solr-config:/opt/solr/server/solr/default:z,rw
-        networks:
-            default:
-                aliases: # Allow access without using the `-dev` or `-prod` suffix.
-                    - drupal
-    drupal-prod:
-        <<: [*prod, *drupal]
-        environment:
-            <<: [*drupal-environment]
-            DEVELOPMENT_ENVIRONMENT: false
-            DRUPAL_DEFAULT_CANTALOUPE_URL: "https://${DOMAIN}/cantaloupe/iiif/2"
-            DRUPAL_DEFAULT_FCREPO_URL: "https://fcrepo.${DOMAIN}/fcrepo/rest/"
-            DRUPAL_DEFAULT_SITE_URL: "${DOMAIN}"
-            DRUSH_OPTIONS_URI: "https://${DOMAIN}"
-            NGINX_REAL_IP_RECURSIVE: ${REVERSE_PROXY}
-            NGINX_SET_REAL_IP_FROM: ${FRONTEND_IP_1}
-            NGINX_SET_REAL_IP_FROM2: ${FRONTEND_IP_2}
-            NGINX_SET_REAL_IP_FROM3: ${FRONTEND_IP_3}
-        volumes:
-            # No bind mounts in production.
-            # Changes to anything other than data is not persisted.
-            - *drupal-public-files
-            - *drupal-private-files
-            - *drupal-solr-config
-        secrets:
-            - source: DB_ROOT_PASSWORD
-            - source: DRUPAL_DEFAULT_ACCOUNT_PASSWORD
-            - source: DRUPAL_DEFAULT_DB_PASSWORD
-            - source: DRUPAL_DEFAULT_SALT
-            - source: JWT_PRIVATE_KEY
-            - source: JWT_PUBLIC_KEY
-    fcrepo-dev: &fcrepo
-        <<: [*dev, *common]
-        image: ${ISLANDORA_REPOSITORY}/fcrepo6:${ISLANDORA_TAG}
-        environment: &fcrepo-environment
-            FCREPO_ALLOW_EXTERNAL_DEFAULT: "http://default/"
-            FCREPO_ALLOW_EXTERNAL_DRUPAL: "https://${DOMAIN}/"
-            FCREPO_PERSISTENCE_TYPE: "mysql"
-            DB_HOST: mariadb
-            DB_PORT: 3306
-        labels: &fcrepo-labels
-            <<: [*traefik-enable, *traefik-https-redirect-middleware]
-            # Due to weird logic in `fcrepo/static/js/common.js`, do not use https
-            # as it assumes it always needs to append /fcr:metadata to every request
-            # breaking the links. Though for files we do want that page to be accessed
-            # so check for a file extension.
-            traefik.http.middlewares.fcrepo-strip-suffix.replacepathregex.regex: "^(.*/fcrepo/rest/[^.]*)/fcr:metadata$$"
-            traefik.http.middlewares.fcrepo-strip-suffix.replacepathregex.replacement: "$$1"
-            traefik.http.routers.fcrepo_http.entrypoints: http
-            traefik.http.routers.fcrepo_http.middlewares: *traefik-https-redirect
-            traefik.http.routers.fcrepo_http.rule: &traefik-host-fcrepo-dev Host(`fcrepo.${DOMAIN}`)
-            traefik.http.routers.fcrepo_http.service: fcrepo
-            traefik.http.routers.fcrepo_https.entrypoints: https
-            traefik.http.routers.fcrepo_https.middlewares: fcrepo-strip-suffix
-            traefik.http.routers.fcrepo_https.rule: *traefik-host-fcrepo-dev
-            traefik.http.routers.fcrepo_https.tls: true
-            traefik.http.services.fcrepo.loadbalancer.server.port: 8080
-        volumes:
-            - fcrepo-data:/data:rw
-        networks:
-            default:
-                aliases: # Allow access without using the `-dev` or `-prod` suffix.
-                    - fcrepo
-        depends_on:
-            activemq-dev:
-                condition: service_healthy
-    fcrepo-prod:
-        <<: [*prod, *fcrepo]
-        environment:
-            <<: [*fcrepo-environment]
-            FCREPO_ALLOW_EXTERNAL_DRUPAL: "https://${DOMAIN}/"
-        labels:
-            <<: [*fcrepo-labels]
-            traefik.http.routers.fcrepo_http.rule: &traefik-host-fcrepo-prod Host(`fcrepo.${DOMAIN}`)
-            traefik.http.routers.fcrepo_https.rule: *traefik-host-fcrepo-prod
-            traefik.http.routers.fcrepo_https.tls.certresolver: *traefik-certresolver
-        secrets:
-            - source: DB_ROOT_PASSWORD
-            - source: FCREPO_DB_PASSWORD
-            - source: JWT_ADMIN_TOKEN
-            - source: JWT_PUBLIC_KEY
-        depends_on:
-            activemq-prod:
-                condition: service_healthy
-    solr-dev: &solr
-        <<: [*dev, *common]
-        image: ${ISLANDORA_REPOSITORY}/solr:${ISLANDORA_TAG}
-        labels: &solr-labels
-            <<: [*traefik-enable, *traefik-https-redirect-middleware]
-            traefik.http.routers.solr_http.entrypoints: http
-            traefik.http.routers.solr_http.middlewares: *traefik-https-redirect
-            traefik.http.routers.solr_http.rule: &traefik-host-solr Host(`solr.${DOMAIN}`)
-            traefik.http.routers.solr_http.service: solr
-            traefik.http.routers.solr_https.entrypoints: https
-            traefik.http.routers.solr_https.rule: *traefik-host-solr
-            traefik.http.routers.solr_https.tls: true
-            traefik.http.services.solr.loadbalancer.server.port: 8983
-        volumes:
-            - solr-data:/data:rw
-            - type: volume
-              source: drupal-solr-config
-              target: /opt/solr/server/solr/default
-              read_only: false
-              volume:
-                  nocopy: true
-        networks:
-            default:
-                aliases: # Allow access without using the `-dev` or `-prod` suffix.
-                    - solr
-        # Ensure drupal mounts the shared volumes first.
-        depends_on:
-            drupal-dev:
-                condition: service_healthy
-    solr-prod:
-        <<: [*prod, *solr]
-        labels:
-            <<: [*traefik-disable, *solr-labels]
-        # Ensure drupal mounts the shared volumes first.
-        depends_on:
-            drupal-prod:
-                condition: service_healthy
-    traefik-dev: &traefik
-        <<: [*dev, *common]
-        image: traefik:v3.5.3@sha256:d6be8725d21b45bdd84b93ea01438256e0e3c94aa8fa51834fe87f37cd5d4af8
-        command: >-
-            --api.insecure=true
-            --api.dashboard=true
-            --api.debug=true
-            --ping=true
-            --entryPoints.http.address=:80
-            --entryPoints.https.address=:443
-            --entryPoints.https.transport.respondingTimeouts.readTimeout=60
-            --providers.file.filename=/etc/traefik/tls.yml
-            --providers.docker=true
-            --providers.docker.network=default
-            --providers.docker.exposedByDefault=false
-        labels:
-            <<: [*traefik-enable, *traefik-https-redirect-middleware]
-            traefik.http.routers.traefik_http.entrypoints: http
-            traefik.http.routers.traefik_http.middlewares: *traefik-https-redirect
-            traefik.http.routers.traefik_http.rule: &traefik-host-traefik Host(`traefik.${DOMAIN}`)
-            traefik.http.routers.traefik_http.service: traefik
-            traefik.http.routers.traefik_https.entrypoints: https
-            traefik.http.routers.traefik_https.rule: *traefik-host-traefik
-            traefik.http.routers.traefik_https.tls: true
-            traefik.http.services.traefik.loadbalancer.server.port: 8080
-        ports:
-            - "80:80"
-            - "443:443"
-        security_opt:
-            - label=type:container_runtime_t # Required for selinux to access the docker socket.
-        volumes:
-            - ./certs:/etc/ssl/traefik:Z,ro
-            - ./dev-tls.yml:/etc/traefik/tls.yml:Z,ro
-            - /var/run/docker.sock:/var/run/docker.sock:z
-        healthcheck:
-            test: traefik healthcheck --ping
-        networks:
-            default:
-                aliases:
-                    # Allow services to connect on the same name/port as the outside.
-                    - activemq.${DOMAIN}
-                    - blazegraph.${DOMAIN}
-                    - fcrepo.${DOMAIN}
-                    - ide.${DOMAIN}
-                    - ${DOMAIN} # Drupal is at the root domain.
-                    - solr.${DOMAIN}
-        depends_on:
-            # Sometimes traefik doesn't pick up on new containers so make sure
-            # they are started before traefik.
-            activemq-dev:
-                condition: service_healthy
-            blazegraph-dev:
-                condition: service_started
-            drupal-dev:
-                condition: service_healthy
-            fcrepo-dev:
-                condition: service_healthy
-            solr-dev:
-                condition: service_healthy
-    traefik-prod:
-        <<: [*prod, *traefik]
-        # Change caServer to use the staging server when testing changes to the Traefik.
-        #
-        # Staging: https://acme-staging-v02.api.letsencrypt.org/directory
-        # Production: https://acme-v02.api.letsencrypt.org/directory
-        #
-        # @See https://letsencrypt.org/docs/staging-environment/
-        # @See https://doc.traefik.io/traefik/https/acme/
-        command: >-
-            --api.insecure=false
-            --api.dashboard=false
-            --api.debug=false
-            --ping=true
-            --entryPoints.http.address=:80
-            --entryPoints.https.address=:443
-            --entryPoints.http.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
-            --entryPoints.https.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
-            --entrypoints.https.http.tls.certResolver=resolver
-            --providers.file.filename=/etc/traefik/tls.yml
-            --providers.docker
-            --providers.docker.network=default
-            --providers.docker.exposedByDefault=false
-            --certificatesresolvers.resolver.acme.httpchallenge=true
-            --certificatesresolvers.resolver.acme.httpchallenge.entrypoint=http
-            --certificatesresolvers.resolver.acme.email=${EMAIL}
-            --certificatesresolvers.resolver.acme.storage=/acme/acme.json
-            --certificatesResolvers.resolver.acme.caServer=https://acme-v02.api.letsencrypt.org/directory
-        labels:
-            <<: [*traefik-disable] # Do no route to dashboard as it is disabled in production.
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock:z,rw
-            - ./certs:/acme:Z
-            - ./prod-tls.yml:/etc/traefik/tls.yml:Z,ro
-        networks:
-            default:
-                aliases:
-                    # Allow services to connect on the same name/port as the outside.
-                    - "${DOMAIN}" # Drupal is at the root domain.
-                    - "fcrepo.${DOMAIN}"
-        depends_on:
-            # Sometimes traefik doesn't pick up on new containers so make sure
-            # they are started before traefik.
-            drupal-prod:
-                condition: service_healthy
-            fcrepo-prod:
-                condition: service_healthy
+  activemq:
+    <<: *common
+    image: islandora/activemq:${ISLANDORA_TAG}
+    secrets:
+      - source: ACTIVEMQ_PASSWORD
+      - source: ACTIVEMQ_WEB_ADMIN_PASSWORD
+    volumes:
+      - activemq-data:/opt/activemq/data:rw
+
+  alpaca:
+    <<: *common
+    depends_on:
+      activemq:
+        condition: service_healthy
+    image: islandora/alpaca:${ISLANDORA_TAG}
+    secrets:
+      - source: ALPACA_JMS_PASSWORD
+
+  blazegraph:
+    <<: *common
+    image: islandora/blazegraph:${ISLANDORA_TAG}
+    volumes:
+      - blazegraph-data:/data:rw
+
+  cantaloupe:
+    <<: *common
+    image: islandora/cantaloupe:${ISLANDORA_TAG}
+    secrets:
+      - source: CERT_PUBLIC_KEY
+      - source: CERT_AUTHORITY
+    volumes:
+      - cantaloupe-data:/data:rw
+
+  crayfits:
+    <<: *common
+    image: islandora/crayfits:${ISLANDORA_TAG}
+    secrets:
+      - source: CERT_PUBLIC_KEY
+      - source: CERT_AUTHORITY
+      - source: JWT_ADMIN_TOKEN
+      - source: JWT_PUBLIC_KEY
+
+  drupal:
+    <<: *common
+    build:
+      args:
+        REPOSITORY: islandora
+        TAG: ${ISLANDORA_TAG}
+      context: ./drupal
+      x-bake:
+        cache-from:
+          - type=registry,ref=${REPOSITORY}/${COMPOSE_PROJECT_NAME}:${TAG}
+          - type=registry,ref=${REPOSITORY}/${COMPOSE_PROJECT_NAME}:latest
+        cache-to:
+          - type=inline
+        platforms:
+          - linux/amd64
+          - linux/arm64
+    environment:
+      DEVELOPMENT_ENVIRONMENT: ${DEVELOPMENT_ENVIRONMENT:-false}
+      DRUPAL_DEFAULT_BROKER_URL: tcp://activemq:61613
+      DRUPAL_DEFAULT_CANTALOUPE_URL: ${URI_SCHEME}://${DOMAIN}/cantaloupe/iiif/2
+      DRUPAL_DEFAULT_CONFIGDIR: /var/www/drupal/config/sync
+      DRUPAL_DEFAULT_FCREPO_HOST: fcrepo
+      DRUPAL_DEFAULT_FCREPO_PORT: 8080
+      DRUPAL_DEFAULT_FCREPO_URL: ${URI_SCHEME}://fcrepo.${DOMAIN}/fcrepo/rest/
+      DRUPAL_DEFAULT_INSTALL_EXISTING_CONFIG: "true"
+      DRUPAL_DEFAULT_NAME: Islandora Digital Collections
+      DRUPAL_DEFAULT_PROFILE: minimal
+      DRUPAL_DEFAULT_SITE_URL: ${DOMAIN}
+      DRUPAL_DEFAULT_SOLR_CORE: default
+      DRUPAL_ENABLE_HTTPS: "false"
+      DRUSH_OPTIONS_URI: ${URI_SCHEME}://${DOMAIN}
+      NGINX_REAL_IP_RECURSIVE: ${REVERSE_PROXY}
+      NGINX_SET_REAL_IP_FROM: ${FRONTEND_IP_1}
+      NGINX_SET_REAL_IP_FROM2: ${FRONTEND_IP_2}
+      NGINX_SET_REAL_IP_FROM3: ${FRONTEND_IP_3}
+    image: ${REPOSITORY}/${COMPOSE_PROJECT_NAME}:${TAG}
+    secrets:
+      - source: CERT_PUBLIC_KEY
+      - source: CERT_AUTHORITY
+      - source: DB_ROOT_PASSWORD
+      - source: DRUPAL_DEFAULT_ACCOUNT_PASSWORD
+      - source: DRUPAL_DEFAULT_DB_PASSWORD
+      - source: DRUPAL_DEFAULT_SALT
+      - source: JWT_PRIVATE_KEY
+      - source: JWT_PUBLIC_KEY
+    volumes:
+      - read_only: false
+        source: drupal-public-files
+        target: /var/www/drupal/web/sites/default/files
+        type: volume
+      - read_only: false
+        source: drupal-private-files
+        target: /var/www/drupal/private
+        type: volume
+      - drupal-solr-config:/opt/solr/server/solr/default:z,rw
+
+  fcrepo:
+    <<: *common
+    depends_on:
+      activemq:
+        condition: service_healthy
+    environment:
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      FCREPO_ALLOW_EXTERNAL_DEFAULT: http://default/
+      FCREPO_ALLOW_EXTERNAL_DRUPAL: https://${DOMAIN}/
+      FCREPO_PERSISTENCE_TYPE: mysql
+    image: islandora/fcrepo6:${ISLANDORA_TAG}
+    secrets:
+      - source: DB_ROOT_PASSWORD
+      - source: FCREPO_DB_PASSWORD
+      - source: JWT_ADMIN_TOKEN
+      - source: JWT_PUBLIC_KEY
+    volumes:
+      - fcrepo-data:/data:rw
+
+  fits:
+    <<: *common
+    image: islandora/fits:${ISLANDORA_TAG}
+
+  homarus:
+    <<: *common
+    image: islandora/homarus:${ISLANDORA_TAG}
+    secrets:
+      - source: CERT_PUBLIC_KEY
+      - source: CERT_AUTHORITY
+      - source: JWT_ADMIN_TOKEN
+      - source: JWT_PUBLIC_KEY
+
+  houdini:
+    <<: *common
+    image: islandora/houdini:${ISLANDORA_TAG}
+    secrets:
+      - source: CERT_PUBLIC_KEY
+      - source: CERT_AUTHORITY
+      - source: JWT_ADMIN_TOKEN
+      - source: JWT_PUBLIC_KEY
+
+  hypercube:
+    <<: *common
+    image: islandora/hypercube:${ISLANDORA_TAG}
+    secrets:
+      - source: CERT_PUBLIC_KEY
+      - source: CERT_AUTHORITY
+      - source: JWT_ADMIN_TOKEN
+      - source: JWT_PUBLIC_KEY
+
+  init:
+    entrypoint: /scripts/init-entrypoint.sh
+    image: islandora/base:${ISLANDORA_TAG}
+    networks:
+      default:
+    profiles:
+      - none
+    restart: "no"
+    security_opt:
+      - label=type:container_runtime_t
+    volumes:
+      - ./.env:/.env
+      - ./certs:/certs:rw
+      - ./secrets:/secrets:rw
+      - ./scripts:/scripts:ro
+      - ./docker-compose.yml:/docker-compose.yml:ro
+      - ./drupal:/drupal:rw
+      - /var/run/docker.sock:/var/run/docker.sock:z
+
+  mariadb:
+    <<: *common
+    image: islandora/mariadb:${ISLANDORA_TAG}
+    secrets:
+      - source: DB_ROOT_PASSWORD
+    volumes:
+      - mariadb-data:/var/lib/mysql:rw
+
+  milliner:
+    <<: *common
+    environment:
+      MILLINER_FEDORA6: true
+    image: islandora/milliner:${ISLANDORA_TAG}
+    secrets:
+      - source: CERT_PUBLIC_KEY
+      - source: CERT_AUTHORITY
+      - source: JWT_ADMIN_TOKEN
+      - source: JWT_PUBLIC_KEY
+
+  solr:
+    <<: *common
+    depends_on:
+      drupal:
+        condition: service_healthy
+    image: islandora/solr:${ISLANDORA_TAG}
+    volumes:
+      - solr-data:/data:rw
+      - read_only: false
+        source: drupal-solr-config
+        target: /opt/solr/server/solr/default
+        type: volume
+        volume:
+          nocopy: true
+
+  traefik:
+    <<: *common
+    command: >-
+      --ping=true
+      --log.level=INFO
+      --entryPoints.http.address=:80
+      --entryPoints.http.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
+      --entryPoints.http.http.encodedCharacters.allowEncodedSlash=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedPercent=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedQuestionMark=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedHash=true
+      --entryPoints.http.transport.respondingTimeouts.readTimeout=60
+      --entryPoints.https.address=:443
+      --entryPoints.https.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
+      --entryPoints.http.http.encodedCharacters.allowEncodedSlash=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedPercent=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedQuestionMark=true
+      --entryPoints.http.http.encodedCharacters.allowEncodedHash=true
+      --entryPoints.https.transport.respondingTimeouts.readTimeout=60
+      --providers.file.directory=/etc/traefik/dynamic
+      --providers.docker=true
+      --providers.docker.network=default
+      --providers.docker.exposedByDefault=false
+      --api.insecure=${DEVELOPMENT_ENVIRONMENT:-false}
+      --api.dashboard=${DEVELOPMENT_ENVIRONMENT:-false}
+      --api.debug=${DEVELOPMENT_ENVIRONMENT:-false}
+    depends_on:
+      drupal:
+        condition: service_healthy
+    environment:
+      DEVELOPMENT_ENVIRONMENT: ${DEVELOPMENT_ENVIRONMENT:-false}
+      DOMAIN: ${DOMAIN}
+      TLS_PROVIDER: ${TLS_PROVIDER:-self-managed}
+      URI_SCHEME: ${URI_SCHEME:-http}
+    healthcheck:
+      start_period: 10s
+      test: traefik healthcheck --ping
+    image: traefik:v3.6.6@sha256:2979bff651c98e70345dd886186a7a15ee3ce18b636af208d4ccbf2d56dbdddd
+    networks:
+      default:
+        aliases:
+          - activemq.${DOMAIN}
+          - blazegraph.${DOMAIN}
+          - fcrepo.${DOMAIN}
+          - ${DOMAIN}
+          - solr.${DOMAIN}
+    ports:
+      - ${HOST_INSECURE_PORT:-80}:80
+      - ${HOST_SECURE_PORT:-443}:443
+    secrets:
+      - source: CERT_PUBLIC_KEY
+      - source: CERT_PRIVATE_KEY
+    security_opt:
+      - label=type:container_runtime_t
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:z
+      - ./conf/traefik:/etc/traefik/dynamic:ro
+      - acme-data:/acme:rw
+

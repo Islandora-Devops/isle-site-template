@@ -1,0 +1,11 @@
+uuid: 4d8a03d2-770b-4b14-98b8-d63d40d47849
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.mirador
+label: Mirador
+description: ''
+targetEntityType: media
+cache: true

@@ -1,0 +1,31 @@
+uuid: 088c2ee7-a3cd-4407-ab3c-ad8ca3ff0f25
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_model
+    - node.type.islandora_object
+    - taxonomy.vocabulary.islandora_models
+_core:
+  default_config_hash: Tqe4AiBzEnYEq7MLccObJrLZvb8AVjv0GLZlM1pcxpo
+id: node.islandora_object.field_model
+field_name: field_model
+entity_type: node
+bundle: islandora_object
+label: Model
+description: 'The internal-to-Islandora category of the resource. Affects how the item is displayed/viewed.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      islandora_models: islandora_models
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

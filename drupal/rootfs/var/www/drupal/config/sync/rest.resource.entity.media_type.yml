@@ -1,0 +1,20 @@
+uuid: 9d79cda6-c03b-441d-8383-0afa74ae1c63
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - media
+    - serialization
+_core:
+  default_config_hash: _yAs-A1tYKRPxRfoIB5J7pNkrM9hNyb_BJUA3_z1Jok
+id: entity.media_type
+plugin_id: 'entity:media_type'
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - basic_auth

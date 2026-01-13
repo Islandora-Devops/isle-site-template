@@ -1,0 +1,19 @@
+uuid: d800dc40-0741-4ccb-b29d-822e25c50bf9
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - serialization
+_core:
+  default_config_hash: _oiysdMeYbeeMg2XCY5t_y6WWx4LJYCycX53eFSEBCo
+id: entity.entity_form_display
+plugin_id: 'entity:entity_form_display'
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - basic_auth

@@ -1,0 +1,23 @@
+uuid: 22e27d48-241e-42d8-9c78-b9c7eec19599
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_of
+    - media.type.audio
+_core:
+  default_config_hash: InUFyVlpxFYVY-YhhapTUcRhFN2ckUDTH37xpa3Gs2M
+id: media.audio.field_media_of
+field_name: field_media_of
+entity_type: media
+bundle: audio
+label: 'Media of'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings: {  }
+field_type: entity_reference

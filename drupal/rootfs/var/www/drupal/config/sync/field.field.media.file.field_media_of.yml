@@ -1,0 +1,23 @@
+uuid: 3fcea3d2-b9a5-4458-bd88-ac56bed9ced3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_of
+    - media.type.file
+_core:
+  default_config_hash: ZoFg1xcTNbj60kVradrk0lqIv9uKpyipN6vwxdFV7nQ
+id: media.file.field_media_of
+field_name: field_media_of
+entity_type: media
+bundle: file
+label: 'Media of'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings: {  }
+field_type: entity_reference

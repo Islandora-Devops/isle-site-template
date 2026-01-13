@@ -1,0 +1,18 @@
+uuid: c8afa8cb-8157-4a64-88a4-52061036d04d
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: iChqZUHWKZPuvvQVJ4Wqfq6EcS_nGnNYR0NpF0amKtE
+id: video
+label: Video
+description: 'A video file.'
+source: video_file
+queue_thumbnail_downloads: false
+new_revision: true
+source_configuration:
+  source_field: field_media_video_file
+field_map:
+  name: name
+  mimetype: field_mime_type
+  filesize: field_file_size

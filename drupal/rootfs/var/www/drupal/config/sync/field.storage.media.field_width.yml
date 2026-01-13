@@ -1,0 +1,26 @@
+uuid: 8e06b5b8-feaf-4565-ae4d-77241604c90f
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - media
+third_party_settings:
+  field_permissions:
+    permission_type: public
+_core:
+  default_config_hash: zL-l_IiMrXgUkI928ssjw2n77FjbeVqehzdJ9_koIYk
+id: media.field_width
+field_name: field_width
+entity_type: media
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

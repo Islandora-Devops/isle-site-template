@@ -1,0 +1,23 @@
+uuid: 28b39aaa-cf11-4579-9d9e-241e9cde00a4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_date_modified
+    - node.type.islandora_object
+  module:
+    - controlled_access_terms
+_core:
+  default_config_hash: I-cN7Bdj3HlLlWipBTjVAEYztLDaeP-ipdBoCXnE7wA
+id: node.islandora_object.field_date_modified
+field_name: field_date_modified
+entity_type: node
+bundle: islandora_object
+label: 'Date Modified'
+description: 'Date on which the original resource being represented in Islandora was changed. Typically modification dates of digital representations of the resource stored in Islandora will be recorded on the relevant Media instead of here.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: edtf

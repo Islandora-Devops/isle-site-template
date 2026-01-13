@@ -1,0 +1,25 @@
+uuid: 474f4de4-e00c-42f0-bc77-b3b1ba85e56d
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.country
+  module:
+    - taxonomy
+_core:
+  default_config_hash: f4Oezg2wdsDVJVSpx7oWJNFS1I3od4WYJ4ib9NIdlE0
+id: taxonomy_term.country
+targetEntityType: taxonomy_term
+bundle: country
+types:
+  - 'schema:Country'
+fieldMappings:
+  name:
+    properties:
+      - 'schema:name'
+  description:
+    properties:
+      - 'schema:description'
+  field_authority_link:
+    properties:
+      - 'schema:sameAs'

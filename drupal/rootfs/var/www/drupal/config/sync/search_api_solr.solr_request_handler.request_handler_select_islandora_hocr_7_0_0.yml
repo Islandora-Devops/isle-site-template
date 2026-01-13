@@ -1,0 +1,63 @@
+uuid: 47a8220e-3aca-4795-96b0-f6ceb0ab694b
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: LSuIfwfn5byIPqu8Ns2Ey4xaft19ZrbZXBwR--Z9qGc
+id: request_handler_select_islandora_hocr_7_0_0
+label: 'Select w/ OCR Highlighting Component'
+minimum_solr_version: 7.0.0
+environments: {  }
+recommended: true
+request_handler:
+  name: /select_ocr
+  class: solr.SearchHandler
+  lst:
+    -
+      name: defaults
+      str:
+        -
+          name: defType
+          VALUE: lucene
+        -
+          name: df
+          VALUE: id
+        -
+          name: echoParams
+          VALUE: explicit
+        -
+          name: omitHeader
+          VALUE: 'true'
+        -
+          name: timeAllowed
+          VALUE: '${solr.selectSearchHandler.timeAllowed:-1}'
+        -
+          name: spellcheck
+          VALUE: 'false'
+  arr:
+    -
+      name: components
+      str:
+        -
+          VALUE: query
+        -
+          VALUE: facet
+        -
+          VALUE: mlt
+        -
+          VALUE: ocrHighlight
+        -
+          VALUE: highlight
+        -
+          VALUE: stats
+        -
+          VALUE: debug
+        -
+          VALUE: spellcheck
+        -
+          VALUE: elevator
+solr_configs:
+  searchComponents:
+    -
+      name: ocrHighlight
+      class: solrocr.OcrHighlightComponent

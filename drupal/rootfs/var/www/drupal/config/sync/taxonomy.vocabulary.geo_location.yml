@@ -1,0 +1,11 @@
+uuid: c351aff9-e6a7-4ac1-a11b-87cf2054728d
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: DGBtA4Guj6o9TTftr2O379-c-FNIxOtbTMKn8qQAbrI
+name: 'Geographic Location'
+vid: geo_location
+description: 'Geographic area(s) and places to which the records pertain.'
+weight: 0
+new_revision: true

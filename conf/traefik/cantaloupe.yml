@@ -1,0 +1,33 @@
+http:
+  middlewares:
+    cantaloupe-strip-prefix:
+      stripPrefix:
+        prefixes:
+          - /cantaloupe
+    cantaloupe-custom-request-headers:
+      headers:
+        customRequestHeaders:
+          X-Forwarded-Path: /cantaloupe
+    cantaloupe:
+      chain:
+        middlewares:
+          - cantaloupe-strip-prefix
+          - cantaloupe-custom-request-headers
+
+  services:
+    cantaloupe:
+      loadBalancer:
+        servers:
+          - url: http://cantaloupe:8182
+  routers:
+    cantaloupe:
+      rule: Host(`{{ env "DOMAIN" }}`) && PathPrefix(`/cantaloupe`)
+      middlewares:
+        - cantaloupe
+      service: cantaloupe
+{{- if (eq (env "TLS_PROVIDER") "letsencrypt") }}
+      tls:
+        certResolver: letsencrypt
+{{- else if (eq (env "URI_SCHEME") "https") }}
+      tls: {}
+{{- end }}

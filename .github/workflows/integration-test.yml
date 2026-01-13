@@ -27,20 +27,16 @@ jobs:
       matrix:
         os: [ubuntu-22.04, ubuntu-24.04]
     env:
-      ISLANDORA_TAG: "${{ github.event.inputs.buildkit-tag || 'main' }}"
-      ISLE_SITE_TEMPLATE_REF: "${{ github.ref_name }}"
-      ISLANDORA_STARTER_OWNER: "${{ github.event.inputs.starter-site-owner || 'islandora-devops' }}"
-      ISLANDORA_STARTER_REF: "${{ github.event.inputs.starter-site-ref || 'heads/main' }}"
       TERM: xterm-256color
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
-      - run: shellcheck tests/*.sh
-
-      - name: setup git identity
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actons"
+      - name: Setup ISLE
+        uses: ./.github/actions/setup
+        with:
+          buildkit-tag: "${{ github.event.inputs.buildkit-tag || 'main' }}"
+          starter-site-owner: "${{ github.event.inputs.starter-site-owner || 'islandora-devops' }}"
+          starter-site-ref: "${{ github.event.inputs.starter-site-ref || 'heads/main' }}"
 
       - name: Install mkcert
         run: |-
@@ -48,21 +44,22 @@ jobs:
           chmod +x mkcert-v*-linux-amd64
           sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
 
-      - name: Start islandora-starter-site
-        run: ./tests/init-template-starter.sh
+      - run: make traefik-https-mkcert down-traefik up ping
+
+      - run: make traefik-http down-traefik up ping
 
       - name: Collect logs for each service
-        if: ${{ always() }}
+        if: ${{ failure() }}
         run: |
           mkdir -p logs
-          services=$(docker compose --profile dev config --services)
+          services=$(docker compose config --services 2>/dev/null)
           for service in $services; do
-            docker compose --profile dev logs $service > "logs/${service}.log"
+            docker compose logs $service 2>/dev/null > "logs/${service}.log"
           done
-          docker compose --profile dev exec mariadb-dev mysqldump drupal_default > logs/drupal_default.sql
+          docker compose exec mariadb mysqldump drupal_default 2>/dev/null > logs/drupal_default.sql
 
       - name: Upload logs as artifacts
-        if: ${{ always() }}
+        if: ${{ failure() }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: docker-logs-${{ matrix.os }}
@@ -79,4 +76,4 @@ jobs:
 
       - name: cleanup
         if: ${{ always() }}
-        run: docker compose --profile dev down
+        run: make down

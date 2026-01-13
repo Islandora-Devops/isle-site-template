@@ -1,0 +1,28 @@
+uuid: 8d40bd30-2c28-4c1f-9fe7-9f45a5a70146
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_authority_link
+    - taxonomy.vocabulary.frequencies
+  module:
+    - controlled_access_terms
+_core:
+  default_config_hash: Z7Cwjb1ejsX8_XXa2oQhfAnxkVeVkNSBfreRybyQiRA
+id: taxonomy_term.frequencies.field_authority_link
+field_name: field_authority_link
+entity_type: taxonomy_term
+bundle: frequencies
+label: 'Authority Link'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  authority_sources:
+    frequencies: 'Publication Frequencies Scheme (LC)'
+    other: Other
+  title: 1
+  link_type: 16
+field_type: authority_link

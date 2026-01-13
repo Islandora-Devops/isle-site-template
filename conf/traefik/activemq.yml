@@ -1,0 +1,18 @@
+{{- if (eq (env "DEVELOPMENT_ENVIRONMENT") "true") }}
+http:
+  services:
+    activemq:
+      loadBalancer:
+        servers:
+          - url: http://activemq:8161
+  routers:
+    activemq:
+      rule: Host(`activemq.{{ env "DOMAIN" }}`)
+      service: activemq
+{{- if (eq (env "TLS_PROVIDER") "letsencrypt") }}
+      tls:
+        certResolver: letsencrypt
+{{- else if (eq (env "URI_SCHEME") "https") }}
+      tls: {}
+{{- end }}
+{{- end }}

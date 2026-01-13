@@ -1,0 +1,27 @@
+From 2cb6c625d6d674b51eb4bf66fae8232b30533c9d Mon Sep 17 00:00:00 2001
+From: Adam Vessey <adam@discoverygarden.ca>
+Date: Fri, 13 Oct 2023 13:52:04 -0300
+Subject: [PATCH] Add in the `public $context` property to the stream wrapper.
+
+---
+ src/FlysystemStreamWrapper.php | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/FlysystemStreamWrapper.php b/src/FlysystemStreamWrapper.php
+index 93a79b6..5c5a200 100644
+--- a/src/FlysystemStreamWrapper.php
++++ b/src/FlysystemStreamWrapper.php
+@@ -25,6 +25,13 @@ class FlysystemStreamWrapper
+      */
+     const STREAM_URL_IGNORE_SIZE = 8;
+
++    /**
++     * PHP-passed stream context.
++     *
++     * @var resource|null
++     */
++    public $context;
++
+     /**
+      * The registered filesystems.
+      *

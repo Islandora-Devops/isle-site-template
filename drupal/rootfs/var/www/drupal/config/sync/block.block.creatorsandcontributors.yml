@@ -1,0 +1,49 @@
+uuid: 28540a48-a2eb-4a84-b4c9-fa9dce4c9f36
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.creators_and_contributors
+  module:
+    - context
+    - facets
+    - islandora
+  theme:
+    - olivero
+_core:
+  default_config_hash: jziE1LayhQhICzoN5LBg3jdBwNieZWUHHr4xGAlwj_o
+id: creatorsandcontributors
+theme: olivero
+region: sidebar
+weight: -13
+provider: null
+plugin: 'facet_block:creators_and_contributors'
+settings:
+  id: 'facet_block:creators_and_contributors'
+  label: 'Creators and Contributors'
+  label_display: visible
+  provider: facets
+  context_mapping: {  }
+  block_id: creatorsandcontributors
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  user_status:
+    id: user_status
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    user_status:
+      viewing_profile: '0'
+      logged_viewing_profile: '0'
+      own_page_true: '0'
+      field_value: '0'
+    user_fields: uid
+  view_inclusion:
+    id: view_inclusion
+    negate: false
+    view_inclusion:
+      view-solr_search_content-page_1: view-solr_search_content-page_1

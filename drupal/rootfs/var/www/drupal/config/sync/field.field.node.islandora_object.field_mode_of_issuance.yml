@@ -1,0 +1,31 @@
+uuid: 0768ef3d-36ef-4730-974f-c252d96254d6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_mode_of_issuance
+    - node.type.islandora_object
+    - taxonomy.vocabulary.issuance_modes
+_core:
+  default_config_hash: '-IKF02Xe_HhVSwFmmPlhBgX7uFetvQMcbpJR4zvpp2c'
+id: node.islandora_object.field_mode_of_issuance
+field_name: field_mode_of_issuance
+entity_type: node
+bundle: islandora_object
+label: 'Mode of Issuance'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      issuance_modes: issuance_modes
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

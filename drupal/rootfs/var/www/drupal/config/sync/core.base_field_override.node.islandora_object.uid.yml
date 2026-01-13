@@ -1,0 +1,22 @@
+uuid: 56d898f6-8c0e-428e-8565-7a877de853d3
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.islandora_object
+_core:
+  default_config_hash: R9tzl3gXbLnojgU6wijGL671X4z_kNWUcGJf7YPgwek
+id: node.islandora_object.uid
+field_name: uid
+entity_type: node
+bundle: islandora_object
+label: 'Authored by'
+description: 'The username of the content author.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: 'Drupal\node\Entity\Node::getDefaultEntityOwner'
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference

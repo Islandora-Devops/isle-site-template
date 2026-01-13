@@ -1,0 +1,21 @@
+uuid: 5ac9308b-baab-466c-94c3-ef55ec258592
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_extent
+    - node.type.islandora_object
+_core:
+  default_config_hash: iHcODx2RZgZbguT3z1VJMDoGHYDinWc0o3TPG6RJGp8
+id: node.islandora_object.field_extent
+field_name: field_extent
+entity_type: node
+bundle: islandora_object
+label: Extent
+description: 'The size or duration of the resource in its original form. Extent of representations of the resource stored in Islandora should be recorded on the relevant Media files.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

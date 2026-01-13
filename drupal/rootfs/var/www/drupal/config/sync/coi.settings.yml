@@ -1,0 +1,14 @@
+_core:
+  default_config_hash: bO--lQ6KgJ0tb7_TBJybomU61yvfcSyI5qRzOxpLFvE
+langcode: en
+override_behavior: disable
+message:
+  enabled: true
+  template: 'This field is overridden by settings.php configuration.'
+overridden_value:
+  enabled: true
+  element: true
+  secrets: false
+styling:
+  selectors: true
+  default: true

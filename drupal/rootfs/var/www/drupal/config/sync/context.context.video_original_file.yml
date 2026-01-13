@@ -1,0 +1,37 @@
+uuid: 51bff83c-8c70-4709-95ca-c71df90dd72d
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+_core:
+  default_config_hash: 1hWjMsl225Q8XunEOdRDfkkuswJrsGmg2qhYd1i36XQ
+label: 'Video Derivatives'
+name: video_original_file
+group: Derivatives
+description: 'Derivatives for Video'
+requireAllConditions: true
+disabled: false
+conditions:
+  media_has_term:
+    id: media_has_term
+    negate: false
+    context_mapping:
+      media: '@islandora.media_route_context_provider:media'
+    uri: 'http://pcdm.org/use#OriginalFile'
+    logic: and
+  parent_node_has_term:
+    id: parent_node_has_term
+    negate: false
+    context_mapping:
+      media: '@islandora.media_route_context_provider:media'
+    uri: 'http://purl.org/coar/resource_type/c_12ce'
+    logic: and
+reactions:
+  derivative:
+    id: derivative
+    saved: false
+    actions:
+      video_generate_a_service_file_from_an_original_file: video_generate_a_service_file_from_an_original_file
+      video_generate_a_thumbnail_from_an_original_file: video_generate_a_thumbnail_from_an_original_file
+weight: -5

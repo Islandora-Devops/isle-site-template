@@ -1,0 +1,31 @@
+uuid: 9664b08b-0052-44b0-ab01-637809d5fc37
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_language
+    - node.type.islandora_object
+    - taxonomy.vocabulary.language
+_core:
+  default_config_hash: v9wwx8Vyosd0BWtE0ioibx6ak7wBLsKLTSbDF3kHOdY
+id: node.islandora_object.field_language
+field_name: field_language
+entity_type: node
+bundle: islandora_object
+label: Language
+description: 'Language of the resource content'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      language: language
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: language
+field_type: entity_reference

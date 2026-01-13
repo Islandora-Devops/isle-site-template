@@ -1,0 +1,49 @@
+uuid: c8666889-2738-4390-845d-9c6765313f67
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.pdfjs
+    - field.field.media.document.field_file_size
+    - field.field.media.document.field_media_document
+    - field.field.media.document.field_media_of
+    - field.field.media.document.field_media_use
+    - field.field.media.document.field_mime_type
+    - field.field.media.document.field_original_name
+    - media.type.document
+  module:
+    - pdf
+_core:
+  default_config_hash: 6vOcvK9Iktr-wVFR-MWAJpJbmAMpLs0JBrBVHFoOdcQ
+id: media.document.pdfjs
+targetEntityType: media
+bundle: document
+mode: pdfjs
+content:
+  field_media_document:
+    type: pdf_default
+    label: visually_hidden
+    settings:
+      keep_pdfjs: '1'
+      width: 100%
+      height: 640px
+      page: ''
+      zoom: ''
+      custom_zoom: ''
+      pagemode: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  field_file_size: true
+  field_gemini_uri: true
+  field_media_of: true
+  field_media_use: true
+  field_mime_type: true
+  field_original_name: true
+  langcode: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

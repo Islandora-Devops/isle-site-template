@@ -1,0 +1,15 @@
+_core:
+  default_config_hash: XgeYJpPmZIOwE_nA73tYvFw-Rcj-HtlbNwfktqSVsaQ
+broker_url: 'tcp://127.0.0.1:61613'
+jwt_expiry: '+2 hour'
+delete_media_and_files: true
+upload_form_location: ''
+upload_form_allowed_mimetypes: ''
+gemini_url: ''
+gemini_pseudo_bundles:
+  'islandora_object:node': 'islandora_object:node'
+  'audio:media': 'audio:media'
+  'file:media': 'file:media'
+  'image:media': 'image:media'
+  'video:media': 'video:media'
+redirect_after_media_save: true

@@ -1,0 +1,46 @@
+uuid: 7534e393-12a7-498c-a4a3-a7bbe4ff9a5d
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - jsonld
+    - jwt
+    - serialization
+    - taxonomy
+    - user
+_core:
+  default_config_hash: G3Adl8KEMsW0Y2f3ZXb1DDDRci7206hfMWMUGCG2KQQ
+id: entity.taxonomy_term
+plugin_id: 'entity:taxonomy_term'
+granularity: method
+configuration:
+  GET:
+    supported_formats:
+      - jsonld
+      - json
+    supported_auth:
+      - basic_auth
+      - jwt_auth
+      - cookie
+  POST:
+    supported_formats:
+      - json
+    supported_auth:
+      - basic_auth
+      - jwt_auth
+      - cookie
+  DELETE:
+    supported_formats:
+      - json
+    supported_auth:
+      - basic_auth
+      - jwt_auth
+      - cookie
+  PATCH:
+    supported_formats:
+      - json
+    supported_auth:
+      - basic_auth
+      - jwt_auth
+      - cookie

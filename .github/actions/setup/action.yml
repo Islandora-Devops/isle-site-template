@@ -1,0 +1,53 @@
+name: "Setup ISLE Composite"
+description: "Sets up the ISLE environment"
+inputs:
+  buildkit-tag:
+    description: "islandora-devops/isle-buildkit docker tag to pull"
+    default: "main"
+  starter-site-owner:
+    description: "islandora-starter-site github owner"
+    default: "Islandora-Devops"
+  starter-site-ref:
+    description: "islandora-starter-site ref to checkout"
+    default: "heads/main"
+runs:
+  using: "composite"
+  steps:
+    - name: Validate Inputs
+      shell: bash
+      run: |
+        REGEX_DOCKER="^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$"
+        REGEX_GITHUB_OWNER="^[a-zA-Z0-9]([a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$"
+        REGEX_GIT_REF="^([a-zA-Z0-9._\/-]+)$"
+        validate() {
+          local name=$1
+          local value=$2
+          local regex=$3
+          if [[ ! $value =~ $regex ]]; then
+            echo "::error::Invalid input for $name: '$value'. Potential shell injection or malformed string."
+            exit 1
+          fi
+        }
+
+        validate "buildkit-tag" "${{ inputs.buildkit-tag }}" "$REGEX_DOCKER"
+        validate "starter-site-owner" "${{ inputs.starter-site-owner }}" "$REGEX_GITHUB_OWNER"
+        validate "starter-site-ref" "${{ inputs.starter-site-ref }}" "$REGEX_GIT_REF"
+
+    - name: setup git identity
+      shell: bash
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Actions"
+
+    - name: Start islandora-starter-site
+      shell: bash
+      env:
+        ISLANDORA_TAG: ${{ inputs.buildkit-tag }}
+        TERM: xterm-256color
+      run: make up
+
+    - name: make sure traefik is serving traffic
+      shell: bash
+      run: ./scripts/ping.sh
+      env:
+        TERM: xterm-256color
