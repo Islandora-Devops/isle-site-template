@@ -33,7 +33,7 @@ if is_dev_mode && has_no_docker_override; then
     echo -e "\tFor easier local development, you can link the sample docker-compose override file."
     echo -e "\tThis allows you to mount your local Drupal codebase into the container."
     echo -e "\tTo do so you can run the following command:"
-    echo_e "\t${BLUE}ln -s docker-compose.sample.yml docker-compose.override.yml${RESET}"
+    echo_e "\t${BLUE}ln -s docker-compose.dev.yml docker-compose.override.yml${RESET}"
     echo_e "\tAnd then run ${BLUE}make up${RESET} for the changes to apply.\n"
 fi
 
