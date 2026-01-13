@@ -25,7 +25,7 @@ find_port() {
       printf "%s\n" "$port"
       return
     fi
- 
+
     while true; do
         # Check if anything is listening on TCP at this port
         local pids
@@ -163,6 +163,7 @@ set_letsencrypt_config() {
 
   if [ "$enable" = "true" ]; then
     sed -i.bak 's/^TLS_PROVIDER=.*/TLS_PROVIDER="letsencrypt"/' .env && rm -f .env.bak
+    sed -i.bak 's/^URI_SCHEME=.*/URI_SCHEME="https"/' .env && rm -f .env.bak
 
     # shellcheck disable=SC2016
     sed -i.bak '/command: >-/a\

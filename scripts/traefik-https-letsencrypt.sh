@@ -25,6 +25,7 @@ echo "Updating .env with:"
 echo "  ${GREEN}URI_SCHEME=https"
 echo "  DOMAIN=${NEW_DOMAIN}"
 echo "  ACME_EMAIL=${NEW_EMAIL}"
+echo "  URI_SCHEME=http"
 echo "  DEVELOPMENT_ENVIRONMENT=false${RESET}"
 echo
 

@@ -9,7 +9,7 @@ MAX_RETRIES=${MAX_RETRIES:-10}
 SLEEP_INCREMENT=5
 RETRIES=0
 while true; do
-    timeout 5 curl -fs "$URI_SCHEME://$DOMAIN/" | grep Islandora && break || exit_code=$?
+    timeout 5 curl -fs "${URI_SCHEME}://${DOMAIN}/" | grep Islandora && break || exit_code=$?
 
     RETRIES=$((RETRIES + 1))
     if [ "$RETRIES" -ge "$MAX_RETRIES" ]; then
