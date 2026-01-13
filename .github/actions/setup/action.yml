@@ -10,6 +10,7 @@ inputs:
   starter-site-ref:
     description: "islandora-starter-site ref to checkout"
     default: "heads/main"
+
 runs:
   using: "composite"
   steps:
@@ -43,8 +44,10 @@ runs:
       shell: bash
       env:
         ISLANDORA_TAG: ${{ inputs.buildkit-tag }}
+        STARTER_SITE_BRANCH: ${{ inputs.starter-site-ref }}
+        STARTER_SITE_OWNER: ${{ inputs.starter-site-owner }}
         TERM: xterm-256color
-      run: make up
+      run: make overwrite-starter-site init up
 
     - name: make sure traefik is serving traffic
       shell: bash
