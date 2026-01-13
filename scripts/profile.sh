@@ -21,6 +21,11 @@ echo_e() {
 # Depends on the PROJECT_NAME variable being set in the calling script.
 find_port() {
     local port=$1
+    if [ "${DEV_ENV_VALUE:-false}" = "false" ]; then
+      printf "%s\n" "$port"
+      return
+    fi
+ 
     while true; do
         # Check if anything is listening on TCP at this port
         local pids
