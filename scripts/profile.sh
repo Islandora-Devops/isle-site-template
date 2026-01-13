@@ -18,10 +18,10 @@ echo_e() {
 }
 
 # Function to find the next available port
-# Depends on the PROJECT_NAME variable being set in the calling script.
+# Depends on the COMPOSE_PROJECT_NAME variable being set in the calling script.
 find_port() {
     local port=$1
-    if [ "${DEV_ENV_VALUE:-false}" = "false" ]; then
+    if [ "${DEVELOPMENT_ENVIRONMENT:-false}" = "false" ]; then
       printf "%s\n" "$port"
       return
     fi
@@ -42,8 +42,8 @@ find_port() {
         if [ -n "$container_id" ]; then
             local our_project
             our_project=$(docker inspect "$container_id" --format '{{ index .Config.Labels "com.docker.compose.project" }}' 2>/dev/null || echo "")
-            if [ "$our_project" = "$PROJECT_NAME" ]; then
-                printf "Port %s is already assigned to this project (%s).\n" "$port" "$PROJECT_NAME" >&2
+            if [ "$our_project" = "$COMPOSE_PROJECT_NAME" ]; then
+                printf "Port %s is already assigned to this project (%s).\n" "$port" "$COMPOSE_PROJECT_NAME" >&2
                 break
             fi
         fi
@@ -75,7 +75,7 @@ print_warning_header() {
 # --- Environment Check ---
 if [ -f .env ]; then
     # Use || true to prevent set -e from exiting if grep finds nothing
-    DEV_ENV_VALUE=$(grep '^DEVELOPMENT_ENVIRONMENT=' .env | cut -d'=' -f2 | tr -d '"' || echo "not_set")
+    DEVELOPMENT_ENVIRONMENT=$(grep '^DEVELOPMENT_ENVIRONMENT=' .env | cut -d'=' -f2 | tr -d '"' || echo "not_set")
     TLS_PROVIDER=$(grep '^TLS_PROVIDER=' .env | cut -d'=' -f2 | tr -d '"' || echo "not_set")
     URI_SCHEME=$(grep '^URI_SCHEME=' .env | cut -d'=' -f2 | tr -d '"' || echo "not_set")
     ENABLE_ACME="false"
@@ -87,12 +87,14 @@ if [ -f .env ]; then
         ENABLE_HTTPS="true"
     fi
 
-    ACME_EMAIL=$(grep '^ACME_EMAIL=' .env | cut -d'=' -f2 | tr -d '"' || echo "")
-    DOMAIN=$(grep '^DOMAIN=' .env | cut -d'=' -f2 | tr -d '"' || echo "localhost")
-    ISLANDORA_TAG=$(grep '^ISLANDORA_TAG=' .env | cut -d'=' -f2 | tr -d '"' || echo "unknown")
-    PROJECT_NAME=$(grep '^COMPOSE_PROJECT_NAME=' .env | cut -d'=' -f2 | tr -d '"' || basename "$PWD")
+    ACME_EMAIL=$(grep '^ACME_EMAIL=' .env | cut -d'=' -f2 | tr -d '"' || echo "postmaster@example.com")
+    DOMAIN=$(grep '^DOMAIN=' .env | cut -d'=' -f2 | tr -d '"' || echo "islandora.traefik.me")
+    ISLANDORA_TAG=$(grep '^ISLANDORA_TAG=' .env | cut -d'=' -f2 | tr -d '"' || echo "main")
+    TAG=$(grep '^TAG=' .env | cut -d'=' -f2 | tr -d '"' || echo "local")
+    REPOSITORY=$(grep '^REPOSITORY=' .env | cut -d'=' -f2 | tr -d '"' || echo "islandora.io")
+    COMPOSE_PROJECT_NAME=$(grep '^COMPOSE_PROJECT_NAME=' .env | cut -d'=' -f2 | tr -d '"' || echo "isle-site-template")
     # Export variables for use by sourcing scripts
-    export DEV_ENV_VALUE ENABLE_HTTPS URI_SCHEME ENABLE_ACME ACME_EMAIL DOMAIN ISLANDORA_TAG PROJECT_NAME
+    export DEVELOPMENT_ENVIRONMENT ENABLE_HTTPS URI_SCHEME ENABLE_ACME ACME_EMAIL DOMAIN ISLANDORA_TAG COMPOSE_PROJECT_NAME TAG REPOSITORY
 else
   echo_e "  ${RED}.env file not found. Cannot determine configuration.${RESET}"
   echo "You should cp sample.env to .env"
@@ -107,11 +109,11 @@ status_dev() {
 }
 
 is_dev_mode() {
-    status_dev || [ "${DEV_ENV_VALUE:-}" = "true" ]
+    status_dev || [ "${DEVELOPMENT_ENVIRONMENT:-}" = "true" ]
 }
 
 is_prod_mode() {
-    status_dev || [ "${DEV_ENV_VALUE:-}" = "false" ]
+    status_dev || [ "${DEVELOPMENT_ENVIRONMENT:-}" = "false" ]
 }
 
 is_https_enabled() {

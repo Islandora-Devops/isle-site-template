@@ -15,7 +15,7 @@ else
     echo_e "Site mode: ${RED}Unknown${RESET} (DEVELOPMENT_ENVIRONMENT is not set to 'true' or 'false' in .env)"
 fi
 
-echo_e "COMPOSE_PROJECT_NAME: ${GREEN}${PROJECT_NAME}${RESET}"
+echo_e "COMPOSE_PROJECT_NAME: ${GREEN}${COMPOSE_PROJECT_NAME}${RESET}"
 if [ "$ISLANDORA_TAG" = "unknown" ]; then
   if grep -q "\${ISLANDORA_TAG}" docker-compose.yml; then
     echo_e "ISLANDORA_TAG: ${RED}${ISLANDORA_TAG}${RESET}"
@@ -38,7 +38,7 @@ if is_dev_mode && has_no_docker_override; then
 fi
 
 
-if [ "${PROJECT_NAME}" = "isle-site-template" ]; then
+if [ "${COMPOSE_PROJECT_NAME}" = "isle-site-template" ]; then
     print_warning_header
     echo_e "\t${YELLOW}Update COMPOSE_PROJECT_NAME in .env${RESET}"
     echo -e "\tDocker Compose uses this name to prefix containers, networks, and volumes."

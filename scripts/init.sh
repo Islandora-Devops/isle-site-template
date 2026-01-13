@@ -10,9 +10,6 @@ if [ -n "${ISLANDORA_TAG:-}" ]; then
   rm -f .env.bak
 fi
 
-id -u > ./certs/UID
-
-
 # For SELinux if applicable.
 if command -v "sestatus" >/dev/null; then
   if sestatus | grep -q "SELinux status: *enabled"; then
