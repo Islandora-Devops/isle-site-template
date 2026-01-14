@@ -108,6 +108,10 @@ status_dev() {
     [ "${STATUS_DEV:-false}" = "true" ]
 }
 
+is_docker_rootless() {
+    status_dev || docker info -f "{{println .SecurityOptions}}" | grep -qi rootless
+}
+
 is_dev_mode() {
     status_dev || [ "${DEVELOPMENT_ENVIRONMENT:-}" = "true" ]
 }

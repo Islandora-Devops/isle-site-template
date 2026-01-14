@@ -15,6 +15,12 @@ if [ -n "${ISLANDORA_TAG:-}" ]; then
   rm -f .env.bak
 fi
 
+if is_dev_mode && is_docker_rootless; then
+  echo "Development mode is not supported on rootless docker."
+  echo "You must set DEVELOPMENT_ENVIRONMENT=false in .env"
+  exit 0
+fi
+
 # For SELinux if applicable.
 if command -v "sestatus" >/dev/null; then
   if sestatus | grep -q "SELinux status: *enabled"; then

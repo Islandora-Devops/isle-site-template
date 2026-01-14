@@ -26,6 +26,13 @@ else
 fi
 
 
+if is_dev_mode && is_docker_rootless; then
+    print_warning_header
+    echo_e "\t${RED}Docker Security: rootless${RESET}"
+    echo_e "\tYou appear to be running docker in rootless mode."
+    echo_e "\tYou must set DEVELOPMENT_ENVIRONMENT=false in .env\n"
+fi
+
 # --- Docker Override Check ---
 if is_dev_mode && has_no_docker_override; then
     print_warning_header
