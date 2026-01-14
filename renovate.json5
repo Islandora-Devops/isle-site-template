@@ -30,6 +30,12 @@
         '*',
       ],
     },
+    {
+      matchManagers: [
+        'composer',
+      ],
+      enabled: false,
+    }
   ],
   customManagers: [
     {
