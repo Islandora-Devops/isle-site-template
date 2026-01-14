@@ -4,6 +4,11 @@ set -eou pipefail
 
 if [ ! -f .env ]; then
   cp sample.env .env;
+  # we've detected an initial install
+  # so extend the default start period for drupal's healthcheck to 1m
+  # so it has time to come online before docker compose marks it unhealthy
+  export DRUPAL_HEALTHCHECK_RETRIES=10
+  export DRUPAL_HEALTHCHECK_START_PERIOD=1m
 fi
 if [ -n "${ISLANDORA_TAG:-}" ]; then
   sed -i.bak "s|^ISLANDORA_TAG=.*|ISLANDORA_TAG=\"${ISLANDORA_TAG}\"|" .env
