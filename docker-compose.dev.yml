@@ -3,7 +3,12 @@
 services:
   drupal:
     volumes:
-      - ./drupal/rootfs/var/www/drupal:/var/www/drupal:z,rw,${CONSISTENCY}
+      - ./drupal/rootfs/var/www/drupal/assets:/var/www/drupal/assets:z,rw,${CONSISTENCY}
+      - ./drupal/rootfs/var/www/drupal/composer.json:/var/www/drupal/composer.json:z,rw,${CONSISTENCY}
+      - ./drupal/rootfs/var/www/drupal/composer.lock:/var/www/drupal/composer.lock:z,rw,${CONSISTENCY}
+      - ./drupal/rootfs/var/www/drupal/config:/var/www/drupal/config:z,rw,${CONSISTENCY}
+      - ./drupal/rootfs/var/www/drupal/web/modules/custom:/var/www/drupal/web/modules/custom:z,rw,${CONSISTENCY}
+      - ./drupal/rootfs/var/www/drupal/web/themes/custom:/var/www/drupal/web/themes/custom:z,rw,${CONSISTENCY}
   mariadb:
     ports:
       - "3306:3306"

@@ -30,6 +30,8 @@ secrets:
     file: ./certs/privkey.pem
   CERT_AUTHORITY:
     file: ./certs/rootCA.pem
+  UID:
+    file: ./certs/UID
   # Production secrets:
   ACTIVEMQ_PASSWORD:
     file: "./secrets/ACTIVEMQ_PASSWORD"
@@ -136,6 +138,7 @@ services:
     secrets:
       - source: CERT_PUBLIC_KEY
       - source: CERT_AUTHORITY
+      - source: UID
       - source: DB_ROOT_PASSWORD
       - source: DRUPAL_DEFAULT_ACCOUNT_PASSWORD
       - source: DRUPAL_DEFAULT_DB_PASSWORD
