@@ -15,6 +15,9 @@ if [ -n "${ISLANDORA_TAG:-}" ]; then
   rm -f .env.bak
 fi
 
+# shellcheck disable=SC1091
+source "${BASH_SOURCE[0]%/*}/profile.sh"
+
 if is_dev_mode && is_docker_rootless; then
   echo "Development mode is not supported on rootless docker."
   echo "You must set DEVELOPMENT_ENVIRONMENT=false in .env"
