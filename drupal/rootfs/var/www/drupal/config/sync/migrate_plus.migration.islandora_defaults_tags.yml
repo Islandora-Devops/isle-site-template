@@ -48,6 +48,7 @@ process:
       migration: islandora_defaults_tags
 destination:
   plugin: 'entity:taxonomy_term'
+idMap: {  }
 migration_dependencies:
   required: {  }
   optional: {  }
