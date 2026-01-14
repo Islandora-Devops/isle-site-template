@@ -23,6 +23,6 @@ fi
 
 docker compose run --rm init
 
-chown -R "$(whoami)" ./certs ./secrets || sudo chown -R "$(whoami)" ./certs ./secrets
+chown -R "$(whoami)" ./certs ./secrets > /dev/null 2>&1 || sudo chown -R "$(whoami)" ./certs ./secrets
 
 make build
