@@ -20,14 +20,14 @@
                 "version": "5",
                 "type": "drupal-library",
                 "dist": {
-                    "url": "https://github.com/mozilla/pdf.js/releases/download/v5.4.54/pdfjs-5.4.54-dist.zip",
+                    "url": "https://github.com/mozilla/pdf.js/releases/download/v5.4.530/pdfjs-5.4.530-dist.zip",
                     "type": "zip"
                 }
             }
         }
     ],
     "require": {
-        "php": "^7.4 || ^8",
+        "php": "^8.3",
         "born-digital/islandora_iiif_hocr": "^2.0",
         "composer/installers": "^2.0",
         "cweagans/composer-patches": "^1.7",
@@ -66,7 +66,7 @@
         "islandora-rdm/islandora_fits": "dev-8.x-1.x as 1.x-dev",
         "islandora/views_nested_details": "^1.0",
         "library/pdf.js": "^5",
-        "mjordan/islandora_workbench_integration": "dev-main"
+        "mjordan/islandora_workbench_integration": "^1"
     },
     "conflict": {
         "drupal/drupal": "*",
