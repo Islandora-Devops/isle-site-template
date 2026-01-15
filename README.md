@@ -11,14 +11,13 @@
   - [Environment Variables](#environment-variables)
   - [HTTPS & Certificates](#https--certificates)
 - [Docker Compose](#docker-compose)
-  - [Override](#override)
+  - [Override](#docker-compose-overrides)
   - [Pushing Docker Images](#pushing-docker-images)
     - [Local Registry](#local-registry)
     - [Remote Registry](#remote-registry)
 - [Development](#development)
   - [Drupal Development](#drupal-development)
     - [Adding a composer dependency](#adding-a-composer-dependency)
-  - [Docker Compose Override](#docker-compose-override)
 - [Production](#production)
   - [Automated Certificate Generation](#automated-certificate-generation)
   - [Setup as a systemd Service](#setup-as-a-systemd-service)
@@ -60,15 +59,15 @@ configurations this template is set up for the following:
 
 1. In GitHub click the green `Use this template` button to create this same repository in your GitHub Organization
 2. Clone your new repository:
-```bash
-git clone https://github.com/INSTITUTION/SITE_NAME.git
-cd SITE_NAME
-```
+    ```bash
+    git clone https://github.com/INSTITUTION/SITE_NAME.git
+    cd SITE_NAME
+    ```
 
 3. Start the services:
-```bash
-make up
-```
+    ```bash
+    make up
+    ```
     This command prepares your host machine, creates the `.env` file from `sample.env` if it doesn't exist, generates necessary secrets and certificates, and builds the Docker images.
 
     Then brings up the ISLE stack using smart port allocation. The URL for your site will be displayed in the output and automatically opened in your browser if possible.
@@ -269,13 +268,14 @@ docker buildx bake --pull --builder isle-builder --push
 
 ### Drupal Development
 
-For local development, the Drupal codebase at `drupal/rootfs/var/www/drupal` is bind-mounted into the container.
+For local development, the Drupal codebase at `drupal/rootfs/var/www/drupal` is bind-mounted into the drupal container if [your local install has a docker-compose.override.yml](#docker-compose-overrides) set.
 Changes made in the following directories will persist in your Git repository:
 
-- `assets/`
-- `config/`
-- `web/modules/custom/`
-- `web/themes/custom/`
+- `./drupal/rootfs/var/www/drupal/*.*`
+- `./drupal/rootfs/var/www/drupal/assets/`
+- `./drupal/rootfs/var/www/drupal/config/`
+- `./drupal/rootfs/var/www/drupal/web/modules/custom/`
+- `./drupal/rootfs/var/www/drupal/web/themes/custom/`
 
 Other changes, such as those in `vendor/` or installed modules, are managed via `composer` inside the container or during build.
 
