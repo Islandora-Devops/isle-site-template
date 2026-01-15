@@ -1,4 +1,8 @@
-.PHONY: help pull init up down build setup traefik-http traefik-https-mkcert traefik-https-letsencrypt traefik-certs overwrite-starter-site create-starter-site-pr status clean ping
+.PHONY: help
+.PHONY: create-starter-site-pr overwrite-starter-site
+.PHONY: build pull down down-% logs-% up up-%
+.PHONY: clean demo-objects init ping status
+.PHONY: traefik-certs traefik-http traefik-https-letsencrypt traefik-https-mkcert
 .SILENT:
 
 # If custom.makefile exists include it.
@@ -11,7 +15,7 @@ help: ## Show this help message
 	echo 'Usage: make [target]'
 	echo ''
 	echo 'Available targets:'
-	awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+	awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[36m%s\033[0m\t%s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort | column -t -s $$'\t'
 
 status: ## Show the current status of the development environment
 	./scripts/status.sh
@@ -57,6 +61,9 @@ clean:  ## Delete all stateful data.
 
 ping:  ## Ensure site is available.
 	./scripts/ping.sh
+
+demo-objects: up ## Add demo objects from https://github.com/Islandora-Devops/islandora_demo_objects
+	./scripts/demo-objects.sh
 
 overwrite-starter-site: ## Keep site template's drupal install in sync with islandora-starter-site
 	./scripts/overwrite-starter-site.sh
