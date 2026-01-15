@@ -238,6 +238,7 @@ services:
       - mariadb-data:/var/lib/mysql:rw
 
   mergepdf:
+    <<: *common
     image: islandora/mergepdf:${ISLANDORA_TAG}
     secrets:
       - source: CERT_PUBLIC_KEY
