@@ -31,6 +31,7 @@ process:
     source: external_uri
 destination:
   plugin: 'entity:taxonomy_term'
+idMap: {  }
 migration_dependencies:
   required: {  }
   optional: {  }

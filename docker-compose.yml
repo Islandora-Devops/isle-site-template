@@ -237,6 +237,14 @@ services:
     volumes:
       - mariadb-data:/var/lib/mysql:rw
 
+  mergepdf:
+    image: islandora/mergepdf:${ISLANDORA_TAG}
+    secrets:
+      - source: CERT_PUBLIC_KEY
+      - source: CERT_AUTHORITY
+      - source: JWT_ADMIN_TOKEN
+      - source: JWT_PUBLIC_KEY
+
   milliner:
     <<: *common
     environment:
@@ -277,10 +285,10 @@ services:
       --entryPoints.http.transport.respondingTimeouts.readTimeout=60
       --entryPoints.https.address=:443
       --entryPoints.https.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
-      --entryPoints.http.http.encodedCharacters.allowEncodedSlash=true
-      --entryPoints.http.http.encodedCharacters.allowEncodedPercent=true
-      --entryPoints.http.http.encodedCharacters.allowEncodedQuestionMark=true
-      --entryPoints.http.http.encodedCharacters.allowEncodedHash=true
+      --entryPoints.https.http.encodedCharacters.allowEncodedSlash=true
+      --entryPoints.https.http.encodedCharacters.allowEncodedPercent=true
+      --entryPoints.https.http.encodedCharacters.allowEncodedQuestionMark=true
+      --entryPoints.https.http.encodedCharacters.allowEncodedHash=true
       --entryPoints.https.transport.respondingTimeouts.readTimeout=60
       --providers.file.directory=/etc/traefik/dynamic
       --providers.docker=true
