@@ -1,7 +1,8 @@
-
 .env
 docker-compose.override.yml
 ./drupal/rootfs/var/www/drupal/vendor
 ./drupal/rootfs/var/www/drupal/web/core
 ./drupal/rootfs/var/www/drupal/web/modules/contrib
 ./drupal/rootfs/var/www/drupal/web/themes/contrib
+islandora_workbench
+islandora_demo_objects

@@ -108,6 +108,10 @@ status_dev() {
     [ "${STATUS_DEV:-false}" = "true" ]
 }
 
+is_docker_rootless() {
+    status_dev || docker info -f "{{println .SecurityOptions}}" | grep -qi rootless
+}
+
 is_dev_mode() {
     status_dev || [ "${DEVELOPMENT_ENVIRONMENT:-}" = "true" ]
 }
@@ -142,6 +146,16 @@ has_no_docker_override() {
 
 is_using_non_standard_ports() {
     status_dev || [ "${HTTP_PORT:-80}" != "80" ] || [ "${HTTPS_PORT:-443}" != "443" ]
+}
+
+# Detect the host port that maps to 80
+traefik_port_80() {
+    docker compose port traefik 80 | cut -d: -f2
+}
+
+# Detect the host port that maps to 443
+traefik_port_443() {
+    docker compose port traefik 443 | cut -d: -f2
 }
 
 # Set HTTPS with sed

@@ -134,6 +134,9 @@ services:
       NGINX_SET_REAL_IP_FROM: ${FRONTEND_IP_1}
       NGINX_SET_REAL_IP_FROM2: ${FRONTEND_IP_2}
       NGINX_SET_REAL_IP_FROM3: ${FRONTEND_IP_3}
+    healthcheck:
+      start_period: ${DRUPAL_HEALTHCHECK_START_PERIOD:-0s}
+      retries: ${DRUPAL_HEALTHCHECK_RETRIES:-3}
     image: ${REPOSITORY}/${COMPOSE_PROJECT_NAME}:${TAG}
     secrets:
       - source: CERT_PUBLIC_KEY
