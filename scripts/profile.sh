@@ -92,6 +92,9 @@ print_warning_header() {
     fi
 }
 
+is_wsl() {
+    grep -qi microsoft /proc/version 2>/dev/null || grep -qi wsl /proc/version 2>/dev/null || false
+}
 
 # --- Environment Check ---
 if [ -f .env ]; then

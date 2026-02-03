@@ -32,13 +32,6 @@ jobs:
       run:
         shell: ${{ startsWith(matrix.os, 'windows') && 'wsl-bash {0}' || 'bash' }}
     steps:
-      - name: Setup WSL
-        if: runner.os == 'Windows'
-        uses: Vampire/setup-wsl@6a8db447be7ed35f2f499c02c6e60ff77ef11278 # v6
-        with:
-          distribution: Ubuntu-24.04
-          additional-packages: make curl git docker.io docker-compose-v2
-
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Setup ISLE
@@ -48,9 +41,11 @@ jobs:
           starter-site-owner: "${{ github.event.inputs.starter-site-owner || 'islandora-devops' }}"
           starter-site-ref: "${{ github.event.inputs.starter-site-ref || 'heads/main' }}"
 
-      - run: make traefik-https-mkcert down-traefik up ping
+      - name: Test switching frontend to TLS
+        run: make traefik-https-mkcert down-traefik up ping
 
-      - run: make traefik-http down-traefik up ping
+      - name: Switch back to HTTP
+        run: make traefik-http down-traefik up ping
 
       - name: Collect logs for each service
         if: ${{ failure() }}
@@ -58,7 +53,7 @@ jobs:
           mkdir -p logs
           services=$(docker compose config --services 2>/dev/null)
           for service in $services; do
-            docker compose logs $service 2>/dev/null > "logs/${service}.log"
+            docker compose logs $service --tail 100 2>/dev/null > "logs/${service}.log"
           done
           docker compose exec mariadb mysqldump drupal_default 2>/dev/null > logs/drupal_default.sql
 

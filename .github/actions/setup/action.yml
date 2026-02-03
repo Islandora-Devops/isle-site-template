@@ -14,6 +14,13 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Setup WSL
+      if: runner.os == 'Windows'
+      uses: Vampire/setup-wsl@6a8db447be7ed35f2f499c02c6e60ff77ef11278 # v6
+      with:
+        distribution: Ubuntu-24.04
+        additional-packages: make curl git docker.io docker-compose-v2
+
     - name: Validate Inputs
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
       run: |
@@ -40,7 +47,7 @@ runs:
         git config --global user.email "actions@github.com"
         git config --global user.name "GitHub Actions"
 
-    - name: Install mkcert (Linux)
+    - name: Install mkcert on host (Linux)
       if: runner.os == 'Linux'
       shell: bash
       run: |-
@@ -48,7 +55,7 @@ runs:
         chmod +x mkcert-v*-linux-amd64
         sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
 
-    - name: Install mkcert (Windows)
+    - name: Install mkcert on host (Windows)
       if: runner.os == 'Windows'
       shell: powershell
       run: choco install mkcert -y
