@@ -1,6 +1,8 @@
 # Ensure consistent line endings
-* text=auto
+* text=auto eol=lf
 
-# Force LF for shell scripts and other files that must have Unix line endings
+# Explicitly mark shell scripts and config files
 *.sh text eol=lf
+*.env text eol=lf
 Makefile text eol=lf
+
