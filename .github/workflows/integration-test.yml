@@ -25,10 +25,20 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04, ubuntu-24.04]
+        os: [ubuntu-22.04, ubuntu-24.04, windows-2022, windows-2025]
     env:
       TERM: xterm-256color
+    defaults:
+      run:
+        shell: ${{ startsWith(matrix.os, 'windows') && 'wsl-bash {0}' || 'bash' }}
     steps:
+      - name: Setup WSL
+        if: runner.os == 'Windows'
+        uses: Vampire/setup-wsl@6a8db447be7ed35f2f499c02c6e60ff77ef11278 # v6
+        with:
+          distribution: Ubuntu-24.04
+          additional-packages: make curl git docker.io docker-compose-v2
+
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Setup ISLE
