@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # shellcheck disable=SC1091
-source "${BASH_SOURCE[0]%/*}/profile.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
 
 if ! command -v mkcert &> /dev/null; then
   echo "Error: mkcert is not installed"
@@ -19,8 +19,47 @@ sed -i.bak 's/^TLS_PROVIDER=.*/TLS_PROVIDER="self-managed"/' .env && rm -f .env.
 set_https "true"
 set_letsencrypt_config "false"
 
-export CAROOT=./certs
-mkcert -install || sudo mkcert -install
+# For some commands we must invoke a Windows executable if in the context of
+# WSL.
+IS_WSL=$(grep -q WSL /proc/version 2>/dev/null && echo "true" || echo "false")
+readonly IS_WSL
+if [[ "${IS_WSL}" == "true" ]]; then
+  MKCERT=mkcert.exe
+else
+  MKCERT=mkcert
+fi
+readonly MKCERT
+
+if [[ "${IS_WSL}" == "true" ]]; then
+  CAROOT=$("${MKCERT}" -CAROOT | xargs -0 wslpath -u)
+else
+  CAROOT=$("${MKCERT}" -CAROOT)
+fi
+readonly CAROOT
+
+"${MKCERT}" -install || sudo "${MKCERT}" -install
+
+PROGDIR=$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")
+readonly PROGDIR
+
+if [ ! -f "${PROGDIR}/certs/rootCA-key.pem" ]; then
+  cp "${CAROOT}/rootCA-key.pem" "${PROGDIR}/certs/rootCA-key.pem"
+fi
+
+if [ ! -f "${PROGDIR}/certs/rootCA.pem" ]; then
+  cp "${CAROOT}/rootCA.pem" "${PROGDIR}/certs/rootCA.pem"
+fi
+
+"${MKCERT}" -cert-file certs/cert.pem -key-file certs/privkey.pem \
+  "*.islandora.io" \
+  "islandora.io" \
+  "*.islandora.info" \
+  "islandora.info" \
+  "*.islandora.traefik.me" \
+  "islandora.traefik.me" \
+  "localhost" \
+  "127.0.0.1" \
+  "::1"
 
 echo "Done! HTTPS mode enabled with mkcert certificates."
 echo "Site will be available at: ${GREEN}${URI_SCHEME}://${DOMAIN}${RESET}"

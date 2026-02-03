@@ -14,7 +14,7 @@ else
 fi
 
 # shellcheck disable=SC1091
-source "${BASH_SOURCE[0]%/*}/profile.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
 
 HTTP_PORT=80
 HTTPS_PORT=443

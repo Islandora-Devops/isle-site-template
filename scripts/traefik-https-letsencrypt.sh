@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # shellcheck disable=SC1091
-source "${BASH_SOURCE[0]%/*}/profile.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
 
 echo "Switching to HTTPS mode with ACME (Let's Encrypt)..."
 echo
