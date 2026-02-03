@@ -5,12 +5,6 @@ set -euo pipefail
 # shellcheck disable=SC1091
 source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
 
-if ! command -v mkcert &> /dev/null; then
-  echo "Error: mkcert is not installed"
-  echo "Please install mkcert from: https://github.com/FiloSottile/mkcert#installation"
-  exit 1
-fi
-
 echo "${BLUE}Switching to HTTPS mode with mkcert...${RESET}"
 
 sed -i.bak 's/^URI_SCHEME=.*/URI_SCHEME="https"/' .env && rm -f .env.bak
@@ -19,8 +13,7 @@ sed -i.bak 's/^TLS_PROVIDER=.*/TLS_PROVIDER="self-managed"/' .env && rm -f .env.
 set_https "true"
 set_letsencrypt_config "false"
 
-# For some commands we must invoke a Windows executable if in the context of
-# WSL.
+# For some commands we must invoke a Windows executable if in the context of WSL.
 IS_WSL=$(grep -q WSL /proc/version 2>/dev/null && echo "true" || echo "false")
 readonly IS_WSL
 if [[ "${IS_WSL}" == "true" ]]; then

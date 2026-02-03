@@ -48,12 +48,6 @@ jobs:
           starter-site-owner: "${{ github.event.inputs.starter-site-owner || 'islandora-devops' }}"
           starter-site-ref: "${{ github.event.inputs.starter-site-ref || 'heads/main' }}"
 
-      - name: Install mkcert
-        run: |-
-          curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
-          chmod +x mkcert-v*-linux-amd64
-          sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
-
       - run: make traefik-https-mkcert down-traefik up ping
 
       - run: make traefik-http down-traefik up ping

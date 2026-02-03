@@ -40,6 +40,19 @@ runs:
         git config --global user.email "actions@github.com"
         git config --global user.name "GitHub Actions"
 
+    - name: Install mkcert (Linux)
+      if: runner.os == 'Linux'
+      shell: bash
+      run: |-
+        curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
+        chmod +x mkcert-v*-linux-amd64
+        sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
+
+    - name: Install mkcert (Windows)
+      if: runner.os == 'Windows'
+      shell: powershell
+      run: choco install mkcert -y
+
     - name: Start islandora-starter-site
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
       run: |
