@@ -2,6 +2,7 @@
 .PHONY: create-starter-site-pr overwrite-starter-site
 .PHONY: build pull down down-% logs-% up up-%
 .PHONY: clean demo-objects init ping status
+.PHONY: sequelace
 .PHONY: traefik-certs traefik-http traefik-https-letsencrypt traefik-https-mkcert
 .SILENT:
 
@@ -70,3 +71,6 @@ overwrite-starter-site: ## Keep site template's drupal install in sync with isla
 
 create-starter-site-pr: ## Create a PR for islandora-starter-site updates
 	./scripts/create-pr.sh
+sequelace:
+	./scripts/sequelace.sh
+
