@@ -23,7 +23,15 @@ HOST_INSECURE_PORT=$(find_port $HTTP_PORT "HTTP")
 HOST_SECURE_PORT=$(find_port $HTTPS_PORT "HTTPS")
 export HOST_INSECURE_PORT HOST_SECURE_PORT
 
-docker compose up --remove-orphans -d
+# if docker compose fails to come up the first time
+# its likely drupal failed to start nginx before docker compose's health timeout
+# given the drupal container depends on solr
+# and the solr docker compose service depends on a healthy drupal
+# get solr up and retry the command if it fails the first time
+docker compose up --remove-orphans -d || {
+    docker compose up solr -d
+    docker compose up --remove-orphans -d
+}
 
 if [ "$URI_SCHEME" = "https" ]; then
     PROTOCOL="https"
