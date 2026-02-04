@@ -17,6 +17,17 @@ echo_e() {
     echo -e "$@"
 }
 
+# update .env variables
+update_env() {
+    local var="$1"
+    local val="$2"
+    if grep -Eq "^${var}=" .env; then
+        sed -i "s/^$var=.*/$var=$val/" .env
+    else
+        echo "${var}=${val}" | tee -a .env
+    fi
+}
+
 # Function to check if a port is in use
 # Works on Linux, macOS, and WSL
 is_port_in_use() {

@@ -67,6 +67,13 @@ echo "---------------------------------------------------"
 echo "🚀 Site available at: $URL"
 echo "---------------------------------------------------"
 
+# if we extended the healthcheck during init
+# set the values back
+if ${extend_healthcheck:-false}; then
+  update_env DRUPAL_HEALTHCHECK_RETRIES 3
+  update_env DRUPAL_HEALTHCHECK_START_PERIOD 0s
+fi
+
 # don't open the URL if we're in GHA
 if [ "${GITHUB_ACTIONS:-}" != "" ]; then
   exit 0
