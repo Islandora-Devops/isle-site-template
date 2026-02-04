@@ -44,8 +44,14 @@ jobs:
       - name: Test switching frontend to TLS
         run: make traefik-https-mkcert down-traefik up ping
 
+      - name: Explicit check (TLS)
+        run: curl -vsf -o /dev/null https://islandora.traefik.me
+
       - name: Switch back to HTTP
         run: make traefik-http down-traefik up ping
+
+      - name: Explicit check (http)
+        run: curl -vsf -o /dev/null http://islandora.traefik.me
 
       - name: Collect logs for each service
         if: ${{ failure() }}

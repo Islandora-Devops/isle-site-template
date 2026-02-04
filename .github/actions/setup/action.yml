@@ -55,11 +55,6 @@ runs:
         chmod +x mkcert-v*-linux-amd64
         sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
 
-    - name: Install mkcert on host (Windows)
-      if: runner.os == 'Windows'
-      shell: powershell
-      run: choco install mkcert -y
-
     - name: Start islandora-starter-site
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
       run: |

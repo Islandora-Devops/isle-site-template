@@ -90,7 +90,6 @@ Available targets:
   traefik-http         Switch to HTTP mode (default)
   traefik-https-mkcert Switch to HTTPS mode using mkcert self-signed certificates
   traefik-https-letsencrypt Switch to HTTPS mode using Let's Encrypt ACME
-  traefik-certs        Generate mkcert certificates
   build                Build the drupal container
   init                 Get the host machine configured to run ISLE
   up                   Start docker compose project with smart port allocation
@@ -118,7 +117,7 @@ Key variables:
 
 By default, the environment runs over **HTTP** to simplify local development.
 
-To switch to **HTTPS** for local development:
+To switch to **HTTPS** for local development (macOS and Linux only **WSL** is not supported for local TLS certificates):
 1.  Ensure you have [mkcert](https://github.com/FiloSottile/mkcert) installed and trusted on your host.
 2.  Run:
 ```bash

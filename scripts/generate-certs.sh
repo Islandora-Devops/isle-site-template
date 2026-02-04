@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 # shellcheck shell=bash
+
 set -euf -o pipefail
+
+if ! command -v mkcert &> /dev/null; then
+  echo "${RED}Error: mkcert is not installed or not in PATH${RESET}"
+  exit 1
+fi
 
 echo "Generating certificates with mkcert..."
 
@@ -10,7 +16,7 @@ readonly PROGDIR
 CAROOT=$(mkcert -CAROOT)
 readonly CAROOT
 
-mkcert -install || true # Ignore errors, as java key stores are sometimes not owned by the user in Windows.
+timeout 10 mkcert -install || true
 
 if [ ! -f "${PROGDIR}/certs/rootCA-key.pem" ]; then
   cp "${CAROOT}/rootCA-key.pem" "${PROGDIR}/certs/rootCA-key.pem"
