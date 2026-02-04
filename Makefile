@@ -3,6 +3,7 @@
 .PHONY: build pull down down-% logs-% up up-%
 .PHONY: clean demo-objects init ping status
 .PHONY: traefik-http traefik-https-letsencrypt traefik-https-mkcert
+.PHONY: sequelace
 .SILENT:
 
 # If custom.makefile exists include it.
@@ -67,3 +68,5 @@ overwrite-starter-site: ## Keep site template's drupal install in sync with isla
 
 create-starter-site-pr: ## Create a PR for islandora-starter-site updates
 	./scripts/create-pr.sh
+sequelace:
+	./scripts/sequelace.sh
