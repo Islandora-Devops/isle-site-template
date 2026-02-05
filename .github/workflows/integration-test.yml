@@ -20,14 +20,20 @@ on:
         default: "heads/main"
   schedule:
     - cron: "15 11 * * *"
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04, ubuntu-24.04]
+        os: [ubuntu-22.04, ubuntu-24.04, windows-2022, windows-2025]
     env:
       TERM: xterm-256color
+    defaults:
+      run:
+        shell: ${{ startsWith(matrix.os, 'windows') && 'wsl-bash {0}' || 'bash' }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
@@ -38,15 +44,18 @@ jobs:
           starter-site-owner: "${{ github.event.inputs.starter-site-owner || 'islandora-devops' }}"
           starter-site-ref: "${{ github.event.inputs.starter-site-ref || 'heads/main' }}"
 
-      - name: Install mkcert
-        run: |-
-          curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
-          chmod +x mkcert-v*-linux-amd64
-          sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
+      - name: Test switching frontend to TLS
+        run: make traefik-https-mkcert down-traefik up ping
 
-      - run: make traefik-https-mkcert down-traefik up ping
+      - name: Explicit check (TLS)
+        if: startsWith(matrix.os, 'ubuntu')
+        run: curl -vsf -o /dev/null https://islandora.traefik.me
 
-      - run: make traefik-http down-traefik up ping
+      - name: Switch back to HTTP
+        run: make traefik-http down-traefik up ping
+
+      - name: Explicit check (http)
+        run: curl -vsf -o /dev/null http://islandora.traefik.me
 
       - name: Collect logs for each service
         if: ${{ failure() }}
@@ -54,7 +63,7 @@ jobs:
           mkdir -p logs
           services=$(docker compose config --services 2>/dev/null)
           for service in $services; do
-            docker compose logs $service 2>/dev/null > "logs/${service}.log"
+            docker compose logs $service --tail 100 2>/dev/null > "logs/${service}.log"
           done
           docker compose exec mariadb mysqldump drupal_default 2>/dev/null > logs/drupal_default.sql
 

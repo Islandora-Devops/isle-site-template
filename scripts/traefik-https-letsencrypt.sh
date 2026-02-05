@@ -3,7 +3,12 @@
 set -euo pipefail
 
 # shellcheck disable=SC1091
-source "${BASH_SOURCE[0]%/*}/profile.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
+
+if is_wsl; then
+  echo "${RED}Error: letsencrypt is not supported using WSL.${RESET}"
+  exit 1
+fi
 
 echo "Switching to HTTPS mode with ACME (Let's Encrypt)..."
 echo

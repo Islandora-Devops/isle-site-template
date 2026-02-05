@@ -2,8 +2,8 @@
 .PHONY: create-starter-site-pr overwrite-starter-site
 .PHONY: build pull down down-% logs-% up up-%
 .PHONY: clean demo-objects init ping status
+.PHONY: traefik-http traefik-https-letsencrypt traefik-https-mkcert
 .PHONY: sequelace
-.PHONY: traefik-certs traefik-http traefik-https-letsencrypt traefik-https-mkcert
 .SILENT:
 
 # If custom.makefile exists include it.
@@ -24,14 +24,11 @@ status: ## Show the current status of the development environment
 traefik-http: ## Switch to HTTP mode (default)
 	./scripts/traefik-http.sh
 
-traefik-https-mkcert: traefik-certs ## Switch to HTTPS mode using mkcert self-signed certificates
+traefik-https-mkcert: ## Switch to HTTPS mode using mkcert self-signed certificates
 	./scripts/traefik-https-mkcert.sh
 
 traefik-https-letsencrypt: ## Switch to HTTPS mode using Let's Encrypt ACME
 	./scripts/traefik-https-letsencrypt.sh
-
-traefik-certs: ## Generate mkcert certificates
-	./scripts/generate-certs.sh
 
 pull:
 	docker compose pull --ignore-buildable --ignore-pull-failures
@@ -73,4 +70,3 @@ create-starter-site-pr: ## Create a PR for islandora-starter-site updates
 	./scripts/create-pr.sh
 sequelace:
 	./scripts/sequelace.sh
-

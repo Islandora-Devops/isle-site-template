@@ -17,6 +17,41 @@ echo_e() {
     echo -e "$@"
 }
 
+# update .env variables
+update_env() {
+    local var="$1"
+    local val="$2"
+    if grep -Eq "^${var}=" .env; then
+        sed -i "s/^$var=.*/$var=$val/" .env
+    else
+        echo "${var}=${val}" | tee -a .env
+    fi
+}
+
+# Function to check if a port is in use
+# Works on Linux, macOS, and WSL
+is_port_in_use() {
+    local port=$1
+    # Try ss first (available on most Linux/WSL systems)
+    # Use -tln without -H for compatibility, filter with grep
+    if command -v ss >/dev/null 2>&1; then
+        ss -tln 2>/dev/null | grep -q ":${port}\b"
+        return $?
+    fi
+    # Fall back to lsof (available on macOS and some Linux)
+    if command -v lsof >/dev/null 2>&1; then
+        lsof -PiTCP:"$port" -sTCP:LISTEN -t >/dev/null 2>&1
+        return $?
+    fi
+    # Last resort: try netstat
+    if command -v netstat >/dev/null 2>&1; then
+        netstat -tln 2>/dev/null | grep -q ":${port}\b"
+        return $?
+    fi
+    # If no tool available, assume port is free
+    return 1
+}
+
 # Function to find the next available port
 # Depends on the COMPOSE_PROJECT_NAME variable being set in the calling script.
 find_port() {
@@ -28,10 +63,7 @@ find_port() {
 
     while true; do
         # Check if anything is listening on TCP at this port
-        local pids
-        pids=$(lsof -PiTCP:"$port" -sTCP:LISTEN -t 2>/dev/null || true)
-
-        if [ -z "$pids" ]; then
+        if ! is_port_in_use "$port"; then
             break # Port is completely free
         fi
 
@@ -71,6 +103,9 @@ print_warning_header() {
     fi
 }
 
+is_wsl() {
+    grep -qi microsoft /proc/version 2>/dev/null || grep -qi wsl /proc/version 2>/dev/null || false
+}
 
 # --- Environment Check ---
 if [ -f .env ]; then
