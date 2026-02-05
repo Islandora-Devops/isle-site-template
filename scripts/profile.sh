@@ -138,6 +138,45 @@ fi
 
 # --- Configuration Helper Functions ---
 
+# Check if running in non-interactive mode
+is_noninteractive() {
+    [ "${ISLE_SITE_TEMPLATE_NONINTERACTIVE:-false}" = "true" ]
+}
+
+# Check if Docker volumes exist for a given project name
+# Returns 0 (true) if at least one expected volume exists, 1 (false) otherwise
+check_volumes_exist() {
+    local project_name="$1"
+    local key_volumes=("drupal-public-files" "mariadb-data" "fcrepo-data")
+    for vol in "${key_volumes[@]}"; do
+        if docker volume ls -q 2>/dev/null | grep -q "^${project_name}_${vol}$"; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Prompt user for input with a default value
+# Usage: result=$(prompt_with_default "prompt message" "default_value")
+prompt_with_default() {
+    local prompt="$1"
+    local default="$2"
+    local input
+
+    if is_noninteractive; then
+        printf "%s" "$default"
+        return
+    fi
+
+    printf "%s [%s]: " "$prompt" "$default" >&2
+    read -r input
+    if [ -z "$input" ]; then
+        printf "%s" "$default"
+    else
+        printf "%s" "$input"
+    fi
+}
+
 # Development mode for testing - set STATUS_DEV=true to force all warnings to show
 status_dev() {
     [ "${STATUS_DEV:-false}" = "true" ]
@@ -208,13 +247,13 @@ set_https() {
 set_letsencrypt_config() {
   local enable=$1
 
-  sed -i.bak 's/^TLS_PROVIDER=.*/TLS_PROVIDER="self-managed"/' .env && rm -f .env.bak
+  update_env TLS_PROVIDER '"self-managed"'
   sed -i.bak '/--certificatesresolvers.letsencrypt.acme/d' docker-compose.yml && rm -f docker-compose.yml.bak
   sed -i.bak '/--entrypoints.https.http.tls.certResolver/d' docker-compose.yml && rm -f docker-compose.yml.bak
 
   if [ "$enable" = "true" ]; then
-    sed -i.bak 's/^TLS_PROVIDER=.*/TLS_PROVIDER="letsencrypt"/' .env && rm -f .env.bak
-    sed -i.bak 's/^URI_SCHEME=.*/URI_SCHEME="https"/' .env && rm -f .env.bak
+    update_env TLS_PROVIDER '"letsencrypt"'
+    update_env URI_SCHEME '"https"'
 
     # shellcheck disable=SC2016
     sed -i.bak '/command: >-/a\
