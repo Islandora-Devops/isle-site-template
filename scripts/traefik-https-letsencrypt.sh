@@ -35,9 +35,9 @@ echo "  DEVELOPMENT_ENVIRONMENT=false${RESET}"
 echo
 
 # Update .env file
-sed -i.bak 's|^DEVELOPMENT_ENVIRONMENT=.*|DEVELOPMENT_ENVIRONMENT="false"|' .env && rm -f .env.bak
-sed -i.bak "s|^DOMAIN=.*|DOMAIN=${NEW_DOMAIN}|" .env && rm -f .env.bak
-sed -i.bak "s|^ACME_EMAIL=.*|ACME_EMAIL=${NEW_EMAIL}|" .env && rm -f .env.bak
+update_env DEVELOPMENT_ENVIRONMENT '"false"'
+update_env DOMAIN "$NEW_DOMAIN"
+update_env ACME_EMAIL "$NEW_EMAIL"
 
 set_https "true"
 set_letsencrypt_config "true"
