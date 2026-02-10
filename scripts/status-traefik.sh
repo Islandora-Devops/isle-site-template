@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # shellcheck disable=SC1091
-source "${BASH_SOURCE[0]%/*}/profile.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
 
 print_traefik_make_helpers() {
     printf "\tThere are some make commands you can run to get traefik configured correctly\n"

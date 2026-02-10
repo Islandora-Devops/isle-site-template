@@ -1,0 +1,8 @@
+# Ensure consistent line endings
+* text=auto eol=lf
+
+# Explicitly mark shell scripts and config files
+*.sh text eol=lf
+*.env text eol=lf
+Makefile text eol=lf
+

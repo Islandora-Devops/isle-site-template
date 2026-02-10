@@ -14,8 +14,15 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Setup WSL
+      if: runner.os == 'Windows'
+      uses: Vampire/setup-wsl@6a8db447be7ed35f2f499c02c6e60ff77ef11278 # v6
+      with:
+        distribution: Ubuntu-24.04
+        additional-packages: make curl git docker.io docker-compose-v2
+
     - name: Validate Inputs
-      shell: bash
+      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
       run: |
         REGEX_DOCKER="^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$"
         REGEX_GITHUB_OWNER="^[a-zA-Z0-9]([a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$"
@@ -35,22 +42,31 @@ runs:
         validate "starter-site-ref" "${{ inputs.starter-site-ref }}" "$REGEX_GIT_REF"
 
     - name: setup git identity
-      shell: bash
+      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
       run: |
         git config --global user.email "actions@github.com"
         git config --global user.name "GitHub Actions"
 
-    - name: Start islandora-starter-site
+    - name: Install mkcert on host (Linux)
+      if: runner.os == 'Linux'
       shell: bash
-      env:
-        ISLANDORA_TAG: ${{ inputs.buildkit-tag }}
-        STARTER_SITE_BRANCH: ${{ inputs.starter-site-ref }}
-        STARTER_SITE_OWNER: ${{ inputs.starter-site-owner }}
-        TERM: xterm-256color
-      run: make overwrite-starter-site init up
+      run: |-
+        curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
+        chmod +x mkcert-v*-linux-amd64
+        sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
+
+    - name: Start islandora-starter-site
+      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
+      run: |
+        make overwrite-starter-site init up \
+          ISLANDORA_TAG=${{ inputs.buildkit-tag }} \
+          STARTER_SITE_BRANCH=${{ inputs.starter-site-ref }} \
+          STARTER_SITE_OWNER=${{ inputs.starter-site-owner }} \
+          GITHUB_ACTIONS="true" \
+          TERM=xterm-256color
 
     - name: make sure traefik is serving traffic
-      shell: bash
+      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
       run: ./scripts/ping.sh
       env:
         TERM: xterm-256color

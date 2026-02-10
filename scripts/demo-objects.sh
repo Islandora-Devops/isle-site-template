@@ -3,7 +3,7 @@
 set -eou pipefail
 
 # shellcheck disable=SC1091
-source "${BASH_SOURCE[0]%/*}/profile.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
 
 if [ ! -d "islandora_workbench" ]; then
   git clone https://github.com/mjordan/islandora_workbench

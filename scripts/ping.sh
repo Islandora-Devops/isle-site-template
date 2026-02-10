@@ -3,7 +3,7 @@
 set -eou pipefail
 
 # shellcheck disable=SC1091
-source "${BASH_SOURCE[0]%/*}/profile.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
 
 MAX_RETRIES=${MAX_RETRIES:-10}
 SLEEP_INCREMENT=5
