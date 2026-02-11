@@ -13,8 +13,7 @@ fi
 echo "${BLUE}Switching to HTTPS mode with mkcert...${RESET}"
 
 # Update .env file
-sed -i.bak 's/^URI_SCHEME=.*/URI_SCHEME="https"/' .env && rm -f .env.bak
-sed -i.bak 's/^TLS_PROVIDER=.*/TLS_PROVIDER="self-managed"/' .env && rm -f .env.bak
+update_env URI_SCHEME "https"
 set_https "true"
 set_letsencrypt_config "false"
 
