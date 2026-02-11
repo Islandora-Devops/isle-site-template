@@ -22,7 +22,7 @@ update_env() {
     local var="$1"
     local val="$2"
     if grep -Eq "^${var}=" .env; then
-        sed -i "s/^$var=.*/$var=$val/" .env
+        sed -i.bak "s/^$var=.*/$var=$val/" .env && rm .env.bak
     else
         echo "${var}=${val}" | tee -a .env
     fi
@@ -107,12 +107,10 @@ is_wsl() {
     grep -qi microsoft /proc/version 2>/dev/null || grep -qi wsl /proc/version 2>/dev/null || false
 }
 
-# --- Environment Check ---
-if [ -f .env ]; then
-    # Use || true to prevent set -e from exiting if grep finds nothing
-    DEVELOPMENT_ENVIRONMENT=$(grep '^DEVELOPMENT_ENVIRONMENT=' .env | cut -d'=' -f2 | tr -d '"' || echo "not_set")
-    TLS_PROVIDER=$(grep '^TLS_PROVIDER=' .env | cut -d'=' -f2 | tr -d '"' || echo "not_set")
-    URI_SCHEME=$(grep '^URI_SCHEME=' .env | cut -d'=' -f2 | tr -d '"' || echo "not_set")
+export_env() {
+    DEVELOPMENT_ENVIRONMENT=$(grep '^DEVELOPMENT_ENVIRONMENT=' .env | cut -d'=' -f2 | tr -d '"' || echo "false")
+    TLS_PROVIDER=$(grep '^TLS_PROVIDER=' .env | cut -d'=' -f2 | tr -d '"' || echo "self-managed")
+    URI_SCHEME=$(grep '^URI_SCHEME=' .env | cut -d'=' -f2 | tr -d '"' || echo "http")
     ENABLE_ACME="false"
     if [ "${TLS_PROVIDER}" = "letsencrypt" ]; then
         ENABLE_ACME="true"
@@ -128,8 +126,14 @@ if [ -f .env ]; then
     TAG=$(grep '^TAG=' .env | cut -d'=' -f2 | tr -d '"' || echo "local")
     REPOSITORY=$(grep '^REPOSITORY=' .env | cut -d'=' -f2 | tr -d '"' || echo "islandora.io")
     COMPOSE_PROJECT_NAME=$(grep '^COMPOSE_PROJECT_NAME=' .env | cut -d'=' -f2 | tr -d '"' || echo "isle-site-template")
+
     # Export variables for use by sourcing scripts
     export DEVELOPMENT_ENVIRONMENT ENABLE_HTTPS URI_SCHEME ENABLE_ACME ACME_EMAIL DOMAIN ISLANDORA_TAG COMPOSE_PROJECT_NAME TAG REPOSITORY
+}
+
+# --- Environment Check ---
+if [ -f .env ]; then
+  export_env
 else
   echo_e "  ${RED}.env file not found. Cannot determine configuration.${RESET}"
   echo "You should cp sample.env to .env"
@@ -137,6 +141,45 @@ else
 fi
 
 # --- Configuration Helper Functions ---
+
+# Check if running in non-interactive mode
+is_noninteractive() {
+    [ "${ISLE_SITE_TEMPLATE_NONINTERACTIVE:-false}" = "true" ]
+}
+
+# Check if Docker volumes exist for a given project name
+# Returns 0 (true) if at least one expected volume exists, 1 (false) otherwise
+check_volumes_exist() {
+    local project_name="$1"
+    local key_volumes=("drupal-public-files" "mariadb-data" "fcrepo-data")
+    for vol in "${key_volumes[@]}"; do
+        if docker volume ls -q 2>/dev/null | grep -q "^${project_name}_${vol}$"; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Prompt user for input with a default value
+# Usage: result=$(prompt_with_default "prompt message" "default_value")
+prompt_with_default() {
+    local prompt="$1"
+    local default="$2"
+    local input
+
+    if is_noninteractive; then
+        printf "%s" "$default"
+        return
+    fi
+
+    printf "%s [%s]: " "$prompt" "$default" >&2
+    read -r input
+    if [ -z "$input" ]; then
+        printf "%s" "$default"
+    else
+        printf "%s" "$input"
+    fi
+}
 
 # Development mode for testing - set STATUS_DEV=true to force all warnings to show
 status_dev() {
@@ -198,9 +241,9 @@ set_https() {
   local enable=$1
 
   if [ "$enable" = "true" ]; then
-    sed -i.bak 's/^DRUPAL_ENABLE_HTTPS:.*/DRUPAL_ENABLE_HTTPS: "true"/' docker-compose.yml && rm -f docker-compose.yml.bak
+    sed -i.bak 's/DRUPAL_ENABLE_HTTPS:.*/DRUPAL_ENABLE_HTTPS: "true"/' docker-compose.yml && rm -f docker-compose.yml.bak
   else
-    sed -i.bak 's/^DRUPAL_ENABLE_HTTPS:.*/DRUPAL_ENABLE_HTTPS: "false"/' docker-compose.yml && rm -f docker-compose.yml.bak
+    sed -i.bak 's/DRUPAL_ENABLE_HTTPS:.*/DRUPAL_ENABLE_HTTPS: "false"/' docker-compose.yml && rm -f docker-compose.yml.bak
   fi
 }
 
@@ -208,13 +251,13 @@ set_https() {
 set_letsencrypt_config() {
   local enable=$1
 
-  sed -i.bak 's/^TLS_PROVIDER=.*/TLS_PROVIDER="self-managed"/' .env && rm -f .env.bak
+  update_env TLS_PROVIDER "self-managed"
   sed -i.bak '/--certificatesresolvers.letsencrypt.acme/d' docker-compose.yml && rm -f docker-compose.yml.bak
   sed -i.bak '/--entrypoints.https.http.tls.certResolver/d' docker-compose.yml && rm -f docker-compose.yml.bak
 
   if [ "$enable" = "true" ]; then
-    sed -i.bak 's/^TLS_PROVIDER=.*/TLS_PROVIDER="letsencrypt"/' .env && rm -f .env.bak
-    sed -i.bak 's/^URI_SCHEME=.*/URI_SCHEME="https"/' .env && rm -f .env.bak
+    update_env TLS_PROVIDER "letsencrypt"
+    update_env URI_SCHEME "https"
 
     # shellcheck disable=SC2016
     sed -i.bak '/command: >-/a\
@@ -225,5 +268,19 @@ set_letsencrypt_config() {
       --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}\
       --certificatesresolvers.letsencrypt.acme.caserver=${ACME_URL}
 ' docker-compose.yml && rm -f docker-compose.yml.bak
+  fi
+}
+
+# Get the IP a hostname resolves to
+get_dns_ip() {
+  local hostname="$1"
+  if command -v dig >/dev/null 2>&1; then
+    dig +short "$hostname" 2>/dev/null | head -1
+  elif command -v nslookup >/dev/null 2>&1; then
+    nslookup "$hostname" 2>/dev/null | awk '/^Address: / { print $2 }' | tail -1
+  elif command -v host >/dev/null 2>&1; then
+    host "$hostname" 2>/dev/null | awk '/has address/ { print $4 }' | head -1
+  else
+    echo ""
   fi
 }

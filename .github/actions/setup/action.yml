@@ -59,6 +59,7 @@ runs:
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
       run: |
         make overwrite-starter-site init up \
+          ISLE_SITE_TEMPLATE_NONINTERACTIVE=true \
           ISLANDORA_TAG=${{ inputs.buildkit-tag }} \
           STARTER_SITE_BRANCH=${{ inputs.starter-site-ref }} \
           STARTER_SITE_OWNER=${{ inputs.starter-site-owner }} \

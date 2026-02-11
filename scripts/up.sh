@@ -2,19 +2,11 @@
 
 set -eou pipefail
 
-if [ -f .env ]; then
-  # Export variables so docker-compose and this script can see them
-  # shellcheck disable=SC1091
-  source .env
-else
-  echo "Error: .env file not found." >&2
-  ./scripts/init.sh
-  # shellcheck disable=SC1091
-  source .env
-fi
+# shellcheck disable=SC1091
+source "$(dirname "${BASH_SOURCE[0]}")/init.sh"
 
 # shellcheck disable=SC1091
-source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
+source .env
 
 HTTP_PORT=80
 HTTPS_PORT=443
