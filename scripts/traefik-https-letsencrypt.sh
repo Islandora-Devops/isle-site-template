@@ -15,7 +15,7 @@ get_public_ip() {
 
 # Verify DNS records required for Let's Encrypt
 verify_dns() {
-  local domain="$1"
+  local host="$1"
   local errors=0
 
   echo_e "${BLUE}Verifying DNS records for Let's Encrypt...${RESET}"
@@ -28,31 +28,24 @@ verify_dns() {
   fi
   echo "  Public IP: $public_ip"
 
-  # Required domains: main domain and fcrepo subdomain
-  local required_domains=("$domain" "fcrepo.$domain")
+  local resolved_ip
+  resolved_ip=$(get_dns_ip "$host")
 
-  for host in "${required_domains[@]}"; do
-    local resolved_ip
-    resolved_ip=$(get_dns_ip "$host")
-
-    if [ -z "$resolved_ip" ]; then
-      echo_e "  ${RED}✗ $host - does not resolve${RESET}"
-      errors=$((errors + 1))
-    elif [ "$resolved_ip" != "$public_ip" ]; then
-      echo_e "  ${RED}✗ $host - resolves to $resolved_ip (expected $public_ip)${RESET}"
-      errors=$((errors + 1))
-    else
-      echo_e "  ${GREEN}✓ $host - resolves to $resolved_ip${RESET}"
-    fi
-  done
+  if [ -z "$resolved_ip" ]; then
+    echo_e "  ${RED}✗ $host - does not resolve${RESET}"
+    errors=$((errors + 1))
+  elif [ "$resolved_ip" != "$public_ip" ]; then
+    echo_e "  ${RED}✗ $host - resolves to $resolved_ip (expected $public_ip)${RESET}"
+    errors=$((errors + 1))
+  else
+    echo_e "  ${GREEN}✓ $host - resolves to $resolved_ip${RESET}"
+  fi
 
   if [ $errors -gt 0 ]; then
     echo ""
-    echo_e "${RED}DNS verification failed.${RESET}"
-    echo "Ensure the following DNS records point to $public_ip:"
-    for host in "${required_domains[@]}"; do
-      echo "  - $host"
-    done
+    echo_e "${RED}DNS verification failed for $host.${RESET}"
+    echo "Ensure this DNS record points to $public_ip:"
+    echo "  - $host"
     echo ""
     echo "Let's Encrypt requires valid DNS records to issue certificates."
     return 1
@@ -60,6 +53,19 @@ verify_dns() {
 
   echo_e "${GREEN}DNS verification passed.${RESET}"
   return 0
+}
+
+should_verify_fcrepo_dns() {
+  local expected_value="${URI_SCHEME}://fcrepo.${DOMAIN}/fcrepo/rest/"
+  local configured_value
+  local yq_query='.services.drupal.environment.DRUPAL_DEFAULT_FCREPO_URL // ""'
+
+  configured_value=$(
+    docker compose config 2>/dev/null | \
+      docker run --rm -i islandora/base:main yq -r "$yq_query" 2>/dev/null || true
+  )
+
+  [ "$configured_value" = "$expected_value" ]
 }
 
 if is_wsl; then
@@ -88,6 +94,12 @@ if ! verify_dns "$NEW_DOMAIN"; then
   exit 1
 fi
 
+if should_verify_fcrepo_dns; then
+  if ! verify_dns "fcrepo.$NEW_DOMAIN"; then
+    exit 1
+  fi
+fi
+
 echo
 echo "Updating .env with:"
 echo "  ${GREEN}URI_SCHEME=https"
@@ -113,4 +125,3 @@ echo "${BLUE}make down-traefik up"
 # so we just wait 60s and then recycle the entire stack
 # to ensure all containers have the proper CA
 echo "sleep 60 && make down up${RESET}"
-

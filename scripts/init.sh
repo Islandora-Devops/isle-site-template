@@ -54,9 +54,6 @@ if $need_init; then
     echo_e "${YELLOW}Running in non-interactive mode, using defaults from .env${RESET}"
   fi
 
-  # Extend healthcheck for fresh install
-  update_env DRUPAL_HEALTHCHECK_RETRIES 10
-  update_env DRUPAL_HEALTHCHECK_START_PERIOD 1m
 fi
 
 if is_dev_mode && is_docker_rootless; then
