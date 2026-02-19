@@ -14,10 +14,12 @@ dependencies:
     - field.storage.node.field_full_title
     - field.storage.node.field_geographic_subject
     - field.storage.node.field_isbn
+    - field.storage.node.field_issue
     - field.storage.node.field_lcc_classification
     - field.storage.node.field_linked_agent
     - field.storage.node.field_member_of
     - field.storage.node.field_oclc_number
+    - field.storage.node.field_parent_publication_title
     - field.storage.node.field_physical_form
     - field.storage.node.field_publisher
     - field.storage.node.field_resource_type
@@ -27,6 +29,7 @@ dependencies:
     - field.storage.node.field_subjects_name
     - field.storage.node.field_tags
     - field.storage.node.field_temporal_subject
+    - field.storage.node.field_volume
     - search_api.server.default_solr_server
   module:
     - controlled_access_terms
@@ -210,6 +213,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_isbn
+  field_issue:
+    label: Issue
+    datasource_id: 'entity:node'
+    property_path: field_issue
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_issue
   field_lcc_classification:
     label: 'Library of Congress Classification'
     datasource_id: 'entity:node'
@@ -244,6 +255,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_oclc_number
+  field_parent_publication_title:
+    label: 'Parent Publication Title'
+    datasource_id: 'entity:node'
+    property_path: field_parent_publication_title
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_parent_publication_title
   field_physical_form:
     label: 'Physical Form'
     datasource_id: 'entity:node'
@@ -294,6 +313,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_tags
+  field_volume:
+    label: Volume
+    datasource_id: 'entity:node'
+    property_path: field_volume
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_volume
   linked_agent_name_fulltext:
     label: Names
     datasource_id: 'entity:node'
@@ -508,6 +535,23 @@ processor_settings:
       preprocess_query: -4
   custom_value: {  }
   dgi_image_discovery: {  }
+  edtf_date_processor:
+    fields:
+      node|field_copyright_date: node|field_copyright_date
+      node|field_date_captured: node|field_date_captured
+      node|field_date_modified: node|field_date_modified
+      node|field_date_valid: node|field_date_valid
+      node|field_edtf_date: node|field_edtf_date
+      node|field_edtf_date_created: node|field_edtf_date_created
+      node|field_edtf_date_issued: node|field_edtf_date_issued
+    open_start_year: '0'
+    open_end_year: ''
+    spring_date: '3'
+    summer_date: '6'
+    autumn_date: '9'
+    winter_date: '12'
+    ignore_open_start: null
+    ignore_open_end: null
   edtf_year_only:
     fields:
       node|islandora_object|field_copyright_date: node|islandora_object|field_copyright_date

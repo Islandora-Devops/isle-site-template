@@ -3,8 +3,12 @@ csl_map:
     - type
   field_description:
     - abstract
+  field_parent_publication_title:
+    - container-title
   field_genre:
     - genre
+  field_issue:
+    - issue
   field_publisher:
     - publisher
   field_place_published:
@@ -13,6 +17,8 @@ csl_map:
     - title
   'current url':
     - URL
+  field_volume:
+    - volume
   field_language:
     - language
   field_edtf_date_issued:

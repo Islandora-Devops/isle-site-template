@@ -1,0 +1,19 @@
+uuid: 841c2cd5-8c1e-4b7c-b2ce-c02639d99a8a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_volume
+    - node.type.islandora_object
+id: node.islandora_object.field_volume
+field_name: field_volume
+entity_type: node
+bundle: islandora_object
+label: Volume
+description: 'Enter the volume information for this item.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
