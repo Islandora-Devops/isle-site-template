@@ -1,0 +1,19 @@
+uuid: ca3f5326-9ba4-48e3-940e-328d0983faeb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_parent_publication_title
+    - node.type.islandora_object
+id: node.islandora_object.field_parent_publication_title
+field_name: field_parent_publication_title
+entity_type: node
+bundle: islandora_object
+label: 'Parent Publication Title'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

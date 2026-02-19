@@ -26,6 +26,7 @@ dependencies:
     - field.field.node.islandora_object.field_geographic_subject
     - field.field.node.islandora_object.field_identifier
     - field.field.node.islandora_object.field_isbn
+    - field.field.node.islandora_object.field_issue
     - field.field.node.islandora_object.field_language
     - field.field.node.islandora_object.field_lcc_classification
     - field.field.node.islandora_object.field_linked_agent
@@ -35,6 +36,7 @@ dependencies:
     - field.field.node.islandora_object.field_model
     - field.field.node.islandora_object.field_note
     - field.field.node.islandora_object.field_oclc_number
+    - field.field.node.islandora_object.field_parent_publication_title
     - field.field.node.islandora_object.field_physical_form
     - field.field.node.islandora_object.field_pid
     - field.field.node.islandora_object.field_place_published
@@ -49,6 +51,7 @@ dependencies:
     - field.field.node.islandora_object.field_table_of_contents
     - field.field.node.islandora_object.field_temporal_subject
     - field.field.node.islandora_object.field_viewer_override
+    - field.field.node.islandora_object.field_volume
     - field.field.node.islandora_object.field_weight
     - node.type.islandora_object
   module:
@@ -430,12 +433,15 @@ hidden:
   did_image: true
   display_media_entity_view_3: true
   display_media_thumbnail: true
+  field_issue: true
   field_model: true
+  field_parent_publication_title: true
   field_pid: true
   field_place_published_country: true
   field_publisher: true
   field_representative_image: true
   field_viewer_override: true
+  field_volume: true
   field_weight: true
   islandora_fits_checksum: true
   langcode: true
