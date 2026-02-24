@@ -2,19 +2,11 @@
 
 set -eou pipefail
 
-if [ -f .env ]; then
-  # Export variables so docker-compose and this script can see them
-  # shellcheck disable=SC1091
-  source .env
-else
-  echo "Error: .env file not found." >&2
-  ./scripts/init.sh
-  # shellcheck disable=SC1091
-  source .env
-fi
+# shellcheck disable=SC1091
+source "$(dirname "${BASH_SOURCE[0]}")/init.sh"
 
 # shellcheck disable=SC1091
-source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
+source .env
 
 HTTP_PORT=80
 HTTPS_PORT=443
@@ -66,13 +58,6 @@ fi
 echo "---------------------------------------------------"
 echo "🚀 Site available at: $URL"
 echo "---------------------------------------------------"
-
-# if we extended the healthcheck during init
-# set the values back
-if ${extend_healthcheck:-false}; then
-  update_env DRUPAL_HEALTHCHECK_RETRIES 3
-  update_env DRUPAL_HEALTHCHECK_START_PERIOD 0s
-fi
 
 # don't open the URL if we're in GHA
 if [ "${GITHUB_ACTIONS:-}" != "" ]; then

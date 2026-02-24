@@ -259,9 +259,6 @@ services:
 
   solr:
     <<: *common
-    depends_on:
-      drupal:
-        condition: service_healthy
     image: islandora/solr:${ISLANDORA_TAG}
     volumes:
       - solr-data:/data:rw
@@ -330,4 +327,3 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:z
       - ./conf/traefik:/etc/traefik/dynamic:ro
       - acme-data:/acme:rw
-
