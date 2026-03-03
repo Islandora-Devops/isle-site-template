@@ -3101,26 +3101,26 @@
         },
         {
             "name": "drupal/field_report",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/field_report.git",
-                "reference": "8.x-2.1"
+                "reference": "8.x-2.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/field_report-8.x-2.1.zip",
-                "reference": "8.x-2.1",
-                "shasum": "b184686d06ad08983ef6bcb42f02fdc81bf51ae4"
+                "url": "https://ftp.drupal.org/files/projects/field_report-8.x-2.2.zip",
+                "reference": "8.x-2.2",
+                "shasum": "ef6ed6b51e21869df888920318757b74db2c5cc6"
             },
             "require": {
-                "drupal/core": "^8.8 || ^9 || ^10"
+                "drupal/core": "^8.8 || ^9 || ^10 || ^11"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.1",
-                    "datestamp": "1660160586",
+                    "version": "8.x-2.2",
+                    "datestamp": "1771520660",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4884,17 +4884,17 @@
         },
         {
             "name": "drupal/rest_oai_pmh",
-            "version": "2.1.1",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/rest_oai_pmh.git",
-                "reference": "2.1.1"
+                "reference": "2.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rest_oai_pmh-2.1.1.zip",
-                "reference": "2.1.1",
-                "shasum": "6f3b208e8cfd80185bfd1f797b829ad6fcedbdc5"
+                "url": "https://ftp.drupal.org/files/projects/rest_oai_pmh-2.2.1.zip",
+                "reference": "2.2.1",
+                "shasum": "7bf04ab655fa6017e7b01ccc6748375ab6855882"
             },
             "require": {
                 "drupal/core": "^10.1 || ^11"
@@ -4902,8 +4902,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.1.1",
-                    "datestamp": "1765226908",
+                    "version": "2.2.1",
+                    "datestamp": "1771879700",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
