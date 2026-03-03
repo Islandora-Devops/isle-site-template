@@ -17,4 +17,4 @@ configuration:
   args: '-c tessedit_create_hocr=1 -c hocr_font_info=0'
   destination_media_type: file
   scheme: public
-  path: 'hocr/[date:custom:Y]-[date:custom:m]/[node:nid]-[term:name].html'
+  path: 'hocr/[date:custom:Y]-[date:custom:m]/[node:nid]-[term:name].hocr'
