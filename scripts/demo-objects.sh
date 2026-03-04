@@ -36,13 +36,18 @@ docker build \
   -t workbench-docker:latest \
   islandora_workbench
 
+# see if we should pass -i or -it to docker
+# based on pseudo tty
+tty_flag=( -i )
+[ -t 0 ] && tty_flag=( -it )
+
 docker run \
-  -it \
+  "${tty_flag[@]}" \
   --rm \
   --env ISLANDORA_WORKBENCH_PASSWORD="$(cat secrets/DRUPAL_DEFAULT_ACCOUNT_PASSWORD)" \
-  --network="host" \
-  -v "$(pwd)/islandora_workbench":/workbench \
-  -v "$(pwd)/islandora_demo_objects":/islandora_demo_objects \
+  --network="${COMPOSE_PROJECT_NAME}_default" \
+  -v "$(pwd)/islandora_workbench":/workbench:z \
+  -v "$(pwd)/islandora_demo_objects":/islandora_demo_objects:z \
   --name my-running-workbench \
   workbench-docker:latest \
   bash -lc "./workbench --config /islandora_demo_objects/create_islandora_objects.yml"
