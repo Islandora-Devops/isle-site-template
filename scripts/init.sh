@@ -2,26 +2,58 @@
 
 set -eou pipefail
 
-extend_healthcheck=false
+need_init=false
 if [ ! -f .env ]; then
   cp sample.env .env
-  extend_healthcheck=true
-fi
-
-if [ -n "${ISLANDORA_TAG:-}" ]; then
-  sed -i.bak "s|^ISLANDORA_TAG=.*|ISLANDORA_TAG=\"${ISLANDORA_TAG}\"|" .env
-  rm -f .env.bak
+  need_init=true
 fi
 
 # shellcheck disable=SC1091
 source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
 
-if $extend_healthcheck; then
-  # we've detected an initial install
-  # so extend the default start period for drupal's healthcheck to 1m
-  # so it has time to come online before docker compose marks it unhealthy
-  update_env DRUPAL_HEALTHCHECK_RETRIES 10
-  update_env DRUPAL_HEALTHCHECK_START_PERIOD 1m
+if [ -n "${ISLANDORA_TAG:-}" ]; then
+  update_env ISLANDORA_TAG "\"${ISLANDORA_TAG}\""
+fi
+
+if ! check_volumes_exist "$COMPOSE_PROJECT_NAME"; then
+  need_init=true
+fi
+
+if $need_init; then
+  if ! is_noninteractive; then
+    echo ""
+    echo_e "${BLUE}=== ISLE Site Configuration ===${RESET}"
+    echo "Configure your site settings (press Enter to accept defaults):"
+    echo ""
+
+    NEW_PROJECT_NAME=$(prompt_with_default "Compose project name" "$COMPOSE_PROJECT_NAME")
+    NEW_DOMAIN=$(prompt_with_default "Site domain" "$DOMAIN")
+
+    if [ "$NEW_PROJECT_NAME" != "$COMPOSE_PROJECT_NAME" ]; then
+      if [[ ! "$NEW_PROJECT_NAME" =~ ^[a-z0-9][a-z0-9_-]{0,63}$ ]]; then
+        echo "Invalid project name. Must be alphanumeric, hyphens, and underscores only (max 64 chars)."
+        exit 1
+      fi
+      update_env "COMPOSE_PROJECT_NAME" "$NEW_PROJECT_NAME"
+    fi
+
+    if [ "$NEW_DOMAIN" != "$DOMAIN" ]; then
+      IP=$(get_dns_ip "$NEW_DOMAIN")
+      if [ -z "$IP" ]; then
+        echo "Invalid domain name. Was unable to resolve the domain to an IP address."
+        exit 1
+      fi
+      update_env "DOMAIN" "$NEW_DOMAIN"
+    fi
+
+    echo ""
+    echo_e "${GREEN}Configuration saved to .env${RESET}"
+    export_env
+
+  else
+    echo_e "${YELLOW}Running in non-interactive mode, using defaults from .env${RESET}"
+  fi
+
 fi
 
 if is_dev_mode && is_docker_rootless; then

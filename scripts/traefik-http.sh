@@ -7,9 +7,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
 
 echo "${BLUE}Switching to HTTP mode...${RESET}"
 
-sed -i.bak 's/^ENABLE_HTTPS=.*/ENABLE_HTTPS="false"/' .env && rm -f .env.bak
-sed -i.bak 's/^URI_SCHEME=.*/URI_SCHEME="http"/' .env && rm -f .env.bak
-sed -i.bak 's/^ENABLE_ACME=.*/ENABLE_ACME="false"/' .env && rm -f .env.bak
+update_env ENABLE_HTTPS "false"
+update_env URI_SCHEME "http"
+update_env ENABLE_ACME "false"
 
 set_https "false"
 set_letsencrypt_config "false"
