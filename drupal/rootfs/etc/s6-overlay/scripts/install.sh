@@ -13,9 +13,10 @@ function configure {
     # Drush from being able to clear it.
     local params=$(/var/www/drupal/web/core/scripts/rebuild_token_calculator.sh 2>/dev/null)
     curl -L "${DRUSH_OPTIONS_URI}/core/rebuild.php?${params}"
-    # Starter site post install steps.
     drush --root=/var/www/drupal --uri="${DRUSH_OPTIONS_URI}" cache:rebuild
-    drush --root=/var/www/drupal --uri="${DRUSH_OPTIONS_URI}" user:role:add fedoraadmin admin
+    if [ -n "${DRUPAL_DEFAULT_FCREPO_URL:-}" ]; then
+      drush --root=/var/www/drupal --uri="${DRUSH_OPTIONS_URI}" user:role:add fedoraadmin admin
+    fi
     drush --root=/var/www/drupal --uri="${DRUSH_OPTIONS_URI}" pm:uninstall pgsql sqlite
     drush --root=/var/www/drupal --uri="${DRUSH_OPTIONS_URI}" migrate:import --userid=1 --tag=islandora
     drush --root=/var/www/drupal --uri="${DRUSH_OPTIONS_URI}" cron || true
@@ -24,24 +25,44 @@ function configure {
 }
 
 function install {
+    # wait for mariadb, activemq, and solr to be available
     wait_for_service "${SITE}" db
     wait_for_service "${SITE}" broker
-    wait_for_service "${SITE}" fcrepo
-    wait_for_service "${SITE}" fits
     wait_for_service "${SITE}" solr
-    wait_for_service "${SITE}" triplestore
+
+    # if fcrepo is enabled, wait for it
+    if [ -n "${DRUPAL_DEFAULT_FCREPO_URL:-}" ]; then
+        wait_for_service "${SITE}" fcrepo
+    fi
+
     create_database "${SITE}"
     install_site "${SITE}"
-    create_blazegraph_namespace_with_default_properties "${SITE}"
-    if [[ "${DRUPAL_DEFAULT_FCREPO_URL}" == https* ]]; then
-      # Certificates might need to be generated which can take a minute or more.
-      if timeout 300 curl -X HEAD "${DRUPAL_DEFAULT_FCREPO_URL}" &>/dev/null; then
-          echo "Valid certificate"
-      else
-          echo "Invalid certificate for ${DRUPAL_DEFAULT_FCREPO_URL}"
-          exit 1
-      fi
+
+    # if blazegraph is enabled, create its namespace
+    if [ -n "${DRUPAL_DEFAULT_TRIPLESTORE_NAMESPACE:-}" ]; then
+        wait_for_service "${SITE}" triplestore
+        create_blazegraph_namespace_with_default_properties "${SITE}"
     fi
+
+    # if fcrepo is served over TLS
+    # certs might need to be generated from letsencrypt which can take a minute or more.    
+    if [[ "${DRUPAL_DEFAULT_FCREPO_URL:-}" == https* ]]; then
+        end=$((SECONDS+300))
+        while (( SECONDS < end )); do
+            if curl -s -o /dev/null -X HEAD "${DRUPAL_DEFAULT_FCREPO_URL}"; then
+                echo "Valid certificate"
+                break
+            fi
+    
+            echo "Waiting for valid certificate..."
+            sleep 5
+        done
+        if (( SECONDS >= end )); then
+            echo "Invalid certificate for ${DRUPAL_DEFAULT_FCREPO_URL}"
+            exit 1
+        fi
+    fi
+
     configure
 }
 
