@@ -63,6 +63,11 @@ if [ "$WAIT_FOR_INSTALL" = "yes" ]; then
     } || true;
 fi
 
+# The Drupal install log line can arrive slightly before Traefik can proxy a
+# successful request to the backend, so do one final readiness check before
+# announcing the URL or opening the browser.
+./scripts/ping.sh > /dev/null 2>&1
+
 echo "---------------------------------------------------"
 echo "🚀 Site available at: $URL"
 echo "---------------------------------------------------"

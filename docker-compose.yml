@@ -168,7 +168,7 @@ services:
       DB_HOST: mariadb
       DB_PORT: 3306
       FCREPO_ALLOW_EXTERNAL_DEFAULT: http://default/
-      FCREPO_ALLOW_EXTERNAL_DRUPAL: https://${DOMAIN}/
+      FCREPO_ALLOW_EXTERNAL_DRUPAL: ${URI_SCHEME}://${DOMAIN}/
       FCREPO_PERSISTENCE_TYPE: mysql
     image: islandora/fcrepo6:${ISLANDORA_TAG}
     secrets:
