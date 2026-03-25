@@ -81,6 +81,8 @@ replace_in_file "docker-compose.dev.yml" "./drupal/rootfs/var/www/drupal/config"
 replace_in_file "docker-compose.dev.yml" "./drupal/rootfs/var/www/drupal/web/modules/custom" "./web/modules/custom"
 replace_in_file "docker-compose.dev.yml" "./drupal/rootfs/var/www/drupal/web/themes/custom" "./web/themes/custom"
 
+replace_in_file "docker-compose.yml" "context: ./drupal" "context: ."
+
 rename_env_var ".env" "REPOSITORY" "DOCKER_REPOSITORY"
 
 find drupal -depth -type d -empty -delete 2>/dev/null || true
