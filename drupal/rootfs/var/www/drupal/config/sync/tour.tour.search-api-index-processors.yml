@@ -1,14 +1,11 @@
 uuid: 92088203-577a-47cb-ab14-c0fa3ddf602b
 langcode: en
 status: true
-dependencies:
-  module:
-    - search_api
+dependencies: {  }
 _core:
   default_config_hash: LqXAZO_yZPho3Pueh85e-NzQ3DmI5rNBf6_q8McKUqc
 id: search-api-index-processors
 label: 'Processors used for this index'
-module: search_api
 routes:
   -
     route_name: entity.search_api_index.processors
@@ -18,12 +15,15 @@ tips:
     plugin: text
     label: 'Processors used for this index'
     weight: 1
+    position: ''
+    selector: null
     body: "Processors customize different aspects of an index's functionality. They can keep items from being indexed, change how certain fields are indexed and influence searches."
   search-api-index-processors-enable:
     id: search-api-index-processors-enable
     plugin: text
     label: 'Enable processors'
     weight: 2
+    position: ''
     selector: '#edit-status'
     body: 'This lists all processors available for this index and lets you choose the ones that should be active. (Note: Some processors cannot be disabled.)'
   search-api-index-processors-weights:
@@ -31,6 +31,7 @@ tips:
     plugin: text
     label: 'Processor order'
     weight: 3
+    position: ''
     selector: '#edit-weights'
     body: 'This shows you which enabled processors will be active in the different parts of the indexing/searching workflow, and lets you re-arrange them. This should usually not be necessary, and only be used by advanced users as some processors will lead to unexpected results when used in the wrong order.'
   search-api-index-processors-settings:
@@ -38,5 +39,6 @@ tips:
     plugin: text
     label: 'Processor settings'
     weight: 4
+    position: ''
     selector: .form-type-vertical-tabs
     body: 'Some processors have additional configuration available, which you are able to change here.'

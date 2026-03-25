@@ -1,0 +1,31 @@
+diff --git a/src/Transcoder/JwtTranscoder.php b/src/Transcoder/JwtTranscoder.php
+index bd17217..4ba4dfa 100644
+--- a/src/Transcoder/JwtTranscoder.php
++++ b/src/Transcoder/JwtTranscoder.php
+@@ -27,14 +27,14 @@ class JwtTranscoder implements JwtTranscoderInterface {
+    *
+    * @var string
+    */
+-  protected string $algorithm;
++  protected ?string $algorithm = NULL;
+
+   /**
+    * The algorithm type we are using.
+    *
+    * @var string
+    */
+-  protected string $algorithmType;
++  protected ?string $algorithmType = NULL;
+
+   /**
+    * The key used to encode/decode a JsonWebToken.
+@@ -250,6 +250,9 @@ class JwtTranscoder implements JwtTranscoderInterface {
+    *   Returns NULL if operation is not found. Otherwise, returns key.
+    */
+   protected function getKey(string $operation) {
++    if ($this->algorithmType === NULL) {
++      return NULL;
++    }
+     if ($this->algorithmType == 'jwt_hs') {
+       return $this->secret;
+     }

@@ -1,14 +1,11 @@
 uuid: 75b0da91-50f9-4812-ab50-df98448fa350
 langcode: en
 status: true
-dependencies:
-  module:
-    - views_ui
+dependencies: {  }
 _core:
   default_config_hash: XIYL1KF7ND2XQRa5AxvEcp8vgCN2kUGiuBNhCgxrPME
 id: views-ui
 label: 'View edit page'
-module: views_ui
 routes:
   -
     route_name: entity.view.edit_form
@@ -20,12 +17,15 @@ tips:
     plugin: text
     label: 'Manage view settings'
     weight: 1
+    position: ''
+    selector: null
     body: 'View or edit the configuration.'
   views-ui-displays:
     id: views-ui-displays
     plugin: text
     label: 'Displays in this view'
     weight: 2
+    position: ''
     selector: '#views-display-top'
     body: 'A display is a way of outputting the results, e.g., as a page or a block. A view can contain multiple displays, which are listed here. The active display is highlighted.'
   views-ui-view-admin:
@@ -41,6 +41,7 @@ tips:
     plugin: text
     label: 'Output format'
     weight: 4
+    position: ''
     selector: .views-ui-display-tab-bucket.format
     body: "Choose how to output results. E.g., choose <em>Content</em> to output each item completely, using your configured display settings. Or choose <em>Fields</em>, which allows you to output only specific fields for each result. Additional formats can be added by installing modules to <em>extend</em> Drupal's base functionality."
   views-ui-fields:
@@ -48,6 +49,7 @@ tips:
     plugin: text
     label: Fields
     weight: 5
+    position: ''
     selector: .views-ui-display-tab-bucket.field
     body: 'If this view uses fields, they are listed here. You can click on a field to configure it.'
   views-ui-filter:
@@ -55,6 +57,7 @@ tips:
     plugin: text
     label: 'Filter your view'
     weight: 6
+    position: ''
     selector: .views-ui-display-tab-bucket.filter
     body: 'Add filters to limit the results in the output. E.g., to only show content that is <em>published</em>, you would add a filter for <em>Published</em> and select <em>Yes</em>.'
   views-ui-filter-operations:
@@ -62,6 +65,7 @@ tips:
     plugin: text
     label: 'Filter actions'
     weight: 7
+    position: ''
     selector: '.views-ui-display-tab-bucket.filter .dropbutton-widget'
     body: 'Add, rearrange or remove filters.'
   views-ui-sorts:
@@ -69,6 +73,7 @@ tips:
     plugin: text
     label: 'Sort Criteria'
     weight: 8
+    position: ''
     selector: .views-ui-display-tab-bucket.sort
     body: 'Control the order in which the results are output. Click on an active sort rule to configure it.'
   views-ui-sorts-operations:
@@ -76,6 +81,7 @@ tips:
     plugin: text
     label: 'Sort actions'
     weight: 9
+    position: ''
     selector: '.views-ui-display-tab-bucket.sort .dropbutton-widget'
     body: 'Add, rearrange or remove sorting rules.'
   views-ui-preview:
