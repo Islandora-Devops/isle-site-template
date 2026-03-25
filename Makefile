@@ -1,5 +1,5 @@
 .PHONY: help
-.PHONY: create-starter-site-pr overwrite-starter-site
+.PHONY: create-starter-site-pr overwrite-starter-site migrate-rootfs-layout
 .PHONY: build pull down down-% logs-% up up-%
 .PHONY: clean demo-objects init ping status
 .PHONY: traefik-http traefik-https-letsencrypt traefik-https-mkcert
@@ -68,5 +68,8 @@ overwrite-starter-site: ## Keep site template's drupal install in sync with isla
 
 create-starter-site-pr: ## Create a PR for islandora-starter-site updates
 	./scripts/create-pr.sh
+
+migrate-rootfs-layout: ## Migrate legacy drupal/rootfs content into the new repo layout
+	./scripts/migrate-rootfs-layout.sh
 sequelace:
 	./scripts/sequelace.sh
