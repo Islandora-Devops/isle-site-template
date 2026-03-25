@@ -47,9 +47,29 @@ rename_env_var() {
 OLD_DRUPAL_ROOT="drupal/rootfs/var/www/drupal"
 OLD_ROOTFS="drupal/rootfs"
 
-if [ -f "drupal/Dockerfile" ] && [ ! -e "Dockerfile" ]; then
-  mv "drupal/Dockerfile" "Dockerfile"
-fi
+cat <<'DOCKERFILE' > Dockerfile
+ARG \
+  DOCKER_REPOSITORY \
+  TAG
+
+FROM ${DOCKER_REPOSITORY}/drupal:${TAG}
+
+ARG TARGETARCH
+
+COPY assets /var/www/drupal/assets
+COPY recipes /var/www/drupal/recipes
+COPY web /var/www/drupal/web
+COPY composer.json composer.lock /var/www/drupal/
+
+RUN --mount=type=cache,id=custom-drupal-composer-${TARGETARCH},sharing=locked,target=/root/.composer/cache \
+    composer install && \
+    chown -R nginx:nginx . && \
+    cleanup.sh
+
+COPY config /var/www/drupal/config
+
+COPY --link rootfs /
+DOCKERFILE
 
 if [ -d "${OLD_DRUPAL_ROOT}" ]; then
   shopt -s dotglob nullglob
@@ -63,8 +83,14 @@ if [ -d "${OLD_DRUPAL_ROOT}" ]; then
   shopt -u dotglob nullglob
 fi
 
-if [ -d "${OLD_ROOTFS}" ] && [ ! -e "rootfs" ]; then
-  mv "${OLD_ROOTFS}" "rootfs"
+if [ -d "${OLD_ROOTFS}/var" ]; then
+  rm -rf "${OLD_ROOTFS:?}/var"
+fi
+
+if [ -d "${OLD_ROOTFS}" ]; then
+  shopt -s dotglob nullglob
+  mv "${OLD_ROOTFS}"/* .
+  shopt -u dotglob nullglob
 fi
 
 replace_in_file "docker-compose.override.yml" "./drupal/rootfs/var/www/drupal/assets" "./assets"
@@ -81,14 +107,23 @@ replace_in_file "docker-compose.dev.yml" "./drupal/rootfs/var/www/drupal/config"
 replace_in_file "docker-compose.dev.yml" "./drupal/rootfs/var/www/drupal/web/modules/custom" "./web/modules/custom"
 replace_in_file "docker-compose.dev.yml" "./drupal/rootfs/var/www/drupal/web/themes/custom" "./web/themes/custom"
 
+replace_in_file "docker-compose.yml" "REPOSITORY: islandora" "DOCKER_REPOSITORY: islandora"
 replace_in_file "docker-compose.yml" "context: ./drupal" "context: ."
+replace_in_file "docker-compose.yml" "\${REPOSITORY}/" "\${DOCKER_REPOSITORY}/"
 
 rename_env_var ".env" "REPOSITORY" "DOCKER_REPOSITORY"
 
+rm -f drupal/Dockerfile drupal/README.md
 find drupal -depth -type d -empty -delete 2>/dev/null || true
 if [ -d "drupal" ] && [ -z "$(find drupal -mindepth 1 -print -quit 2>/dev/null)" ]; then
   rmdir drupal
 fi
+
+cat <<'DOCKERFILE_NOTE'
+Dockerfile note:
+./Dockerfile is now the canonical Dockerfile location.
+If you rerun this migration script, review and re-apply any local Dockerfile changes afterward.
+DOCKERFILE_NOTE
 
 cat <<'GITIGNORE_RECOMMENDATION'
 Recommend adding this to .gitignore:

@@ -13,7 +13,7 @@ repo="https://github.com/${STARTER_SITE_OWNER}/islandora-starter-site"
 ref="${STARTER_SITE_BRANCH}"
 
 # The path to the drupal webroot
-DRUPAL_ROOT="drupal/rootfs/var/www/drupal"
+DRUPAL_ROOT="./"
 
 # Confirmation prompt if not in GitHub Actions
 if [ "${GITHUB_ACTIONS:-}" == "" ]; then

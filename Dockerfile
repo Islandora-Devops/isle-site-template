@@ -1,13 +1,22 @@
-# syntax=docker/dockerfile:1.21.0@sha256:27f9262d43452075f3c410287a2c43f5ef1bf7ec2bb06e8c9eeb1b8d453087bc
-ARG REPOSITORY
-ARG TAG
-FROM ${REPOSITORY}/drupal:${TAG}
+ARG \
+  DOCKER_REPOSITORY \
+  TAG
+
+FROM islandora/drupal:6.3.10
 
 ARG TARGETARCH
 
-COPY --link rootfs /
+COPY assets /var/www/drupal/assets
+COPY recipes /var/www/drupal/recipes
+COPY web /var/www/drupal/web
+COPY composer.json composer.lock /var/www/drupal/
 
 RUN --mount=type=cache,id=custom-drupal-composer-${TARGETARCH},sharing=locked,target=/root/.composer/cache \
-    composer install -d /var/www/drupal && \
-    chown -R nginx:nginx /var/www/drupal && \
+    composer install && \
+    chown -R nginx:nginx . && \
     cleanup.sh
+
+COPY config /var/www/drupal/config
+
+COPY --link rootfs /
+
