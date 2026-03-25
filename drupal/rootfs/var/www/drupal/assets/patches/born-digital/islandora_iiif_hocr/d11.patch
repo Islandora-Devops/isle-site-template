@@ -1,0 +1,21 @@
+From 5a3a354a6dca08db9c348ada43d81ee2ece1ad83 Mon Sep 17 00:00:00 2001
+From: Joe Corall <jjc223@lehigh.edu>
+Date: Mon, 9 Feb 2026 10:08:43 -0500
+Subject: [PATCH] Declare d11 compatibility
+
+---
+ islandora_iiif_hocr.info.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/islandora_iiif_hocr.info.yml b/islandora_iiif_hocr.info.yml
+index 8f86bed..8801e15 100644
+--- a/islandora_iiif_hocr.info.yml
++++ b/islandora_iiif_hocr.info.yml
+@@ -2,6 +2,6 @@ name: Islandora IIIF hOCR
+ type: module
+ description: Adds hOCR data into IIIF manifests.
+ package: Islandora
+-core_version_requirement: ^9 || ^10
++core_version_requirement: ^10 || ^11
+ dependencies:
+   - islandora:islandora_iiif

@@ -5,3 +5,10 @@ mirador_enabled_plugins:
   miradorImageToolsPlugin: miradorImageToolsPlugin
   textOverlayPlugin: textOverlayPlugin
 iiif_manifest_url: '[node:url:unaliased:absolute]/manifest'
+mirador_library_minified: false
+mirador_language_support: false
+mirador_selected_theme: light
+mirador_theme_light_primary: '#1967d2'
+mirador_theme_light_secondary: '#1967d2'
+mirador_theme_dark_primary: '#4db6ac'
+mirador_theme_dark_secondary: '#4db6ac'

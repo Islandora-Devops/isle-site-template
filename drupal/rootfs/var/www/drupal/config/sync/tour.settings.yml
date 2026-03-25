@@ -1,0 +1,4 @@
+hide_tour_when_empty: false
+display_custom_labels: true
+tour_avail_text: 'Take a tour of this page.'
+tour_no_avail_text: 'No tour available for this page.'

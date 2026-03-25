@@ -6,7 +6,6 @@ dependencies:
     - views.view.solr_search_content
   module:
     - context
-    - islandora
     - views
   theme:
     - olivero
@@ -22,7 +21,7 @@ settings:
   label_display: '0'
   provider: views
   views_label: ''
-  items_per_page: none
+  items_per_page: null
 visibility:
   user_status:
     id: user_status
@@ -39,8 +38,3 @@ visibility:
     id: context_all
     negate: null
     values: collection
-  media_source_mimetype:
-    id: media_source_mimetype
-    negate: false
-    context_mapping: {  }
-    mimetype: ''
