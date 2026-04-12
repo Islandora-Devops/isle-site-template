@@ -89,14 +89,28 @@ if [ -n "${SSH_CONNECTION:-}" ] || [ -n "${SSH_CLIENT:-}" ] || [ -n "${SSH_TTY:-
   exit 0
 fi
 
-# 6. Open in Browser (Cross-Platform)
+# only request a one-time login link in interactive terminals
+if [ ! -t 1 ]; then
+  exit 0
+fi
+
+OPEN_URL="$URL"
+if ULI_URL=$(docker compose exec -T drupal drush uli 2>/dev/null); then
+    OPEN_URL="$ULI_URL"
+    echo "Admin login link: $ULI_URL"
+else
+    echo "Unable to generate an admin login link automatically."
+    echo "Run: docker compose exec drupal drush uli"
+fi
+
+# Open in Browser (Cross-Platform)
 case "$(uname -s)" in
-    Darwin*)    open "$URL" ;;
+    Darwin*)    open "$OPEN_URL" ;;
     Linux*)     if grep -qi microsoft /proc/version; then
-                    powershell.exe Start-Process "$URL" # WSL
+                    powershell.exe Start-Process "$OPEN_URL" # WSL
                 else
-                    xdg-open "$URL" # Standard Linux
+                    xdg-open "$OPEN_URL" # Standard Linux
                 fi ;;
-    CYGWIN*|MINGW*|MSYS*) start "$URL" ;; # Windows Native
-    *)          echo "You can open $URL in your browser." ;;
+    CYGWIN*|MINGW*|MSYS*) start "$OPEN_URL" ;; # Windows Native
+    *)          echo "You can open $OPEN_URL in your browser." ;;
 esac

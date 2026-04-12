@@ -70,7 +70,7 @@ configurations this template is set up for the following:
     ```
     This command prepares your host machine, creates the `.env` file from `sample.env` if it doesn't exist, generates necessary secrets and certificates, and builds the Docker images.
 
-    Then brings up the ISLE stack using smart port allocation. The URL for your site will be displayed in the output and automatically opened in your browser if possible.
+    Then brings up the ISLE stack using smart port allocation. The URL for your site will be displayed in the output, and in an interactive local terminal `make up` will open your browser with a Drupal one-time login link for `uid=1`.
 
     Default URL: [http://islandora.traefik.me](http://islandora.traefik.me) (maps to 127.0.0.1)
 
