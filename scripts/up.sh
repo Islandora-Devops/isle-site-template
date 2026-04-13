@@ -70,7 +70,6 @@ fi
 
 echo "---------------------------------------------------"
 echo "🚀 Site available at: $URL"
-echo "---------------------------------------------------"
 
 # if we extended the healthcheck during init
 # set the values back
@@ -78,6 +77,13 @@ if ${extend_healthcheck:-false}; then
   update_env DRUPAL_HEALTHCHECK_RETRIES 3
   update_env DRUPAL_HEALTHCHECK_START_PERIOD 0s
 fi
+
+OPEN_URL="$URL"
+if ULI_URL=$(docker compose exec drupal drush uli 2>/dev/null); then
+    OPEN_URL="$ULI_URL"
+    echo "🔐 Login to your site at: $ULI_URL"
+fi
+echo "---------------------------------------------------"
 
 # don't open the URL if we're in GHA
 if [ "${GITHUB_ACTIONS:-}" != "" ]; then
@@ -87,20 +93,6 @@ fi
 # don't open the URL if we're in an SSH session
 if [ -n "${SSH_CONNECTION:-}" ] || [ -n "${SSH_CLIENT:-}" ] || [ -n "${SSH_TTY:-}" ]; then
   exit 0
-fi
-
-# only request a one-time login link in interactive terminals
-if [ ! -t 1 ]; then
-  exit 0
-fi
-
-OPEN_URL="$URL"
-if ULI_URL=$(docker compose exec -T drupal drush uli 2>/dev/null); then
-    OPEN_URL="$ULI_URL"
-    echo "Admin login link: $ULI_URL"
-else
-    echo "Unable to generate an admin login link automatically."
-    echo "Run: docker compose exec drupal drush uli"
 fi
 
 # Open in Browser (Cross-Platform)
