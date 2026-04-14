@@ -12,10 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - name: Update from starter site
-        run: make overwrite-starter-site
+      - name: Setup ISLE
+        uses: ./.github/actions/setup
+
+      - name: Refresh tracked Solr config
+        run: make sync-solr-conf
 
       - name: Create Pull Request
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: make create-starter-site-pr
+
+      - name: cleanup
+        if: ${{ always() }}
+        run: make down

@@ -1,5 +1,5 @@
 .PHONY: help
-.PHONY: create-starter-site-pr overwrite-starter-site
+.PHONY: create-starter-site-pr overwrite-starter-site sync-solr-conf
 .PHONY: build pull down down-% logs-% up up-%
 .PHONY: clean demo-objects init ping status
 .PHONY: traefik-http traefik-https-letsencrypt traefik-https-mkcert
@@ -65,6 +65,9 @@ demo-objects: up ## Add demo objects from https://github.com/Islandora-Devops/is
 
 overwrite-starter-site: ## Keep site template's drupal install in sync with islandora-starter-site
 	./scripts/overwrite-starter-site.sh
+
+sync-solr-conf: ## Refresh tracked Solr default core config from the running drupal container
+	./scripts/sync-solr-conf.sh
 
 create-starter-site-pr: ## Create a PR for islandora-starter-site updates
 	./scripts/create-pr.sh
