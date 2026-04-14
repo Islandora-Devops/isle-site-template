@@ -49,7 +49,7 @@
     that avoids logging every request
 -->
 
-<schema name="drupal-4.3.2-solr-9.x-0" version="1.6">
+<schema name="drupal-4.3.10-solr-9.x-0" version="1.6">
   <!-- attribute "name" is the name of this schema and is only used for display purposes.
        version="x.y" is Solr's version number for the schema syntax and
        semantics.  It should not normally be changed by applications.
@@ -219,6 +219,9 @@
   <dynamicField name="hts_*" type="pint" indexed="true" stored="false" docValues="true"/>
   <dynamicField name="htm_*" type="pints" indexed="true" stored="false" docValues="true"/>
 
+  <!-- Unindexed string fields that can be used to store values that won't be searchable but have docValues -->
+  <dynamicField name="zdvs_*" type="string" indexed="false" stored="true" docValues="true"/>
+  <dynamicField name="zdvm_*" type="strings" indexed="false" stored="true" docValues="true"/>
   <!-- Unindexed string fields that can be used to store values that won't be searchable -->
   <dynamicField name="zs_*" type="string" indexed="false" stored="true"/>
   <dynamicField name="zm_*" type="strings" indexed="false" stored="true"/>
