@@ -51,9 +51,9 @@ runs:
       if: runner.os == 'Linux'
       shell: bash
       run: |-
-        curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
-        chmod +x mkcert-v*-linux-amd64
-        sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
+        curl -L "https://dl.filippo.io/mkcert/latest?for=linux/amd64" -o mkcert
+        chmod +x mkcert
+        sudo mv mkcert /usr/local/bin/mkcert
 
     - name: Start islandora-starter-site
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
