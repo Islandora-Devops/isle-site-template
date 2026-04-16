@@ -175,3 +175,8 @@ fieldMappings:
     properties:
       - 'schema:author'
     mapping_type: rel
+  nid:
+    properties:
+      - 'dcterms:identifier'
+    datatype_callback:
+      callable: 'Drupal\rest_oai_pmh\EntityUrl::makeAbsoluteUrl'
