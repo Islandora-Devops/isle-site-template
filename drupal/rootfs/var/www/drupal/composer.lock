@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4fd6de1537d1694c0012dcc1f117186e",
+    "content-hash": "f3ac7f642709dd1a0ed1427c034a6fca",
     "packages": [
         {
             "name": "adci/full-name-parser",
@@ -1279,16 +1279,16 @@
         },
         {
             "name": "discoverygarden/dgi_image_discovery",
-            "version": "v1.6.2",
+            "version": "v1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/discoverygarden/dgi_image_discovery.git",
-                "reference": "adf983f64327d02fc5e54b641ad3214f66b2f817"
+                "reference": "8086e0eb298036ec3669cd770fbc3ec342dfa9b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/discoverygarden/dgi_image_discovery/zipball/adf983f64327d02fc5e54b641ad3214f66b2f817",
-                "reference": "adf983f64327d02fc5e54b641ad3214f66b2f817",
+                "url": "https://api.github.com/repos/discoverygarden/dgi_image_discovery/zipball/8086e0eb298036ec3669cd770fbc3ec342dfa9b2",
+                "reference": "8086e0eb298036ec3669cd770fbc3ec342dfa9b2",
                 "shasum": ""
             },
             "require": {
@@ -1304,22 +1304,22 @@
             ],
             "support": {
                 "issues": "https://github.com/discoverygarden/dgi_image_discovery/issues",
-                "source": "https://github.com/discoverygarden/dgi_image_discovery/tree/v1.6.2"
+                "source": "https://github.com/discoverygarden/dgi_image_discovery/tree/v1.7.0"
             },
-            "time": "2025-11-03T19:26:19+00:00"
+            "time": "2026-04-07T15:47:53+00:00"
         },
         {
             "name": "discoverygarden/islandora_hocr",
-            "version": "v1.4.1",
+            "version": "v1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/discoverygarden/islandora_hocr.git",
-                "reference": "9fcc39878a075bc71c67435b57d2e8cec0fa3682"
+                "reference": "6d55b301cc4df5b5f3e147b029bc9c28cfd5990a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/discoverygarden/islandora_hocr/zipball/9fcc39878a075bc71c67435b57d2e8cec0fa3682",
-                "reference": "9fcc39878a075bc71c67435b57d2e8cec0fa3682",
+                "url": "https://api.github.com/repos/discoverygarden/islandora_hocr/zipball/6d55b301cc4df5b5f3e147b029bc9c28cfd5990a",
+                "reference": "6d55b301cc4df5b5f3e147b029bc9c28cfd5990a",
                 "shasum": ""
             },
             "require": {
@@ -1333,9 +1333,9 @@
             ],
             "support": {
                 "issues": "https://github.com/discoverygarden/islandora_hocr/issues",
-                "source": "https://github.com/discoverygarden/islandora_hocr/tree/v1.4.1"
+                "source": "https://github.com/discoverygarden/islandora_hocr/tree/v1.4.2"
             },
-            "time": "2026-01-26T18:14:39+00:00"
+            "time": "2026-04-15T16:15:06+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -1550,17 +1550,17 @@
         },
         {
             "name": "drupal/advanced_search",
-            "version": "2.4.0",
+            "version": "2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/advanced_search.git",
-                "reference": "2.4.0"
+                "reference": "2.4.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/advanced_search-2.4.0.zip",
-                "reference": "2.4.0",
-                "shasum": "f3d49db28203235a2570f159aa970ce56b515c67"
+                "url": "https://ftp.drupal.org/files/projects/advanced_search-2.4.2.zip",
+                "reference": "2.4.2",
+                "shasum": "c33c86cbbcbaa0ecc97e9feb7137bc760fa2440a"
             },
             "require": {
                 "drupal/core": "^8.8 || ^9 || ^10 || ^11",
@@ -1580,8 +1580,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.4.0",
-                    "datestamp": "1772636153",
+                    "version": "2.4.2",
+                    "datestamp": "1774961377",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -1725,17 +1725,17 @@
         },
         {
             "name": "drupal/citation_select",
-            "version": "2.1.0",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/citation_select.git",
-                "reference": "2.1.0"
+                "reference": "2.1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/citation_select-2.1.0.zip",
-                "reference": "2.1.0",
-                "shasum": "43fa775fd9832b86ba3c604bb4081379f4545077"
+                "url": "https://ftp.drupal.org/files/projects/citation_select-2.1.1.zip",
+                "reference": "2.1.1",
+                "shasum": "aa9cc34e135356ebf4d5b7ea3c70f31174b2f727"
             },
             "require": {
                 "adci/full-name-parser": "^0.2.4",
@@ -1747,8 +1747,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.1.0",
-                    "datestamp": "1774284684",
+                    "version": "2.1.1",
+                    "datestamp": "1774634511",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2267,16 +2267,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "11.3.5",
+            "version": "11.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "6de8a6ff360ad1c2719af077259c3ef77ba3d23f"
+                "reference": "bb36d7d09b0132185bd33be730ec2e6d35c2d627"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/6de8a6ff360ad1c2719af077259c3ef77ba3d23f",
-                "reference": "6de8a6ff360ad1c2719af077259c3ef77ba3d23f",
+                "url": "https://api.github.com/repos/drupal/core/zipball/bb36d7d09b0132185bd33be730ec2e6d35c2d627",
+                "reference": "bb36d7d09b0132185bd33be730ec2e6d35c2d627",
                 "shasum": ""
             },
             "require": {
@@ -2434,13 +2434,13 @@
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
             "support": {
-                "source": "https://github.com/drupal/core/tree/11.3.5"
+                "source": "https://github.com/drupal/core/tree/11.3.7"
             },
-            "time": "2026-03-06T09:54:42+00:00"
+            "time": "2026-04-15T15:47:32+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
-            "version": "11.3.5",
+            "version": "11.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",
@@ -2484,29 +2484,29 @@
                 "drupal"
             ],
             "support": {
-                "source": "https://github.com/drupal/core-composer-scaffold/tree/11.3.5"
+                "source": "https://github.com/drupal/core-composer-scaffold/tree/11.3.7"
             },
             "time": "2026-02-10T11:39:53+00:00"
         },
         {
             "name": "drupal/core-recommended",
-            "version": "11.3.5",
+            "version": "11.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-recommended.git",
-                "reference": "957d0a4e92e90fcf8375a64d63bdff47f7c88b52"
+                "reference": "fb5d6475f4f564d5fa8a8846e4b5e1b97cdfeb94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core-recommended/zipball/957d0a4e92e90fcf8375a64d63bdff47f7c88b52",
-                "reference": "957d0a4e92e90fcf8375a64d63bdff47f7c88b52",
+                "url": "https://api.github.com/repos/drupal/core-recommended/zipball/fb5d6475f4f564d5fa8a8846e4b5e1b97cdfeb94",
+                "reference": "fb5d6475f4f564d5fa8a8846e4b5e1b97cdfeb94",
                 "shasum": ""
             },
             "require": {
                 "asm89/stack-cors": "~v2.3.0",
                 "composer/semver": "~3.4.4",
                 "doctrine/lexer": "~3.0.1",
-                "drupal/core": "11.3.5",
+                "drupal/core": "11.3.7",
                 "egulias/email-validator": "~4.0.4",
                 "guzzlehttp/guzzle": "~7.10.0",
                 "guzzlehttp/promises": "~2.3.0",
@@ -2568,9 +2568,9 @@
             ],
             "description": "Core and its dependencies with known-compatible minor versions. Require this project INSTEAD OF drupal/core.",
             "support": {
-                "source": "https://github.com/drupal/core-recommended/tree/11.3.5"
+                "source": "https://github.com/drupal/core-recommended/tree/11.3.7"
             },
-            "time": "2026-03-06T09:54:42+00:00"
+            "time": "2026-04-15T15:47:32+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -3704,17 +3704,17 @@
         },
         {
             "name": "drupal/islandora_mirador",
-            "version": "2.4.0",
+            "version": "2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/islandora_mirador.git",
-                "reference": "2.4.0"
+                "reference": "2.4.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/islandora_mirador-2.4.0.zip",
-                "reference": "2.4.0",
-                "shasum": "ba01f6d00d0dd5ed120c935ff438d87cb0220d54"
+                "url": "https://ftp.drupal.org/files/projects/islandora_mirador-2.4.1.zip",
+                "reference": "2.4.1",
+                "shasum": "a978b49f463cfeebcdbd8538993b563b80a31a70"
             },
             "require": {
                 "drupal/core": "^10 || ^11",
@@ -3732,8 +3732,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.4.0",
-                    "datestamp": "1774034991",
+                    "version": "2.4.1",
+                    "datestamp": "1774961150",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5489,17 +5489,17 @@
         },
         {
             "name": "drupal/views_data_export",
-            "version": "1.8.0",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/views_data_export.git",
-                "reference": "8.x-1.8"
+                "reference": "8.x-1.9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/views_data_export-8.x-1.8.zip",
-                "reference": "8.x-1.8",
-                "shasum": "4a82d6defc226f208193fe3632253db2a2113608"
+                "url": "https://ftp.drupal.org/files/projects/views_data_export-8.x-1.9.zip",
+                "reference": "8.x-1.9",
+                "shasum": "b9692e81431e2aff1672b51467227d848c91f6b3"
             },
             "require": {
                 "drupal/core": "^9 || ^10 || ^11",
@@ -5517,8 +5517,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.8",
-                    "datestamp": "1761320258",
+                    "version": "8.x-1.9",
+                    "datestamp": "1774617979",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5627,16 +5627,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "13.7.1",
+            "version": "13.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "4049dd4332bfc47d19ce849cb50380bd0498e4cc"
+                "reference": "670c5f81b3f525b3f08263f038c7f07558f2580d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/4049dd4332bfc47d19ce849cb50380bd0498e4cc",
-                "reference": "4049dd4332bfc47d19ce849cb50380bd0498e4cc",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/670c5f81b3f525b3f08263f038c7f07558f2580d",
+                "reference": "670c5f81b3f525b3f08263f038c7f07558f2580d",
                 "shasum": ""
             },
             "require": {
@@ -5764,7 +5764,7 @@
                 "issues": "https://github.com/drush-ops/drush/issues",
                 "security": "https://github.com/drush-ops/drush/security/advisories",
                 "slack": "https://drupal.slack.com/messages/C62H9CWQM",
-                "source": "https://github.com/drush-ops/drush/tree/13.7.1"
+                "source": "https://github.com/drush-ops/drush/tree/13.7.2"
             },
             "funding": [
                 {
@@ -5772,7 +5772,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-28T22:21:17+00:00"
+            "time": "2026-03-20T19:18:11+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -5921,12 +5921,12 @@
             "version": "v7.0.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/firebase/php-jwt.git",
+                "url": "https://github.com/googleapis/php-jwt.git",
                 "reference": "28aa0694bcfdfa5e2959c394d5a1ee7a5083629e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/28aa0694bcfdfa5e2959c394d5a1ee7a5083629e",
+                "url": "https://api.github.com/repos/googleapis/php-jwt/zipball/28aa0694bcfdfa5e2959c394d5a1ee7a5083629e",
                 "reference": "28aa0694bcfdfa5e2959c394d5a1ee7a5083629e",
                 "shasum": ""
             },
@@ -5974,8 +5974,8 @@
                 "php"
             ],
             "support": {
-                "issues": "https://github.com/firebase/php-jwt/issues",
-                "source": "https://github.com/firebase/php-jwt/tree/v7.0.3"
+                "issues": "https://github.com/googleapis/php-jwt/issues",
+                "source": "https://github.com/googleapis/php-jwt/tree/v7.0.3"
             },
             "time": "2026-02-25T22:16:40+00:00"
         },
@@ -8856,12 +8856,12 @@
             "version": "v2.7.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/seboettg/citeproc-php.git",
+                "url": "https://github.com/pkp/citeproc-php.git",
                 "reference": "a7200e4ac0ec4265442a41aa82fb574d22af21a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seboettg/citeproc-php/zipball/a7200e4ac0ec4265442a41aa82fb574d22af21a2",
+                "url": "https://api.github.com/repos/pkp/citeproc-php/zipball/a7200e4ac0ec4265442a41aa82fb574d22af21a2",
                 "reference": "a7200e4ac0ec4265442a41aa82fb574d22af21a2",
                 "shasum": ""
             },
@@ -8909,7 +8909,7 @@
             "description": "Full-featured CSL processor (https://citationstyles.org)",
             "support": {
                 "issues": "https://github.com/seboettg/citeproc-php/issues",
-                "source": "https://github.com/seboettg/citeproc-php/tree/v2.7.1"
+                "source": "https://github.com/pkp/citeproc-php/tree/v2.7.1"
             },
             "time": "2026-02-05T11:15:32+00:00"
         },
