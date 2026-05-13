@@ -72,7 +72,7 @@ configurations this template is set up for the following:
 
     Then brings up the ISLE stack using smart port allocation. The URL for your site will be displayed in the output and automatically opened in your browser if possible.
 
-    Default URL: [http://islandora.traefik.me](http://islandora.traefik.me) (maps to 127.0.0.1)
+    Default URL: [http://islandora.io](http://islandora.io) (maps to 127.0.0.1)
 
     *Note: The first start will take several minutes as Drupal installs.*
 
@@ -110,7 +110,7 @@ Edit this file to customize your setup.
 Key variables:
 - `COMPOSE_PROJECT_NAME`: Unique name for your project.
 - `ISLANDORA_TAG`: Version of [Isle Buildkit](https://github.com/Islandora-Devops/isle-buildkit) images.
-- `DOMAIN`: The domain name for your site (default: `islandora.traefik.me`).
+- `DOMAIN`: The domain name for your site (default: `islandora.io`).
 - `REPOSITORY`: Docker registry for pushing/pulling images.
 
 ### HTTPS & Certificates
@@ -182,20 +182,20 @@ If you have these default values in your `.env` file
 
 ```
 URI_SCHEME=http
-DOMAIN=islandora.traefik.me
+DOMAIN=islandora.io
 DEVELOPMENT_ENVIRONMENT=true
 ```
 you can access all the services at the following URLs.
 
 | Service    | URL                                       |
 | :--------- | :---------------------------------------- |
-| Drupal     | http://islandora.traefik.me                     |
-| ActiveMQ   | http://activemq.islandora.traefik.me            |
-| Blazegraph | http://blazegraph.islandora.traefik.me/bigdata/ |
-| Cantaloupe | http://islandora.traefik.me/cantaloupe          |
-| Fedora     | http://fcrepo.islandora.traefik.me/fcrepo/rest/ |
-| Solr       | http://solr.islandora.traefik.me                |
-| Traefik    | http://traefik.islandora.traefik.me             |
+| Drupal     | http://islandora.io                     |
+| ActiveMQ   | http://activemq.islandora.io            |
+| Blazegraph | http://blazegraph.islandora.io/bigdata/ |
+| Cantaloupe | http://islandora.io/cantaloupe          |
+| Fedora     | http://fcrepo.islandora.io/fcrepo/rest/ |
+| Solr       | http://solr.islandora.io                |
+| Traefik    | http://traefik.islandora.io             |
 
 > [!IMPORTANT]
 > DEVELOPMENT_ENVIRONMENT should never be set to `true` for sites available on the public internet

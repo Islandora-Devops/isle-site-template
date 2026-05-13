@@ -49,13 +49,13 @@ jobs:
 
       - name: Explicit check (TLS)
         if: startsWith(matrix.os, 'ubuntu')
-        run: curl -vsf -o /dev/null https://islandora.traefik.me
+        run: curl -vsf -o /dev/null https://islandora.io
 
       - name: Switch back to HTTP
         run: make traefik-http down-traefik up ping
 
       - name: Explicit check (http)
-        run: curl -vsf -o /dev/null http://islandora.traefik.me
+        run: curl -vsf -o /dev/null http://islandora.io
 
       - name: Collect logs for each service
         if: ${{ failure() }}

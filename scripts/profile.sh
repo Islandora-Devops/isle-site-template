@@ -123,7 +123,7 @@ if [ -f .env ]; then
     fi
 
     ACME_EMAIL=$(grep '^ACME_EMAIL=' .env | cut -d'=' -f2 | tr -d '"' || echo "postmaster@example.com")
-    DOMAIN=$(grep '^DOMAIN=' .env | cut -d'=' -f2 | tr -d '"' || echo "islandora.traefik.me")
+    DOMAIN=$(grep '^DOMAIN=' .env | cut -d'=' -f2 | tr -d '"' || echo "islandora.io")
     ISLANDORA_TAG=$(grep '^ISLANDORA_TAG=' .env | cut -d'=' -f2 | tr -d '"' || echo "main")
     TAG=$(grep '^TAG=' .env | cut -d'=' -f2 | tr -d '"' || echo "local")
     REPOSITORY=$(grep '^REPOSITORY=' .env | cut -d'=' -f2 | tr -d '"' || echo "islandora.io")

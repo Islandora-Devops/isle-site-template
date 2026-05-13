@@ -31,8 +31,6 @@ mkcert -cert-file certs/cert.pem -key-file certs/privkey.pem \
   "islandora.io" \
   "*.islandora.info" \
   "islandora.info" \
-  "*.islandora.traefik.me" \
-  "islandora.traefik.me" \
   "localhost" \
   "127.0.0.1" \
   "::1"

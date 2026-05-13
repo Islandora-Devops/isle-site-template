@@ -74,6 +74,8 @@ services:
     image: islandora/alpaca:${ISLANDORA_TAG}
     secrets:
       - source: ALPACA_JMS_PASSWORD
+      - source: CERT_PUBLIC_KEY
+      - source: CERT_AUTHORITY
 
   blazegraph:
     <<: *common
