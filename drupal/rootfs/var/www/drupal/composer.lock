@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f3ac7f642709dd1a0ed1427c034a6fca",
+    "content-hash": "3e21e333bc66454c7812a22f0d6f29d6",
     "packages": [
         {
             "name": "adci/full-name-parser",
@@ -2267,16 +2267,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "11.3.7",
+            "version": "11.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "bb36d7d09b0132185bd33be730ec2e6d35c2d627"
+                "reference": "16e55d807cc9f839d281988fa16ee15096ed3a19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/bb36d7d09b0132185bd33be730ec2e6d35c2d627",
-                "reference": "bb36d7d09b0132185bd33be730ec2e6d35c2d627",
+                "url": "https://api.github.com/repos/drupal/core/zipball/16e55d807cc9f839d281988fa16ee15096ed3a19",
+                "reference": "16e55d807cc9f839d281988fa16ee15096ed3a19",
                 "shasum": ""
             },
             "require": {
@@ -2434,13 +2434,13 @@
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
             "support": {
-                "source": "https://github.com/drupal/core/tree/11.3.7"
+                "source": "https://github.com/drupal/core/tree/11.3.9"
             },
-            "time": "2026-04-15T15:47:32+00:00"
+            "time": "2026-05-06T14:19:19+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
-            "version": "11.3.7",
+            "version": "11.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",
@@ -2484,29 +2484,29 @@
                 "drupal"
             ],
             "support": {
-                "source": "https://github.com/drupal/core-composer-scaffold/tree/11.3.7"
+                "source": "https://github.com/drupal/core-composer-scaffold/tree/11.3.9"
             },
             "time": "2026-02-10T11:39:53+00:00"
         },
         {
             "name": "drupal/core-recommended",
-            "version": "11.3.7",
+            "version": "11.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-recommended.git",
-                "reference": "fb5d6475f4f564d5fa8a8846e4b5e1b97cdfeb94"
+                "reference": "b44d2fb1ccebe941157d9d27ad7e35aa2ab8ca84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core-recommended/zipball/fb5d6475f4f564d5fa8a8846e4b5e1b97cdfeb94",
-                "reference": "fb5d6475f4f564d5fa8a8846e4b5e1b97cdfeb94",
+                "url": "https://api.github.com/repos/drupal/core-recommended/zipball/b44d2fb1ccebe941157d9d27ad7e35aa2ab8ca84",
+                "reference": "b44d2fb1ccebe941157d9d27ad7e35aa2ab8ca84",
                 "shasum": ""
             },
             "require": {
                 "asm89/stack-cors": "~v2.3.0",
                 "composer/semver": "~3.4.4",
                 "doctrine/lexer": "~3.0.1",
-                "drupal/core": "11.3.7",
+                "drupal/core": "11.3.9",
                 "egulias/email-validator": "~4.0.4",
                 "guzzlehttp/guzzle": "~7.10.0",
                 "guzzlehttp/promises": "~2.3.0",
@@ -2568,9 +2568,9 @@
             ],
             "description": "Core and its dependencies with known-compatible minor versions. Require this project INSTEAD OF drupal/core.",
             "support": {
-                "source": "https://github.com/drupal/core-recommended/tree/11.3.7"
+                "source": "https://github.com/drupal/core-recommended/tree/11.3.9"
             },
-            "time": "2026-04-15T15:47:32+00:00"
+            "time": "2026-05-06T14:19:19+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -4561,20 +4561,20 @@
         },
         {
             "name": "drupal/pathauto",
-            "version": "1.14.0",
+            "version": "1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/pathauto.git",
-                "reference": "8.x-1.14"
+                "reference": "8.x-1.15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/pathauto-8.x-1.14.zip",
-                "reference": "8.x-1.14",
-                "shasum": "07f0d2efcf0bfb450e2ab69a43921fa39dc5f25b"
+                "url": "https://ftp.drupal.org/files/projects/pathauto-8.x-1.15.zip",
+                "reference": "8.x-1.15",
+                "shasum": "de86fb2c00bb78a449ea5ae2249a5eb96367f05c"
             },
             "require": {
-                "drupal/core": "^10 || ^11",
+                "drupal/core": "^10.2 || ^11",
                 "drupal/ctools": "*",
                 "drupal/token": "*"
             },
@@ -4590,8 +4590,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.14",
-                    "datestamp": "1759838097",
+                    "version": "8.x-1.15",
+                    "datestamp": "1778049296",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5417,17 +5417,17 @@
         },
         {
             "name": "drupal/twig_tweak",
-            "version": "3.4.1",
+            "version": "3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/twig_tweak.git",
-                "reference": "3.4.1"
+                "reference": "3.4.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/twig_tweak-3.4.1.zip",
-                "reference": "3.4.1",
-                "shasum": "ceaa5ea8f357ce8827c728f22871265f0f7cd74f"
+                "url": "https://ftp.drupal.org/files/projects/twig_tweak-3.4.2.zip",
+                "reference": "3.4.2",
+                "shasum": "c31272a550c05981ca21b1eacc37abfe62cf2598"
             },
             "require": {
                 "drupal/core": "^10.3 || ^11.0",
@@ -5441,8 +5441,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "3.4.1",
-                    "datestamp": "1748530577",
+                    "version": "3.4.2",
+                    "datestamp": "1776781834",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5462,10 +5462,6 @@
                 {
                     "name": "anybody",
                     "homepage": "https://www.drupal.org/user/291091"
-                },
-                {
-                    "name": "chesn0k",
-                    "homepage": "https://www.drupal.org/user/3650191"
                 },
                 {
                     "name": "chi",
@@ -5563,17 +5559,17 @@
         },
         {
             "name": "drupal/views_field_view",
-            "version": "1.0.0-beta6",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/views_field_view.git",
-                "reference": "8.x-1.0-beta6"
+                "reference": "8.x-1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/views_field_view-8.x-1.0-beta6.zip",
-                "reference": "8.x-1.0-beta6",
-                "shasum": "a43a286dc185c2f6cebb2833c8d16ed28a1a1df6"
+                "url": "https://ftp.drupal.org/files/projects/views_field_view-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "a8662f4c6949551496106d6d79d9e9886051c6b4"
             },
             "require": {
                 "drupal/core": "^9 || ^10 || ^11"
@@ -5581,11 +5577,11 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0-beta6",
-                    "datestamp": "1736794891",
+                    "version": "8.x-1.0",
+                    "datestamp": "1777993121",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },

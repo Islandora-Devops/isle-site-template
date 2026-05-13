@@ -7,7 +7,7 @@ dependencies:
 id: repository_items
 label: 'Repository Items'
 type: 'canonical_entities:node'
-pattern: 'islandora/[node:title]'
+pattern: '/islandora/[node:title]'
 selection_criteria:
   edf28a5a-6fa6-4c20-a64d-d63582ccc3d5:
     id: 'entity_bundle:node'
