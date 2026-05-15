@@ -3506,17 +3506,17 @@
         },
         {
             "name": "drupal/islandora",
-            "version": "2.17.6",
+            "version": "2.18.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/islandora.git",
-                "reference": "2.17.6"
+                "reference": "2.18.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/islandora-2.17.6.zip",
-                "reference": "2.17.6",
-                "shasum": "edf0aebd3eb8c802f1141baba36d53100a35e9cc"
+                "url": "https://ftp.drupal.org/files/projects/islandora-2.18.1.zip",
+                "reference": "2.18.1",
+                "shasum": "12021ede8f0f3a7fbe3780c2dbd550bcc8197594"
             },
             "require": {
                 "drupal/action": "^0.2",
@@ -3555,8 +3555,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.17.6",
-                    "datestamp": "1773675621",
+                    "version": "2.18.1",
+                    "datestamp": "1778671375",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3704,17 +3704,17 @@
         },
         {
             "name": "drupal/islandora_mirador",
-            "version": "2.4.1",
+            "version": "2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/islandora_mirador.git",
-                "reference": "2.4.1"
+                "reference": "2.4.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/islandora_mirador-2.4.1.zip",
-                "reference": "2.4.1",
-                "shasum": "a978b49f463cfeebcdbd8538993b563b80a31a70"
+                "url": "https://ftp.drupal.org/files/projects/islandora_mirador-2.4.2.zip",
+                "reference": "2.4.2",
+                "shasum": "6562b8224ec642f74a8e461cbf1e00efe7418b42"
             },
             "require": {
                 "drupal/core": "^10 || ^11",
@@ -3732,8 +3732,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.4.1",
-                    "datestamp": "1774961150",
+                    "version": "2.4.2",
+                    "datestamp": "1778099522",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4853,26 +4853,29 @@
         },
         {
             "name": "drupal/rest_oai_pmh",
-            "version": "2.2.1",
+            "version": "2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/rest_oai_pmh.git",
-                "reference": "2.2.1"
+                "reference": "2.3.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rest_oai_pmh-2.2.1.zip",
-                "reference": "2.2.1",
-                "shasum": "7bf04ab655fa6017e7b01ccc6748375ab6855882"
+                "url": "https://ftp.drupal.org/files/projects/rest_oai_pmh-2.3.2.zip",
+                "reference": "2.3.2",
+                "shasum": "d0cc6b49ee8ecfa0cdde56f73f70fbc894b96413"
             },
             "require": {
                 "drupal/core": "^10.1 || ^11"
             },
+            "suggest": {
+                "discoverygarden/dgi_image_discovery": "Provides image discovery support for RDF thumbnail URL callbacks."
+            },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.2.1",
-                    "datestamp": "1771879700",
+                    "version": "2.3.2",
+                    "datestamp": "1778704100",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5623,16 +5626,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "13.7.2",
+            "version": "13.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "670c5f81b3f525b3f08263f038c7f07558f2580d"
+                "reference": "a4974fabbd14337fbfdc2918184e6ef773cfeb78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/670c5f81b3f525b3f08263f038c7f07558f2580d",
-                "reference": "670c5f81b3f525b3f08263f038c7f07558f2580d",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/a4974fabbd14337fbfdc2918184e6ef773cfeb78",
+                "reference": "a4974fabbd14337fbfdc2918184e6ef773cfeb78",
                 "shasum": ""
             },
             "require": {
@@ -5661,7 +5664,7 @@
                 "symfony/yaml": "^6.0 || ^7"
             },
             "conflict": {
-                "drupal/core": "< 10.4",
+                "drupal/core": "<10.4 <12.0",
                 "drupal/migrate_run": "*",
                 "drupal/migrate_tools": "<= 5"
             },
@@ -5760,7 +5763,7 @@
                 "issues": "https://github.com/drush-ops/drush/issues",
                 "security": "https://github.com/drush-ops/drush/security/advisories",
                 "slack": "https://drupal.slack.com/messages/C62H9CWQM",
-                "source": "https://github.com/drush-ops/drush/tree/13.7.2"
+                "source": "https://github.com/drush-ops/drush/tree/13.7.3"
             },
             "funding": [
                 {
@@ -5768,7 +5771,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-20T19:18:11+00:00"
+            "time": "2026-05-11T10:48:11+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
