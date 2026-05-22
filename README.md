@@ -286,6 +286,30 @@ To add a composer dependency to your running instance you can
 docker compose exec drupal composer require drupal/module
 ```
 
+#### Testing a GitHub PR patch
+
+To test a GitHub pull request as a Composer patch, run:
+
+```bash
+make patch-pr
+```
+
+The command prompts for the GitHub PR URL, infers the Composer package and patch label, updates `drupal/rootfs/var/www/drupal/composer.json`, and runs `make build up`. To skip the prompt:
+
+```bash
+GITHUB_PR_URL=https://github.com/Islandora/openseadragon/pull/74 make patch-pr
+```
+
+#### Editing a module or theme branch
+
+To edit a Drupal.org or Islandora module/theme branch locally, run:
+
+```bash
+make checkout-pr
+```
+
+The command prompts for the extension name, source, repository when needed, and branch. It checks the code out under `./drupal-projects/`, adds a bind mount to `docker-compose.override.yml`, and runs `make up`.
+
 ## Production
 
 ### Automated Certificate Generation

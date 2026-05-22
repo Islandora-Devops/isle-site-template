@@ -1,7 +1,7 @@
 .PHONY: help
 .PHONY: create-starter-site-pr overwrite-starter-site sync-solr-conf
-.PHONY: build pull down down-% logs-% up up-%
-.PHONY: clean demo-objects init ping status
+.PHONY: build pull down down-% logs-% patch-pr up up-%
+.PHONY: checkout-pr clean demo-objects init ping status
 .PHONY: traefik-http traefik-https-letsencrypt traefik-https-mkcert
 .PHONY: sequelace
 .SILENT:
@@ -71,5 +71,12 @@ sync-solr-conf: ## Refresh tracked Solr default core config from the running dru
 
 create-starter-site-pr: ## Create a PR for islandora-starter-site updates
 	./scripts/create-pr.sh
+
+patch-pr: ## Add a GitHub PR patch to Drupal composer.json
+	./scripts/patch-pr.sh
+
+checkout-pr: ## Checkout a contrib module or theme branch, bind mount it, and start the stack
+	./scripts/checkout-pr.sh
+
 sequelace:
 	./scripts/sequelace.sh
