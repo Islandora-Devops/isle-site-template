@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e21e333bc66454c7812a22f0d6f29d6",
+    "content-hash": "77ba26f292244177ec0771ed7ed08cff",
     "packages": [
         {
             "name": "adci/full-name-parser",
@@ -4463,17 +4463,17 @@
         },
         {
             "name": "drupal/openseadragon",
-            "version": "2.2.2",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/openseadragon.git",
-                "reference": "2.2.2"
+                "reference": "3.0.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/openseadragon-2.2.2.zip",
-                "reference": "2.2.2",
-                "shasum": "80f8c326ba0816747b82e42f28a7badabfd56df6"
+                "url": "https://ftp.drupal.org/files/projects/openseadragon-3.0.1.zip",
+                "reference": "3.0.1",
+                "shasum": "3b5ef84c8b95225ff0c7d0c632b5889276c3f028"
             },
             "require": {
                 "drupal/core": "^9.1 || ^10 || ^11",
@@ -4491,8 +4491,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.2.2",
-                    "datestamp": "1730133222",
+                    "version": "3.0.1",
+                    "datestamp": "1779487872",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4537,10 +4537,6 @@
                 {
                     "name": "rosiel",
                     "homepage": "https://www.drupal.org/user/3263030"
-                },
-                {
-                    "name": "seth.e.shaw",
-                    "homepage": "https://www.drupal.org/user/50620"
                 }
             ],
             "description": "OpenSeadragon",
