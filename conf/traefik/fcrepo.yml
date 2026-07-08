@@ -11,13 +11,7 @@ http:
           - url: http://fcrepo:8080
   routers:
     fcrepo:
-      rule: Host(`fcrepo.{{ env "DOMAIN" }}`)
+      rule: Host(`fcrepo.islandora.io`)
       middlewares:
         - fcrepo-strip-suffix
       service: fcrepo
-{{- if (eq (env "TLS_PROVIDER") "letsencrypt") }}
-      tls:
-        certResolver: letsencrypt
-{{- else if (eq (env "URI_SCHEME") "https") }}
-      tls: {}
-{{- end }}

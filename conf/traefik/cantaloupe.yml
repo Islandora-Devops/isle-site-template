@@ -21,13 +21,7 @@ http:
           - url: http://cantaloupe:8182
   routers:
     cantaloupe:
-      rule: Host(`{{ env "DOMAIN" }}`) && PathPrefix(`/cantaloupe`)
+      rule: Host(`islandora.io`) && PathPrefix(`/cantaloupe`)
       middlewares:
         - cantaloupe
       service: cantaloupe
-{{- if (eq (env "TLS_PROVIDER") "letsencrypt") }}
-      tls:
-        certResolver: letsencrypt
-{{- else if (eq (env "URI_SCHEME") "https") }}
-      tls: {}
-{{- end }}

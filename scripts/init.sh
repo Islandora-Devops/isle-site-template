@@ -3,25 +3,43 @@
 set -eou pipefail
 
 extend_healthcheck=false
+
+set_env_value() {
+  local key="$1"
+  local value="$2"
+  if grep -q "^${key}=" .env; then
+    sed -i.bak "s|^${key}=.*|${key}=${value}|" .env
+    rm -f .env.bak
+    return
+  fi
+  printf '%s=%s\n' "${key}" "${value}" >> .env
+}
+
+is_docker_rootless() {
+  docker info -f "{{println .SecurityOptions}}" 2>/dev/null | grep -qi rootless
+}
+
+is_dev_mode() {
+  local value
+  value="$(sed -n 's/^DEVELOPMENT_ENVIRONMENT=//p' .env | tail -n 1 | tr -d "\"'[:space:]")"
+  [ "${value:-false}" = "true" ]
+}
+
 if [ ! -f .env ]; then
   cp sample.env .env
   extend_healthcheck=true
 fi
 
 if [ -n "${ISLANDORA_TAG:-}" ]; then
-  sed -i.bak "s|^ISLANDORA_TAG=.*|ISLANDORA_TAG=\"${ISLANDORA_TAG}\"|" .env
-  rm -f .env.bak
+  set_env_value ISLANDORA_TAG "${ISLANDORA_TAG}"
 fi
-
-# shellcheck disable=SC1091
-source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
 
 if $extend_healthcheck; then
   # we've detected an initial install
   # so extend the default start period for drupal's healthcheck to 1m
   # so it has time to come online before docker compose marks it unhealthy
-  update_env DRUPAL_HEALTHCHECK_RETRIES 10
-  update_env DRUPAL_HEALTHCHECK_START_PERIOD 1m
+  set_env_value DRUPAL_HEALTHCHECK_RETRIES 10
+  set_env_value DRUPAL_HEALTHCHECK_START_PERIOD 1m
 fi
 
 if is_dev_mode && is_docker_rootless; then
@@ -43,6 +61,12 @@ fi
 
 docker compose run --rm init
 
-chown -R "$(whoami)" ./certs ./secrets > /dev/null 2>&1 || sudo chown -R "$(whoami)" ./certs ./secrets
+chown -R "$(whoami)" ./certs ./secrets > /dev/null 2>&1 || sudo chown -R "$(whoami)" ./certs ./secrets > /dev/null 2>&1 || true
 
-make build
+mkdir -p ./certs
+id -u > ./certs/UID
+if [ -d drupal/rootfs ]; then
+  find drupal/rootfs -type d -exec chmod 755 {} \;
+fi
+docker compose pull --ignore-buildable --ignore-pull-failures
+docker compose build

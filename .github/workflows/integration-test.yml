@@ -1,6 +1,8 @@
 name: Run tests
 on:
-  pull_request:
+  push:
+    branches-ignore:
+      - main
   workflow_dispatch:
     inputs:
       buildkit-tag:
@@ -13,6 +15,11 @@ on:
         required: true
         type: string
         default: "Islandora-Devops"
+      starter-site-repository:
+        description: "The islandora-starter-site repository name"
+        required: true
+        type: string
+        default: "islandora-starter-site"
       starter-site-ref:
         description: "The islandora-starter-site git ref to checkout (heads/BRANCH-NAME or tags/TAG-NAME)"
         required: true
@@ -42,17 +49,24 @@ jobs:
         with:
           buildkit-tag: "${{ github.event.inputs.buildkit-tag || 'main' }}"
           starter-site-owner: "${{ github.event.inputs.starter-site-owner || 'islandora-devops' }}"
+          starter-site-repository: "${{ github.event.inputs.starter-site-repository || 'islandora-starter-site' }}"
           starter-site-ref: "${{ github.event.inputs.starter-site-ref || 'heads/main' }}"
 
       - name: Test switching frontend to TLS
-        run: make traefik-https-mkcert down-traefik up ping
+        run: |
+          sitectl component set ingress --context isle-site-template-local --yolo --mode https-mkcert --domain islandora.io
+          sitectl compose --context isle-site-template-local up
+          sitectl healthcheck --context isle-site-template-local --persist --timeout 20m --interval 15s
 
       - name: Explicit check (TLS)
         if: startsWith(matrix.os, 'ubuntu')
         run: curl -vsf -o /dev/null https://islandora.io
 
       - name: Switch back to HTTP
-        run: make traefik-http down-traefik up ping
+        run: |
+          sitectl component set ingress --context isle-site-template-local --yolo --mode http --domain islandora.io
+          sitectl compose --context isle-site-template-local up
+          sitectl healthcheck --context isle-site-template-local --persist --timeout 20m --interval 15s
 
       - name: Explicit check (http)
         run: curl -vsf -o /dev/null http://islandora.io
@@ -85,4 +99,8 @@ jobs:
 
       - name: cleanup
         if: ${{ always() }}
-        run: make down
+        run: |
+          if command -v sitectl >/dev/null 2>&1; then
+            sitectl compose --context isle-site-template-local down -v --remove-orphans || true
+          fi
+          docker compose down -v --remove-orphans || true

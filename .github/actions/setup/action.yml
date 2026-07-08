@@ -1,5 +1,5 @@
 name: "Setup ISLE Composite"
-description: "Sets up the ISLE environment"
+description: "Sets up an ISLE environment with sitectl"
 inputs:
   buildkit-tag:
     description: "islandora-devops/isle-buildkit docker tag to pull"
@@ -7,9 +7,33 @@ inputs:
   starter-site-owner:
     description: "islandora-starter-site github owner"
     default: "Islandora-Devops"
+  starter-site-repository:
+    description: "islandora-starter-site repository name"
+    default: "islandora-starter-site"
   starter-site-ref:
-    description: "islandora-starter-site ref to checkout"
+    description: "islandora-starter-site branch, tag, or commit to use"
     default: "heads/main"
+  context-name:
+    description: "sitectl context name"
+    default: "isle-site-template-local"
+  ingress-mode:
+    description: "Ingress mode: http, https, https-letsencrypt, https-custom, or https-mkcert"
+    default: "http"
+  ingress-domain:
+    description: "Ingress domain"
+    default: "islandora.io"
+  acme-email:
+    description: "ACME email used when ingress-mode is https-letsencrypt"
+    default: ""
+  bot-mitigation:
+    description: "Create-time bot mitigation state: on or off"
+    default: "off"
+  healthcheck-timeout:
+    description: "sitectl healthcheck timeout"
+    default: "20m"
+  healthcheck-interval:
+    description: "sitectl healthcheck interval"
+    default: "15s"
 
 runs:
   using: "composite"
@@ -19,14 +43,31 @@ runs:
       uses: Vampire/setup-wsl@6a8db447be7ed35f2f499c02c6e60ff77ef11278 # v6
       with:
         distribution: Ubuntu-24.04
-        additional-packages: make curl git docker.io docker-compose-v2
+        additional-packages: ca-certificates curl git gnupg docker.io docker-compose-v2
 
     - name: Validate Inputs
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
+      env:
+        BUILDKIT_TAG: ${{ inputs.buildkit-tag }}
+        STARTER_SITE_OWNER: ${{ inputs.starter-site-owner }}
+        STARTER_SITE_REPOSITORY: ${{ inputs.starter-site-repository }}
+        STARTER_SITE_REF: ${{ inputs.starter-site-ref }}
+        SITECTL_CONTEXT: ${{ inputs.context-name }}
+        INGRESS_MODE: ${{ inputs.ingress-mode }}
+        INGRESS_DOMAIN: ${{ inputs.ingress-domain }}
+        ACME_EMAIL: ${{ inputs.acme-email }}
+        BOT_MITIGATION: ${{ inputs.bot-mitigation }}
+        HEALTHCHECK_TIMEOUT: ${{ inputs.healthcheck-timeout }}
+        HEALTHCHECK_INTERVAL: ${{ inputs.healthcheck-interval }}
       run: |
         REGEX_DOCKER="^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$"
         REGEX_GITHUB_OWNER="^[a-zA-Z0-9]([a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$"
+        REGEX_GITHUB_REPOSITORY="^[a-zA-Z0-9._-]+$"
         REGEX_GIT_REF="^([a-zA-Z0-9._\/-]+)$"
+        REGEX_CONTEXT="^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+        REGEX_DOMAIN="^[a-zA-Z0-9][a-zA-Z0-9.-]*(:[0-9]+)?$"
+        REGEX_EMAIL="^$|^[^[:space:]@]+@[^[:space:]@]+$"
+        REGEX_DURATION="^[0-9]+(ms|s|m|h)$"
         validate() {
           local name=$1
           local value=$2
@@ -37,9 +78,28 @@ runs:
           fi
         }
 
-        validate "buildkit-tag" "${{ inputs.buildkit-tag }}" "$REGEX_DOCKER"
-        validate "starter-site-owner" "${{ inputs.starter-site-owner }}" "$REGEX_GITHUB_OWNER"
-        validate "starter-site-ref" "${{ inputs.starter-site-ref }}" "$REGEX_GIT_REF"
+        validate "buildkit-tag" "$BUILDKIT_TAG" "$REGEX_DOCKER"
+        validate "starter-site-owner" "$STARTER_SITE_OWNER" "$REGEX_GITHUB_OWNER"
+        validate "starter-site-repository" "$STARTER_SITE_REPOSITORY" "$REGEX_GITHUB_REPOSITORY"
+        validate "starter-site-ref" "$STARTER_SITE_REF" "$REGEX_GIT_REF"
+        validate "context-name" "$SITECTL_CONTEXT" "$REGEX_CONTEXT"
+        validate "ingress-domain" "$INGRESS_DOMAIN" "$REGEX_DOMAIN"
+        validate "acme-email" "$ACME_EMAIL" "$REGEX_EMAIL"
+        validate "healthcheck-timeout" "$HEALTHCHECK_TIMEOUT" "$REGEX_DURATION"
+        validate "healthcheck-interval" "$HEALTHCHECK_INTERVAL" "$REGEX_DURATION"
+
+        case "$INGRESS_MODE" in
+          http|https|https-cloudflare-origin|https-letsencrypt|https-custom|https-mkcert) ;;
+          *) echo "::error::Invalid input for ingress-mode: '$INGRESS_MODE'."; exit 1 ;;
+        esac
+        case "$BOT_MITIGATION" in
+          on|off|enabled|disabled) ;;
+          *) echo "::error::Invalid input for bot-mitigation: '$BOT_MITIGATION'."; exit 1 ;;
+        esac
+        if [ "$INGRESS_MODE" = "https-letsencrypt" ] && [ -z "$ACME_EMAIL" ]; then
+          echo "::error::acme-email is required when ingress-mode is https-letsencrypt."
+          exit 1
+        fi
 
     - name: setup git identity
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
@@ -47,26 +107,87 @@ runs:
         git config --global user.email "actions@github.com"
         git config --global user.name "GitHub Actions"
 
-    - name: Install mkcert on host (Linux)
-      if: runner.os == 'Linux'
-      shell: bash
-      run: |-
-        curl -L "https://dl.filippo.io/mkcert/latest?for=linux/amd64" -o mkcert
-        chmod +x mkcert
-        sudo mv mkcert /usr/local/bin/mkcert
+    - name: Install sitectl
+      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
+      run: |
+        if command -v sitectl >/dev/null 2>&1 && command -v sitectl-isle >/dev/null 2>&1; then
+          exit 0
+        fi
+
+        sudo apt-get update -qq
+        sudo apt-get install -y ca-certificates curl gnupg
+
+        curl -fsSL https://packages.libops.io/sitectl/sitectl-archive-keyring.asc |
+          sudo gpg --dearmor --yes -o /usr/share/keyrings/sitectl-archive-keyring.gpg
+
+        echo "deb [signed-by=/usr/share/keyrings/sitectl-archive-keyring.gpg] https://packages.libops.io/sitectl ./" |
+          sudo tee /etc/apt/sources.list.d/sitectl.list >/dev/null
+
+        sudo apt-get update -qq
+        sudo apt-get install -y sitectl-isle
 
     - name: Start islandora-starter-site
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
-      run: |
-        make overwrite-starter-site init up \
-          ISLANDORA_TAG=${{ inputs.buildkit-tag }} \
-          STARTER_SITE_BRANCH=${{ inputs.starter-site-ref }} \
-          STARTER_SITE_OWNER=${{ inputs.starter-site-owner }} \
-          GITHUB_ACTIONS="true" \
-          TERM=xterm-256color
-
-    - name: make sure traefik is serving traffic
-      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
-      run: ./scripts/ping.sh
       env:
+        ISLANDORA_TAG: ${{ inputs.buildkit-tag }}
+        STARTER_SITE_OWNER: ${{ inputs.starter-site-owner }}
+        STARTER_SITE_REPOSITORY: ${{ inputs.starter-site-repository }}
+        STARTER_SITE_REF: ${{ inputs.starter-site-ref }}
+        SITECTL_CONTEXT: ${{ inputs.context-name }}
+        INGRESS_MODE: ${{ inputs.ingress-mode }}
+        INGRESS_DOMAIN: ${{ inputs.ingress-domain }}
+        ACME_EMAIL: ${{ inputs.acme-email }}
+        BOT_MITIGATION: ${{ inputs.bot-mitigation }}
+        HEALTHCHECK_TIMEOUT: ${{ inputs.healthcheck-timeout }}
+        HEALTHCHECK_INTERVAL: ${{ inputs.healthcheck-interval }}
         TERM: xterm-256color
+      run: |
+        action_path="$GITHUB_ACTION_PATH"
+        if command -v wslpath >/dev/null 2>&1 && [[ "$action_path" =~ ^[A-Za-z]:\\ ]]; then
+          action_path="$(wslpath -u "$action_path")"
+        fi
+        cd "${action_path}/../../.."
+
+        GITHUB_ACTIONS=true ./scripts/overwrite-starter-site.sh
+
+        case "$BOT_MITIGATION" in
+          enabled) BOT_MITIGATION=on ;;
+          disabled) BOT_MITIGATION=off ;;
+        esac
+
+        create_args=(
+          create isle/default
+          --path "$PWD"
+          --type local
+          --checkout-source existing
+          --context "$SITECTL_CONTEXT"
+          --site islandora
+          --environment local
+          --project-name isle-site-template
+          --compose-project-name isle-site-template
+          --default-context
+          --yolo
+          --fcrepo on
+          --blazegraph on
+          --iiif cantaloupe
+          --iiif-topology disabled
+          --fits on
+          --crayfits on
+          --homarus on
+          --houdini on
+          --hypercube on
+          --mergepdf on
+          --ingress on
+          --mode "$INGRESS_MODE"
+          --domain "$INGRESS_DOMAIN"
+          --max-upload-size 128M
+          --upload-timeout 300s
+          --bot-mitigation "$BOT_MITIGATION"
+          --dev-mode off
+        )
+        if [ "$INGRESS_MODE" = "https-letsencrypt" ]; then
+          create_args+=(--acme-email "$ACME_EMAIL")
+        fi
+
+        sitectl "${create_args[@]}"
+        sitectl healthcheck --context "$SITECTL_CONTEXT" --persist --timeout "$HEALTHCHECK_TIMEOUT" --interval "$HEALTHCHECK_INTERVAL" --format table

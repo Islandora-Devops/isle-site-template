@@ -59,7 +59,7 @@ secrets:
 services:
   activemq:
     <<: *common
-    image: islandora/activemq:${ISLANDORA_TAG}
+    image: islandora/activemq:6.4.3
     secrets:
       - source: ACTIVEMQ_PASSWORD
       - source: ACTIVEMQ_WEB_ADMIN_PASSWORD
@@ -71,7 +71,7 @@ services:
     depends_on:
       activemq:
         condition: service_healthy
-    image: islandora/alpaca:${ISLANDORA_TAG}
+    image: islandora/alpaca:6.4.3
     secrets:
       - source: ALPACA_JMS_PASSWORD
       - source: CERT_PUBLIC_KEY
@@ -79,13 +79,13 @@ services:
 
   blazegraph:
     <<: *common
-    image: islandora/blazegraph:${ISLANDORA_TAG}
+    image: islandora/blazegraph:6.4.3
     volumes:
       - blazegraph-data:/data:rw
 
   cantaloupe:
     <<: *common
-    image: islandora/cantaloupe:${ISLANDORA_TAG}
+    image: islandora/cantaloupe:6.4.3
     secrets:
       - source: CERT_PUBLIC_KEY
       - source: CERT_AUTHORITY
@@ -94,7 +94,7 @@ services:
 
   crayfits:
     <<: *common
-    image: islandora/crayfits:${ISLANDORA_TAG}
+    image: islandora/crayfits:6.4.3
     secrets:
       - source: CERT_PUBLIC_KEY
       - source: CERT_AUTHORITY
@@ -106,40 +106,40 @@ services:
     build:
       args:
         REPOSITORY: islandora
-        TAG: ${ISLANDORA_TAG}
+        TAG: 6.4.3
       context: ./drupal
       x-bake:
         cache-from:
-          - type=registry,ref=${REPOSITORY}/${COMPOSE_PROJECT_NAME}:${TAG}
-          - type=registry,ref=${REPOSITORY}/${COMPOSE_PROJECT_NAME}:latest
+          - type=registry,ref=islandora.io/isle-site-template:local
+          - type=registry,ref=islandora.io/isle-site-template:latest
         cache-to:
           - type=inline
         platforms:
           - linux/amd64
           - linux/arm64
     environment:
-      DEVELOPMENT_ENVIRONMENT: ${DEVELOPMENT_ENVIRONMENT:-false}
+      DEVELOPMENT_ENVIRONMENT: "false"
       DRUPAL_DEFAULT_BROKER_URL: tcp://activemq:61613
-      DRUPAL_DEFAULT_CANTALOUPE_URL: ${URI_SCHEME}://${DOMAIN}/cantaloupe/iiif/2
+      DRUPAL_DEFAULT_CANTALOUPE_URL: http://islandora.io/cantaloupe/iiif/2
       DRUPAL_DEFAULT_CONFIGDIR: /var/www/drupal/config/sync
       DRUPAL_DEFAULT_FCREPO_HOST: fcrepo
       DRUPAL_DEFAULT_FCREPO_PORT: 8080
-      DRUPAL_DEFAULT_FCREPO_URL: ${URI_SCHEME}://fcrepo.${DOMAIN}/fcrepo/rest/
+      DRUPAL_DEFAULT_FCREPO_URL: http://fcrepo.islandora.io/fcrepo/rest/
       DRUPAL_DEFAULT_INSTALL_EXISTING_CONFIG: "true"
       DRUPAL_DEFAULT_NAME: Islandora Digital Collections
       DRUPAL_DEFAULT_PROFILE: minimal
-      DRUPAL_DEFAULT_SITE_URL: ${DOMAIN}
+      DRUPAL_DEFAULT_SITE_URL: http://islandora.io/
       DRUPAL_DEFAULT_SOLR_CORE: default
       DRUPAL_ENABLE_HTTPS: "false"
-      DRUSH_OPTIONS_URI: ${URI_SCHEME}://${DOMAIN}
-      NGINX_REAL_IP_RECURSIVE: ${REVERSE_PROXY}
-      NGINX_SET_REAL_IP_FROM: ${FRONTEND_IP_1}
-      NGINX_SET_REAL_IP_FROM2: ${FRONTEND_IP_2}
-      NGINX_SET_REAL_IP_FROM3: ${FRONTEND_IP_3}
+      DRUSH_OPTIONS_URI: http://islandora.io/
+      NGINX_REAL_IP_RECURSIVE: "off"
+      NGINX_SET_REAL_IP_FROM: 127.0.0.1/32
+      NGINX_SET_REAL_IP_FROM2: 172.0.0.0/8
+      NGINX_SET_REAL_IP_FROM3: 192.168.0.0/16
     healthcheck:
-      start_period: ${DRUPAL_HEALTHCHECK_START_PERIOD:-0s}
-      retries: ${DRUPAL_HEALTHCHECK_RETRIES:-3}
-    image: ${REPOSITORY}/${COMPOSE_PROJECT_NAME}:${TAG}
+      start_period: 0s
+      retries: 3
+    image: islandora.io/isle-site-template:local
     secrets:
       - source: CERT_PUBLIC_KEY
       - source: CERT_AUTHORITY
@@ -170,9 +170,9 @@ services:
       DB_HOST: mariadb
       DB_PORT: 3306
       FCREPO_ALLOW_EXTERNAL_DEFAULT: http://default/
-      FCREPO_ALLOW_EXTERNAL_DRUPAL: ${URI_SCHEME}://${DOMAIN}/
+      FCREPO_ALLOW_EXTERNAL_DRUPAL: http://islandora.io/
       FCREPO_PERSISTENCE_TYPE: mysql
-    image: islandora/fcrepo6:${ISLANDORA_TAG}
+    image: islandora/fcrepo6:6.4.3
     secrets:
       - source: DB_ROOT_PASSWORD
       - source: FCREPO_DB_PASSWORD
@@ -183,11 +183,11 @@ services:
 
   fits:
     <<: *common
-    image: islandora/fits:${ISLANDORA_TAG}
+    image: islandora/fits:6.4.3
 
   homarus:
     <<: *common
-    image: islandora/homarus:${ISLANDORA_TAG}
+    image: islandora/homarus:6.4.3
     secrets:
       - source: CERT_PUBLIC_KEY
       - source: CERT_AUTHORITY
@@ -196,7 +196,7 @@ services:
 
   houdini:
     <<: *common
-    image: islandora/houdini:${ISLANDORA_TAG}
+    image: islandora/houdini:6.4.3
     secrets:
       - source: CERT_PUBLIC_KEY
       - source: CERT_AUTHORITY
@@ -205,7 +205,7 @@ services:
 
   hypercube:
     <<: *common
-    image: islandora/hypercube:${ISLANDORA_TAG}
+    image: islandora/hypercube:6.4.3
     secrets:
       - source: CERT_PUBLIC_KEY
       - source: CERT_AUTHORITY
@@ -214,7 +214,7 @@ services:
 
   init:
     entrypoint: /scripts/init-entrypoint.sh
-    image: islandora/base:${ISLANDORA_TAG}
+    image: islandora/base:6.4.3
     networks:
       default:
     profiles:
@@ -223,7 +223,6 @@ services:
     security_opt:
       - label=type:container_runtime_t
     volumes:
-      - ./.env:/.env
       - ./certs:/certs:rw
       - ./secrets:/secrets:rw
       - ./scripts:/scripts:ro
@@ -233,7 +232,7 @@ services:
 
   mariadb:
     <<: *common
-    image: islandora/mariadb:${ISLANDORA_TAG}
+    image: islandora/mariadb:6.4.3
     secrets:
       - source: DB_ROOT_PASSWORD
     volumes:
@@ -241,7 +240,7 @@ services:
 
   mergepdf:
     <<: *common
-    image: islandora/mergepdf:${ISLANDORA_TAG}
+    image: islandora/mergepdf:6.4.3
     secrets:
       - source: CERT_PUBLIC_KEY
       - source: CERT_AUTHORITY
@@ -252,7 +251,7 @@ services:
     <<: *common
     environment:
       MILLINER_FEDORA6: true
-    image: islandora/milliner:${ISLANDORA_TAG}
+    image: islandora/milliner:6.4.3
     secrets:
       - source: CERT_PUBLIC_KEY
       - source: CERT_AUTHORITY
@@ -264,7 +263,7 @@ services:
     depends_on:
       drupal:
         condition: service_healthy
-    image: islandora/solr:${ISLANDORA_TAG}
+    image: islandora/solr:6.4.3
     volumes:
       - solr-data:/data:rw
       - read_only: false
@@ -280,34 +279,27 @@ services:
       --ping=true
       --log.level=INFO
       --entryPoints.http.address=:80
-      --entryPoints.http.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
+      --entryPoints.http.forwardedHeaders.trustedIPs=127.0.0.1/32,172.0.0.0/8,192.168.0.0/16
       --entryPoints.http.http.encodedCharacters.allowEncodedSlash=true
       --entryPoints.http.http.encodedCharacters.allowEncodedPercent=true
       --entryPoints.http.http.encodedCharacters.allowEncodedQuestionMark=true
       --entryPoints.http.http.encodedCharacters.allowEncodedHash=true
       --entryPoints.http.transport.respondingTimeouts.readTimeout=60
-      --entryPoints.https.address=:443
-      --entryPoints.https.forwardedHeaders.trustedIPs=${FRONTEND_IP_1},${FRONTEND_IP_2},${FRONTEND_IP_3}
-      --entryPoints.https.http.encodedCharacters.allowEncodedSlash=true
-      --entryPoints.https.http.encodedCharacters.allowEncodedPercent=true
-      --entryPoints.https.http.encodedCharacters.allowEncodedQuestionMark=true
-      --entryPoints.https.http.encodedCharacters.allowEncodedHash=true
-      --entryPoints.https.transport.respondingTimeouts.readTimeout=60
       --providers.file.directory=/etc/traefik/dynamic
       --providers.docker=true
       --providers.docker.network=default
       --providers.docker.exposedByDefault=false
-      --api.insecure=${DEVELOPMENT_ENVIRONMENT:-false}
-      --api.dashboard=${DEVELOPMENT_ENVIRONMENT:-false}
-      --api.debug=${DEVELOPMENT_ENVIRONMENT:-false}
+      --api.insecure=false
+      --api.dashboard=false
+      --api.debug=false
     depends_on:
       drupal:
         condition: service_healthy
     environment:
-      DEVELOPMENT_ENVIRONMENT: ${DEVELOPMENT_ENVIRONMENT:-false}
-      DOMAIN: ${DOMAIN}
-      TLS_PROVIDER: ${TLS_PROVIDER:-self-managed}
-      URI_SCHEME: ${URI_SCHEME:-http}
+      DEVELOPMENT_ENVIRONMENT: "false"
+      DOMAIN: islandora.io
+      TLS_PROVIDER: self-managed
+      URI_SCHEME: http
     healthcheck:
       start_period: 10s
       test: traefik healthcheck --ping
@@ -315,14 +307,13 @@ services:
     networks:
       default:
         aliases:
-          - activemq.${DOMAIN}
-          - blazegraph.${DOMAIN}
-          - fcrepo.${DOMAIN}
-          - ${DOMAIN}
-          - solr.${DOMAIN}
+          - activemq.islandora.io
+          - blazegraph.islandora.io
+          - fcrepo.islandora.io
+          - islandora.io
+          - solr.islandora.io
     ports:
-      - ${HOST_INSECURE_PORT:-80}:80
-      - ${HOST_SECURE_PORT:-443}:443
+      - "80:80"
     secrets:
       - source: CERT_PUBLIC_KEY
       - source: CERT_PRIVATE_KEY
@@ -332,4 +323,3 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:z
       - ./conf/traefik:/etc/traefik/dynamic:ro
       - acme-data:/acme:rw
-
