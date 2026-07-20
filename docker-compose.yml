@@ -103,6 +103,9 @@ services:
 
   drupal:
     <<: *common
+    depends_on:
+      mariadb:
+        condition: service_healthy
     build:
       args:
         REPOSITORY: islandora

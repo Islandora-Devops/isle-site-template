@@ -114,19 +114,31 @@ sitectl drupal login
 
 ## CI Setup Action
 
-The reusable composite action at `.github/actions/setup` installs `sitectl-isle`, refreshes the Drupal codebase from a requested `islandora-starter-site` repository/ref, creates the local ISLE context with explicit default component choices and `--yolo`, starts the stack, and runs `sitectl healthcheck`.
+The reusable composite action at `.github/actions/setup` checks out requested `isle-site-template` and `islandora-starter-site` sources, installs pinned sitectl packages, starts the default stack with the requested BuildKit tag, and waits for `sitectl healthcheck` to pass. It currently supports Linux X64 runners.
 
-Downstream workflows can test the current starter-site branch or fork by passing the repository owner, repository name, and ref:
+Pin the action to a full commit SHA in downstream workflows. The action leaves the stack running so later steps can execute repository-specific tests, and exposes `project-directory`, `context-name`, and `compose-project-name` outputs:
 
 ```yaml
-- uses: Islandora-Devops/isle-site-template/.github/actions/setup@main
+- id: isle
+  uses: Islandora-Devops/isle-site-template/.github/actions/setup@<full-commit-sha>
   with:
-    starter-site-owner: ${{ github.event.pull_request.head.repo.owner.login }}
-    starter-site-repository: ${{ github.event.pull_request.head.repo.name }}
-    starter-site-ref: ${{ github.event.pull_request.head.sha }}
+    buildkit-tag: main
+
+- name: Run tests against Islandora
+  env:
+    SITECTL_CONTEXT: ${{ steps.isle.outputs.context-name }}
+  run: sitectl verify --context "$SITECTL_CONTEXT"
+
+- name: Clean up
+  if: ${{ always() }}
+  env:
+    SITECTL_CONTEXT: ${{ steps.isle.outputs.context-name }}
+  run: sitectl compose --context "$SITECTL_CONTEXT" down --volumes --remove-orphans
 ```
 
-Use the action's ingress inputs when a test suite needs HTTPS. Workflows should not call the old Traefik helper scripts directly.
+To test a template pull request, pass its fork and immutable head commit through `isle-site-template-owner`, `isle-site-template-repository`, and `isle-site-template-ref`. To test an `islandora-starter-site` pull request, use the corresponding `starter-site-*` inputs. Pull-request code controls Docker builds, so run these tests on ephemeral GitHub-hosted runners without secrets or write permissions.
+
+The optional `drupal-module-owner`, `drupal-module-repository`, and `drupal-module-ref` inputs stage a module checkout and expose `drupal-module-directory`. Installing that checkout into the fresh site is intentionally deferred until sitectl's module-under-test workflow is available; reserving the source inputs now avoids changing the action interface later.
 
 ## Template Maintenance
 

@@ -1,163 +1,272 @@
-name: "Setup ISLE Composite"
-description: "Sets up an ISLE environment with sitectl"
+name: "Setup ISLE"
+description: "Starts a fresh ISLE site with sitectl for downstream integration tests"
+
 inputs:
   buildkit-tag:
-    description: "islandora-devops/isle-buildkit docker tag to pull"
+    description: "islandora-devops/isle-buildkit tag used by the Islandora service images"
+    default: "main"
+  isle-site-template-owner:
+    description: "GitHub owner of the isle-site-template source"
+    default: "Islandora-Devops"
+  isle-site-template-repository:
+    description: "GitHub repository containing the isle-site-template source"
+    default: "isle-site-template"
+  isle-site-template-ref:
+    description: "Branch, tag, pull-request ref, or commit for isle-site-template"
     default: "main"
   starter-site-owner:
-    description: "islandora-starter-site github owner"
+    description: "GitHub owner of the islandora-starter-site source"
     default: "Islandora-Devops"
   starter-site-repository:
-    description: "islandora-starter-site repository name"
+    description: "GitHub repository containing the islandora-starter-site source"
     default: "islandora-starter-site"
   starter-site-ref:
-    description: "islandora-starter-site branch, tag, or commit to use"
-    default: "heads/main"
+    description: "Branch, tag, pull-request ref, or commit for islandora-starter-site"
+    default: "main"
+  drupal-module-owner:
+    description: "Optional GitHub owner for a staged Drupal module under test"
+    default: ""
+  drupal-module-repository:
+    description: "Optional GitHub repository for a staged Drupal module under test"
+    default: ""
+  drupal-module-ref:
+    description: "Optional branch, tag, pull-request ref, or commit for a staged Drupal module"
+    default: ""
   context-name:
     description: "sitectl context name"
-    default: "isle-site-template-local"
-  ingress-mode:
-    description: "Ingress mode: http, https, https-letsencrypt, https-custom, or https-mkcert"
-    default: "http"
-  ingress-domain:
-    description: "Ingress domain"
-    default: "islandora.io"
-  acme-email:
-    description: "ACME email used when ingress-mode is https-letsencrypt"
-    default: ""
-  bot-mitigation:
-    description: "Create-time bot mitigation state: on or off"
-    default: "off"
+    default: "isle-ci"
   healthcheck-timeout:
-    description: "sitectl healthcheck timeout"
+    description: "Maximum time to wait for the fresh install"
     default: "20m"
   healthcheck-interval:
-    description: "sitectl healthcheck interval"
+    description: "Interval between health checks"
     default: "15s"
+
+outputs:
+  project-directory:
+    description: "Absolute path to the running isle-site-template checkout"
+    value: ${{ steps.metadata.outputs.project-directory }}
+  context-name:
+    description: "sitectl context for the running project"
+    value: ${{ steps.metadata.outputs.context-name }}
+  compose-project-name:
+    description: "Docker Compose project name"
+    value: ${{ steps.metadata.outputs.compose-project-name }}
+  drupal-module-directory:
+    description: "Absolute path to the staged Drupal module, or an empty string"
+    value: ${{ steps.metadata.outputs.drupal-module-directory }}
 
 runs:
   using: "composite"
   steps:
-    - name: Setup WSL
-      if: runner.os == 'Windows'
-      uses: Vampire/setup-wsl@6a8db447be7ed35f2f499c02c6e60ff77ef11278 # v6
-      with:
-        distribution: Ubuntu-24.04
-        additional-packages: ca-certificates curl git gnupg docker.io docker-compose-v2
-
-    - name: Validate Inputs
-      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
+    - name: Validate inputs
+      shell: bash
       env:
         BUILDKIT_TAG: ${{ inputs.buildkit-tag }}
-        STARTER_SITE_OWNER: ${{ inputs.starter-site-owner }}
-        STARTER_SITE_REPOSITORY: ${{ inputs.starter-site-repository }}
-        STARTER_SITE_REF: ${{ inputs.starter-site-ref }}
+        TEMPLATE_OWNER: ${{ inputs.isle-site-template-owner }}
+        TEMPLATE_REPOSITORY: ${{ inputs.isle-site-template-repository }}
+        TEMPLATE_REF: ${{ inputs.isle-site-template-ref }}
+        STARTER_OWNER: ${{ inputs.starter-site-owner }}
+        STARTER_REPOSITORY: ${{ inputs.starter-site-repository }}
+        STARTER_REF: ${{ inputs.starter-site-ref }}
+        MODULE_OWNER: ${{ inputs.drupal-module-owner }}
+        MODULE_REPOSITORY: ${{ inputs.drupal-module-repository }}
+        MODULE_REF: ${{ inputs.drupal-module-ref }}
         SITECTL_CONTEXT: ${{ inputs.context-name }}
-        INGRESS_MODE: ${{ inputs.ingress-mode }}
-        INGRESS_DOMAIN: ${{ inputs.ingress-domain }}
-        ACME_EMAIL: ${{ inputs.acme-email }}
-        BOT_MITIGATION: ${{ inputs.bot-mitigation }}
         HEALTHCHECK_TIMEOUT: ${{ inputs.healthcheck-timeout }}
         HEALTHCHECK_INTERVAL: ${{ inputs.healthcheck-interval }}
+        RUNNER_OS: ${{ runner.os }}
+        RUNNER_ARCH: ${{ runner.arch }}
       run: |
-        REGEX_DOCKER="^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$"
-        REGEX_GITHUB_OWNER="^[a-zA-Z0-9]([a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$"
-        REGEX_GITHUB_REPOSITORY="^[a-zA-Z0-9._-]+$"
-        REGEX_GIT_REF="^([a-zA-Z0-9._\/-]+)$"
-        REGEX_CONTEXT="^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
-        REGEX_DOMAIN="^[a-zA-Z0-9][a-zA-Z0-9.-]*(:[0-9]+)?$"
-        REGEX_EMAIL="^$|^[^[:space:]@]+@[^[:space:]@]+$"
-        REGEX_DURATION="^[0-9]+(ms|s|m|h)$"
+        if [ "$RUNNER_OS" != "Linux" ] || [ "$RUNNER_ARCH" != "X64" ]; then
+          echo "::error::Setup ISLE currently supports Linux X64 runners."
+          exit 1
+        fi
+
+        regex_docker='^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$'
+        regex_owner='^[a-zA-Z0-9]([a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$'
+        regex_repository='^[a-zA-Z0-9._-]{1,100}$'
+        regex_context='^[a-zA-Z0-9][a-zA-Z0-9._-]*$'
+        regex_duration='^[0-9]+(ms|s|m|h)$'
+
         validate() {
           local name=$1
           local value=$2
           local regex=$3
           if [[ ! $value =~ $regex ]]; then
-            echo "::error::Invalid input for $name: '$value'. Potential shell injection or malformed string."
+            echo "::error::Invalid ${name} input."
+            exit 1
+          fi
+        }
+        validate_ref() {
+          local name=$1
+          local value=$2
+          if ! git check-ref-format --branch "$value" >/dev/null 2>&1; then
+            echo "::error::Invalid ${name} input."
             exit 1
           fi
         }
 
-        validate "buildkit-tag" "$BUILDKIT_TAG" "$REGEX_DOCKER"
-        validate "starter-site-owner" "$STARTER_SITE_OWNER" "$REGEX_GITHUB_OWNER"
-        validate "starter-site-repository" "$STARTER_SITE_REPOSITORY" "$REGEX_GITHUB_REPOSITORY"
-        validate "starter-site-ref" "$STARTER_SITE_REF" "$REGEX_GIT_REF"
-        validate "context-name" "$SITECTL_CONTEXT" "$REGEX_CONTEXT"
-        validate "ingress-domain" "$INGRESS_DOMAIN" "$REGEX_DOMAIN"
-        validate "acme-email" "$ACME_EMAIL" "$REGEX_EMAIL"
-        validate "healthcheck-timeout" "$HEALTHCHECK_TIMEOUT" "$REGEX_DURATION"
-        validate "healthcheck-interval" "$HEALTHCHECK_INTERVAL" "$REGEX_DURATION"
+        validate "buildkit-tag" "$BUILDKIT_TAG" "$regex_docker"
+        validate "isle-site-template-owner" "$TEMPLATE_OWNER" "$regex_owner"
+        validate "isle-site-template-repository" "$TEMPLATE_REPOSITORY" "$regex_repository"
+        validate_ref "isle-site-template-ref" "$TEMPLATE_REF"
+        validate "starter-site-owner" "$STARTER_OWNER" "$regex_owner"
+        validate "starter-site-repository" "$STARTER_REPOSITORY" "$regex_repository"
+        validate_ref "starter-site-ref" "$STARTER_REF"
+        validate "context-name" "$SITECTL_CONTEXT" "$regex_context"
+        validate "healthcheck-timeout" "$HEALTHCHECK_TIMEOUT" "$regex_duration"
+        validate "healthcheck-interval" "$HEALTHCHECK_INTERVAL" "$regex_duration"
 
-        case "$INGRESS_MODE" in
-          http|https|https-cloudflare-origin|https-letsencrypt|https-custom|https-mkcert) ;;
-          *) echo "::error::Invalid input for ingress-mode: '$INGRESS_MODE'."; exit 1 ;;
-        esac
-        case "$BOT_MITIGATION" in
-          on|off|enabled|disabled) ;;
-          *) echo "::error::Invalid input for bot-mitigation: '$BOT_MITIGATION'."; exit 1 ;;
-        esac
-        if [ "$INGRESS_MODE" = "https-letsencrypt" ] && [ -z "$ACME_EMAIL" ]; then
-          echo "::error::acme-email is required when ingress-mode is https-letsencrypt."
+        module_inputs=0
+        [ -n "$MODULE_OWNER" ] && module_inputs=$((module_inputs + 1))
+        [ -n "$MODULE_REPOSITORY" ] && module_inputs=$((module_inputs + 1))
+        [ -n "$MODULE_REF" ] && module_inputs=$((module_inputs + 1))
+        if [ "$module_inputs" -ne 0 ] && [ "$module_inputs" -ne 3 ]; then
+          echo "::error::Drupal module owner, repository, and ref must be supplied together."
           exit 1
         fi
+        if [ "$module_inputs" -eq 3 ]; then
+          validate "drupal-module-owner" "$MODULE_OWNER" "$regex_owner"
+          validate "drupal-module-repository" "$MODULE_REPOSITORY" "$regex_repository"
+          validate_ref "drupal-module-ref" "$MODULE_REF"
+        fi
 
-    - name: setup git identity
-      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
+    - name: Check out isle-site-template
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      with:
+        repository: ${{ inputs.isle-site-template-owner }}/${{ inputs.isle-site-template-repository }}
+        ref: ${{ inputs.isle-site-template-ref }}
+        path: .isle-site-template
+        fetch-depth: 1
+        persist-credentials: false
+
+    - name: Check out islandora-starter-site
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      with:
+        repository: ${{ inputs.starter-site-owner }}/${{ inputs.starter-site-repository }}
+        ref: ${{ inputs.starter-site-ref }}
+        path: .islandora-starter-site
+        fetch-depth: 1
+        persist-credentials: false
+
+    - name: Stage Drupal module source
+      if: ${{ inputs.drupal-module-owner != '' && inputs.drupal-module-repository != '' && inputs.drupal-module-ref != '' }}
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      with:
+        repository: ${{ inputs.drupal-module-owner }}/${{ inputs.drupal-module-repository }}
+        ref: ${{ inputs.drupal-module-ref }}
+        path: .drupal-module-under-test
+        fetch-depth: 1
+        persist-credentials: false
+
+    - name: Record project metadata
+      id: metadata
+      shell: bash
+      env:
+        MODULE_OWNER: ${{ inputs.drupal-module-owner }}
+        SITECTL_CONTEXT: ${{ inputs.context-name }}
       run: |
-        git config --global user.email "actions@github.com"
-        git config --global user.name "GitHub Actions"
+        module_directory=
+        if [ -n "$MODULE_OWNER" ]; then
+          module_directory="${GITHUB_WORKSPACE}/.drupal-module-under-test"
+        fi
+        {
+          echo "project-directory=${GITHUB_WORKSPACE}/.isle-site-template"
+          echo "context-name=${SITECTL_CONTEXT}"
+          echo "compose-project-name=isle-site-template"
+          echo "drupal-module-directory=${module_directory}"
+        } >> "$GITHUB_OUTPUT"
+
+    - name: Install islandora-starter-site
+      shell: bash
+      env:
+        PROJECT_DIRECTORY: ${{ steps.metadata.outputs.project-directory }}
+      run: |
+        starter_directory="${GITHUB_WORKSPACE}/.islandora-starter-site"
+        drupal_root="${PROJECT_DIRECTORY}/drupal/rootfs/var/www/drupal"
+        settings_path="${drupal_root}/assets/patches/default_settings.txt"
+        settings_backup="${RUNNER_TEMP}/isle-default-settings.txt"
+
+        if [ ! -d "$drupal_root" ] || [ ! -d "$starter_directory/.git" ]; then
+          echo "::error::The selected repositories do not have the expected ISLE/starter-site layouts."
+          exit 1
+        fi
+        if [ -f "$settings_path" ]; then
+          cp "$settings_path" "$settings_backup"
+        fi
+
+        find "$drupal_root" -mindepth 1 -maxdepth 1 -exec rm -rf -- {} +
+        tar \
+          --directory "$starter_directory" \
+          --exclude .git \
+          --exclude .github \
+          --exclude ci \
+          --exclude renovate.json5 \
+          --create --file - . | tar --directory "$drupal_root" --extract --file -
+
+        mkdir -p \
+          "${drupal_root}/web/modules/custom" \
+          "${drupal_root}/web/themes/custom"
+        touch \
+          "${drupal_root}/web/modules/custom/.gitkeep" \
+          "${drupal_root}/web/themes/custom/.gitkeep"
+        if [ -f "$settings_backup" ]; then
+          mkdir -p "$(dirname "$settings_path")"
+          cp "$settings_backup" "$settings_path"
+        fi
 
     - name: Install sitectl
-      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
+      shell: bash
       run: |
-        if command -v sitectl >/dev/null 2>&1 && command -v sitectl-isle >/dev/null 2>&1; then
-          exit 0
-        fi
+        package_directory="${RUNNER_TEMP}/sitectl-packages"
+        mkdir -p "$package_directory"
 
-        sudo apt-get update -qq
-        sudo apt-get install -y ca-certificates curl gnupg
+        download_package() {
+          local filename=$1
+          local sha256=$2
+          local url=$3
+          local destination="${package_directory}/${filename}"
+          curl --proto '=https' --tlsv1.2 --fail --show-error --silent --location \
+            "$url" --output "$destination"
+          printf '%s  %s\n' "$sha256" "$destination" | sha256sum --check --status
+        }
 
-        curl -fsSL https://packages.libops.io/sitectl/sitectl-archive-keyring.asc |
-          sudo gpg --dearmor --yes -o /usr/share/keyrings/sitectl-archive-keyring.gpg
+        download_package \
+          sitectl_0.36.1_amd64.deb \
+          53adbbb24bf4dd543e5952c908c0ba8fdd7fd6f077e82f64b581e4627d17b506 \
+          https://packages.libops.io/sitectl/pool/main/s/sitectl/sitectl_0.36.1_amd64.deb
+        download_package \
+          sitectl-drupal_0.9.3_amd64.deb \
+          1e2eb257256c9610a2d181c61bef19981310cff94b044b70b6bf6cf00a019e9e \
+          https://packages.libops.io/sitectl/pool/main/s/sitectl-drupal/sitectl-drupal_0.9.3_amd64.deb
+        download_package \
+          sitectl-isle_0.17.8_amd64.deb \
+          e3132f589686e7cf68877faf9bdbce1eba9e4b7351e65d10b2f423c541350431 \
+          https://packages.libops.io/sitectl/pool/main/s/sitectl-isle/sitectl-isle_0.17.8_amd64.deb
 
-        echo "deb [signed-by=/usr/share/keyrings/sitectl-archive-keyring.gpg] https://packages.libops.io/sitectl ./" |
-          sudo tee /etc/apt/sources.list.d/sitectl.list >/dev/null
+        sudo dpkg --install \
+          "${package_directory}/sitectl_0.36.1_amd64.deb" \
+          "${package_directory}/sitectl-drupal_0.9.3_amd64.deb" \
+          "${package_directory}/sitectl-isle_0.17.8_amd64.deb"
+        sitectl --version
+        sitectl-drupal --version
+        sitectl-isle --version
 
-        sudo apt-get update -qq
-        sudo apt-get install -y sitectl-isle
-
-    - name: Start islandora-starter-site
-      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
+    - name: Start the fresh ISLE install
+      shell: bash
       env:
-        ISLANDORA_TAG: ${{ inputs.buildkit-tag }}
-        STARTER_SITE_OWNER: ${{ inputs.starter-site-owner }}
-        STARTER_SITE_REPOSITORY: ${{ inputs.starter-site-repository }}
-        STARTER_SITE_REF: ${{ inputs.starter-site-ref }}
-        SITECTL_CONTEXT: ${{ inputs.context-name }}
-        INGRESS_MODE: ${{ inputs.ingress-mode }}
-        INGRESS_DOMAIN: ${{ inputs.ingress-domain }}
-        ACME_EMAIL: ${{ inputs.acme-email }}
-        BOT_MITIGATION: ${{ inputs.bot-mitigation }}
-        HEALTHCHECK_TIMEOUT: ${{ inputs.healthcheck-timeout }}
+        BUILDKIT_TAG: ${{ inputs.buildkit-tag }}
         HEALTHCHECK_INTERVAL: ${{ inputs.healthcheck-interval }}
+        HEALTHCHECK_TIMEOUT: ${{ inputs.healthcheck-timeout }}
+        ISLANDORA_TAG: ${{ inputs.buildkit-tag }}
+        PROJECT_DIRECTORY: ${{ steps.metadata.outputs.project-directory }}
+        SITECTL_CONTEXT: ${{ inputs.context-name }}
         TERM: xterm-256color
       run: |
-        action_path="$GITHUB_ACTION_PATH"
-        if command -v wslpath >/dev/null 2>&1 && [[ "$action_path" =~ ^[A-Za-z]:\\ ]]; then
-          action_path="$(wslpath -u "$action_path")"
-        fi
-        cd "${action_path}/../../.."
-
-        GITHUB_ACTIONS=true ./scripts/overwrite-starter-site.sh
-
-        case "$BOT_MITIGATION" in
-          enabled) BOT_MITIGATION=on ;;
-          disabled) BOT_MITIGATION=off ;;
-        esac
-
         create_args=(
           create isle/default
-          --path "$PWD"
+          --path "$PROJECT_DIRECTORY"
           --type local
           --checkout-source existing
           --context "$SITECTL_CONTEXT"
@@ -168,9 +277,11 @@ runs:
           --default-context
           --yolo
           --fcrepo on
+          --isle-file-system-uri private
           --blazegraph on
           --iiif cantaloupe
           --iiif-topology disabled
+          --codebase nested
           --fits on
           --crayfits on
           --homarus on
@@ -178,16 +289,35 @@ runs:
           --hypercube on
           --mergepdf on
           --ingress on
-          --mode "$INGRESS_MODE"
-          --domain "$INGRESS_DOMAIN"
+          --mode http
+          --domain islandora.io
           --max-upload-size 128M
           --upload-timeout 300s
-          --bot-mitigation "$BOT_MITIGATION"
+          --bot-mitigation off
           --dev-mode off
+          --image "activemq=islandora/activemq:${BUILDKIT_TAG}"
+          --image "alpaca=islandora/alpaca:${BUILDKIT_TAG}"
+          --image "blazegraph=islandora/blazegraph:${BUILDKIT_TAG}"
+          --image "cantaloupe=islandora/cantaloupe:${BUILDKIT_TAG}"
+          --image "crayfits=islandora/crayfits:${BUILDKIT_TAG}"
+          --image "fcrepo=islandora/fcrepo6:${BUILDKIT_TAG}"
+          --image "fits=islandora/fits:${BUILDKIT_TAG}"
+          --image "homarus=islandora/homarus:${BUILDKIT_TAG}"
+          --image "houdini=islandora/houdini:${BUILDKIT_TAG}"
+          --image "hypercube=islandora/hypercube:${BUILDKIT_TAG}"
+          --image "init=islandora/base:${BUILDKIT_TAG}"
+          --image "mariadb=islandora/mariadb:${BUILDKIT_TAG}"
+          --image "mergepdf=islandora/mergepdf:${BUILDKIT_TAG}"
+          --image "milliner=islandora/milliner:${BUILDKIT_TAG}"
+          --image "solr=islandora/solr:${BUILDKIT_TAG}"
+          --build-arg drupal.REPOSITORY=islandora
+          --build-arg "drupal.TAG=${BUILDKIT_TAG}"
         )
-        if [ "$INGRESS_MODE" = "https-letsencrypt" ]; then
-          create_args+=(--acme-email "$ACME_EMAIL")
-        fi
 
         sitectl "${create_args[@]}"
-        sitectl healthcheck --context "$SITECTL_CONTEXT" --persist --timeout "$HEALTHCHECK_TIMEOUT" --interval "$HEALTHCHECK_INTERVAL" --format table
+        sitectl healthcheck \
+          --context "$SITECTL_CONTEXT" \
+          --persist \
+          --timeout "$HEALTHCHECK_TIMEOUT" \
+          --interval "$HEALTHCHECK_INTERVAL" \
+          --format table
