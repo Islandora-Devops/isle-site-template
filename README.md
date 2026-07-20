@@ -128,7 +128,7 @@ jobs:
       runner-os: ${{ matrix.os }}
 ```
 
-For repository-specific test steps, use the composite action at `.github/actions/setup`. It checks out requested `isle-site-template` and `islandora-starter-site` sources, installs pinned sitectl packages, starts the default stack with the requested BuildKit tag, and waits for `sitectl healthcheck` to pass. It supports X64 Ubuntu runners and Windows runners through Ubuntu 24.04 on WSL2.
+For repository-specific test steps, use the composite action at `.github/actions/setup`. It checks out requested `isle-site-template` and `islandora-starter-site` sources, installs the latest compatible sitectl package set (minimum 1.0.0) from the signed LibOps APT repository, starts the default stack with the requested BuildKit tag, and waits for `sitectl healthcheck` to pass. It supports X64 Ubuntu runners and Windows runners through Ubuntu 24.04 on WSL2.
 
 Pin the action to a full commit SHA in downstream workflows. The action leaves the stack running and exposes `project-directory`, `context-name`, and `compose-project-name` outputs. On Windows, paths are absolute within WSL and follow-up shell steps must use `wsl-bash {0}`:
 
