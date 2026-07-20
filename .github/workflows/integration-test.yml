@@ -65,60 +65,37 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  fresh-install:
+    name: Fresh install (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-22.04
+          - ubuntu-24.04
+          - windows-2022
+          - windows-2025
+    uses: ./.github/workflows/fresh-install.yml
+    with:
+      runner-os: ${{ matrix.os }}
+      buildkit-tag: ${{ inputs.buildkit-tag || 'main' }}
+      isle-site-template-owner: ${{ inputs.isle-site-template-owner || github.event.pull_request.head.repo.owner.login || github.repository_owner }}
+      isle-site-template-repository: ${{ inputs.isle-site-template-repository || github.event.pull_request.head.repo.name || github.event.repository.name }}
+      isle-site-template-ref: ${{ inputs.isle-site-template-ref || github.event.pull_request.head.sha || github.sha }}
+      starter-site-owner: ${{ inputs.starter-site-owner || 'Islandora-Devops' }}
+      starter-site-repository: ${{ inputs.starter-site-repository || 'islandora-starter-site' }}
+      starter-site-ref: ${{ inputs.starter-site-ref || 'main' }}
+      drupal-module-owner: ${{ inputs.drupal-module-owner || '' }}
+      drupal-module-repository: ${{ inputs.drupal-module-repository || '' }}
+      drupal-module-ref: ${{ inputs.drupal-module-ref || '' }}
+
+  notify-nightly-failure:
+    name: Notify Slack on nightly failure
+    if: ${{ always() && github.event_name == 'schedule' && needs.fresh-install.result == 'failure' }}
+    needs: fresh-install
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
-    env:
-      TERM: xterm-256color
     steps:
-      - name: Check out the workflow source
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          persist-credentials: false
-
-      - name: Set up a fresh ISLE install
-        id: setup
-        uses: ./.github/actions/setup
-        with:
-          buildkit-tag: ${{ inputs.buildkit-tag || 'main' }}
-          isle-site-template-owner: ${{ inputs.isle-site-template-owner || github.event.pull_request.head.repo.owner.login || github.repository_owner }}
-          isle-site-template-repository: ${{ inputs.isle-site-template-repository || github.event.pull_request.head.repo.name || github.event.repository.name }}
-          isle-site-template-ref: ${{ inputs.isle-site-template-ref || github.event.pull_request.head.sha || github.sha }}
-          starter-site-owner: ${{ inputs.starter-site-owner || 'Islandora-Devops' }}
-          starter-site-repository: ${{ inputs.starter-site-repository || 'islandora-starter-site' }}
-          starter-site-ref: ${{ inputs.starter-site-ref || 'main' }}
-          drupal-module-owner: ${{ inputs.drupal-module-owner || '' }}
-          drupal-module-repository: ${{ inputs.drupal-module-repository || '' }}
-          drupal-module-ref: ${{ inputs.drupal-module-ref || '' }}
-
-      - name: Confirm the default site is serving traffic
-        run: curl --fail --show-error --silent --output /dev/null --retry 5 --retry-delay 3 http://islandora.io
-
-      - name: Collect service logs
-        if: ${{ failure() }}
-        env:
-          SITECTL_CONTEXT: ${{ steps.setup.outputs.context-name || 'isle-ci' }}
-        run: |
-          set +e
-          mkdir -p logs
-          sitectl compose --context "$SITECTL_CONTEXT" ps --all > logs/compose-ps.txt 2>&1
-          services=$(sitectl compose --context "$SITECTL_CONTEXT" config --services 2>/dev/null)
-          for service in $services; do
-            sitectl compose --context "$SITECTL_CONTEXT" logs --tail 200 "$service" \
-              > "logs/${service}.log" 2>&1
-          done
-
-      - name: Upload service logs
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
-        with:
-          name: docker-logs
-          path: logs
-          if-no-files-found: ignore
-          retention-days: 3
-
-      - name: Notify Slack on nightly failure
-        if: ${{ failure() && github.event_name == 'schedule' }}
+      - name: Notify Slack
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
@@ -127,12 +104,3 @@ jobs:
             --header 'Content-Type: application/json' \
             --data '{"text":"Scheduled ISLE install failed: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
             "$SLACK_WEBHOOK_URL"
-
-      - name: Clean up
-        if: ${{ always() }}
-        env:
-          SITECTL_CONTEXT: ${{ steps.setup.outputs.context-name || 'isle-ci' }}
-        run: |
-          if command -v sitectl >/dev/null 2>&1; then
-            sitectl compose --context "$SITECTL_CONTEXT" down --volumes --remove-orphans || true
-          fi

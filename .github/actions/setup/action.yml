@@ -44,7 +44,7 @@ inputs:
 
 outputs:
   project-directory:
-    description: "Absolute path to the running isle-site-template checkout"
+    description: "Absolute Linux/WSL-shell path to the running isle-site-template checkout"
     value: ${{ steps.metadata.outputs.project-directory }}
   context-name:
     description: "sitectl context for the running project"
@@ -53,14 +53,157 @@ outputs:
     description: "Docker Compose project name"
     value: ${{ steps.metadata.outputs.compose-project-name }}
   drupal-module-directory:
-    description: "Absolute path to the staged Drupal module, or an empty string"
+    description: "Absolute Linux/WSL-shell path to the staged Drupal module, or an empty string"
     value: ${{ steps.metadata.outputs.drupal-module-directory }}
 
 runs:
   using: "composite"
   steps:
+    - name: Prepare Windows Subsystem for Linux
+      if: ${{ runner.os == 'Windows' }}
+      shell: pwsh
+      run: |
+        $ErrorActionPreference = "Stop"
+
+        $totalMemoryMb = [math]::Floor(
+          (Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1MB
+        )
+        $memoryMb = [math]::Max(4096, [math]::Floor($totalMemoryMb * 0.75))
+        $wslConfig = @"
+        [wsl2]
+        memory=${memoryMb}MB
+        swap=2GB
+        "@
+        $wslConfigPath = Join-Path $env:USERPROFILE ".wslconfig"
+        Set-Content -LiteralPath $wslConfigPath -Value $wslConfig -Encoding ascii
+
+        $pathVariables = @(
+          "GITHUB_ACTION_PATH/pu"
+          "GITHUB_ENV/pu"
+          "GITHUB_EVENT_PATH/pu"
+          "GITHUB_OUTPUT/pu"
+          "GITHUB_PATH/pu"
+          "GITHUB_STATE/pu"
+          "GITHUB_STEP_SUMMARY/pu"
+          "GITHUB_WORKSPACE/pu"
+          "RUNNER_TEMP/pu"
+          "RUNNER_TOOL_CACHE/pu"
+        )
+        $valueVariables = @(
+          "BUILDKIT_TAG/u"
+          "CI/u"
+          "GITHUB_ACTIONS/u"
+          "GITHUB_JOB/u"
+          "GITHUB_RUN_ATTEMPT/u"
+          "GITHUB_RUN_ID/u"
+          "HEALTHCHECK_INTERVAL/u"
+          "HEALTHCHECK_TIMEOUT/u"
+          "ISLANDORA_TAG/u"
+          "MODULE_OWNER/u"
+          "MODULE_REF/u"
+          "MODULE_REPOSITORY/u"
+          "PROJECT_DIRECTORY/u"
+          "RUNNER_ARCH/u"
+          "RUNNER_OS/u"
+          "SITECTL_CONTEXT/u"
+          "STARTER_OWNER/u"
+          "STARTER_REF/u"
+          "STARTER_REPOSITORY/u"
+          "TEMPLATE_OWNER/u"
+          "TEMPLATE_REF/u"
+          "TEMPLATE_REPOSITORY/u"
+          "TERM/u"
+        )
+        $required = $pathVariables + $valueVariables
+        $requiredNames = @($required | ForEach-Object { ($_ -split "/")[0] })
+        $preserved = @(
+          ($env:WSLENV -split ":") |
+            Where-Object { $_ -and (($_ -split "/")[0] -notin $requiredNames) }
+        )
+        "WSLENV=$(($preserved + $required) -join ':')" |
+          Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+    - name: Install Ubuntu for WSL
+      if: ${{ runner.os == 'Windows' }}
+      uses: Vampire/setup-wsl@d1da7f2c0322a5ee4f24975344f67fc0f5baf364 # v7.0.0
+      with:
+        distribution: Ubuntu-24.04
+        set-as-default: "true"
+        update: "false"
+        use-cache: "true"
+        wsl-shell-user: root
+        wsl-version: "1"
+
+    - name: Upgrade Ubuntu to WSL 2
+      if: ${{ runner.os == 'Windows' }}
+      shell: pwsh
+      run: |
+        $ErrorActionPreference = "Stop"
+        $updated = $false
+        foreach ($attempt in 1..3) {
+          wsl.exe --update --web-download
+          if ($LASTEXITCODE -eq 0) {
+            $updated = $true
+            break
+          }
+          Write-Warning "WSL update attempt $attempt failed."
+          Start-Sleep -Seconds 5
+        }
+        if (-not $updated) {
+          throw "Unable to update WSL through the web download channel."
+        }
+
+        wsl.exe --set-default-version 2
+        if ($LASTEXITCODE -ne 0) {
+          throw "Unable to make WSL 2 the default."
+        }
+        wsl.exe --set-version Ubuntu-24.04 2
+        if ($LASTEXITCODE -ne 0) {
+          throw "Unable to convert Ubuntu to WSL 2."
+        }
+        wsl.exe --shutdown
+
+    - name: Install and start Docker in WSL
+      if: ${{ runner.os == 'Windows' }}
+      shell: wsl-bash {0}
+      run: |
+        export DEBIAN_FRONTEND=noninteractive
+        apt-get update
+        apt-get install --yes --no-install-recommends \
+          ca-certificates \
+          curl \
+          docker-compose-v2 \
+          docker.io \
+          git \
+          sudo \
+          tar
+
+        daemon_log="${RUNNER_TEMP}/isle-dockerd.log"
+        if ! docker info >/dev/null 2>&1; then
+          service docker start || true
+        fi
+        if ! docker info >/dev/null 2>&1; then
+          nohup dockerd >"$daemon_log" 2>&1 </dev/null &
+        fi
+
+        docker_ready=false
+        for _ in $(seq 1 60); do
+          if docker info >/dev/null 2>&1; then
+            docker_ready=true
+            break
+          fi
+          sleep 2
+        done
+        if [ "$docker_ready" != true ]; then
+          service docker status || true
+          [ ! -f "$daemon_log" ] || tail -200 "$daemon_log"
+          echo "::error::Docker did not start inside WSL."
+          exit 1
+        fi
+        docker compose version
+
     - name: Validate inputs
-      shell: bash
+      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
       env:
         BUILDKIT_TAG: ${{ inputs.buildkit-tag }}
         TEMPLATE_OWNER: ${{ inputs.isle-site-template-owner }}
@@ -78,8 +221,9 @@ runs:
         RUNNER_OS: ${{ runner.os }}
         RUNNER_ARCH: ${{ runner.arch }}
       run: |
-        if [ "$RUNNER_OS" != "Linux" ] || [ "$RUNNER_ARCH" != "X64" ]; then
-          echo "::error::Setup ISLE currently supports Linux X64 runners."
+        if { [ "$RUNNER_OS" != "Linux" ] && [ "$RUNNER_OS" != "Windows" ]; } || \
+          [ "$RUNNER_ARCH" != "X64" ]; then
+          echo "::error::Setup ISLE supports Linux or Windows X64 runners."
           exit 1
         fi
 
@@ -162,24 +306,39 @@ runs:
 
     - name: Record project metadata
       id: metadata
-      shell: bash
+      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
       env:
         MODULE_OWNER: ${{ inputs.drupal-module-owner }}
+        RUNNER_OS: ${{ runner.os }}
         SITECTL_CONTEXT: ${{ inputs.context-name }}
       run: |
+        project_directory="${GITHUB_WORKSPACE}/.isle-site-template"
         module_directory=
         if [ -n "$MODULE_OWNER" ]; then
           module_directory="${GITHUB_WORKSPACE}/.drupal-module-under-test"
         fi
+
+        if [ "$RUNNER_OS" = "Windows" ]; then
+          project_source=$project_directory
+          project_directory=$(mktemp --directory --tmpdir=/var/tmp isle-site-template.XXXXXX)
+          cp -a "${project_source}/." "${project_directory}/"
+
+          if [ -n "$module_directory" ]; then
+            module_source=$module_directory
+            module_directory=$(mktemp --directory --tmpdir=/var/tmp islandora-module.XXXXXX)
+            cp -a "${module_source}/." "${module_directory}/"
+          fi
+        fi
+
         {
-          echo "project-directory=${GITHUB_WORKSPACE}/.isle-site-template"
+          echo "project-directory=${project_directory}"
           echo "context-name=${SITECTL_CONTEXT}"
           echo "compose-project-name=isle-site-template"
           echo "drupal-module-directory=${module_directory}"
         } >> "$GITHUB_OUTPUT"
 
     - name: Install islandora-starter-site
-      shell: bash
+      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
       env:
         PROJECT_DIRECTORY: ${{ steps.metadata.outputs.project-directory }}
       run: |
@@ -217,7 +376,7 @@ runs:
         fi
 
     - name: Install sitectl
-      shell: bash
+      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
       run: |
         package_directory="${RUNNER_TEMP}/sitectl-packages"
         mkdir -p "$package_directory"
@@ -245,7 +404,11 @@ runs:
           e3132f589686e7cf68877faf9bdbce1eba9e4b7351e65d10b2f423c541350431 \
           https://packages.libops.io/sitectl/pool/main/s/sitectl-isle/sitectl-isle_0.17.8_amd64.deb
 
-        sudo dpkg --install \
+        dpkg_command=(dpkg)
+        if [ "$(id -u)" -ne 0 ]; then
+          dpkg_command=(sudo dpkg)
+        fi
+        "${dpkg_command[@]}" --install \
           "${package_directory}/sitectl_0.36.1_amd64.deb" \
           "${package_directory}/sitectl-drupal_0.9.3_amd64.deb" \
           "${package_directory}/sitectl-isle_0.17.8_amd64.deb"
@@ -254,7 +417,7 @@ runs:
         sitectl-isle --version
 
     - name: Start the fresh ISLE install
-      shell: bash
+      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
       env:
         BUILDKIT_TAG: ${{ inputs.buildkit-tag }}
         HEALTHCHECK_INTERVAL: ${{ inputs.healthcheck-interval }}

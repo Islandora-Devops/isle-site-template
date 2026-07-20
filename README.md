@@ -112,11 +112,25 @@ sitectl drupal drush cr
 sitectl drupal login
 ```
 
-## CI Setup Action
+## Reusable CI
 
-The reusable composite action at `.github/actions/setup` checks out requested `isle-site-template` and `islandora-starter-site` sources, installs pinned sitectl packages, starts the default stack with the requested BuildKit tag, and waits for `sitectl healthcheck` to pass. It currently supports Linux X64 runners.
+The reusable workflow at `.github/workflows/fresh-install.yml` starts the default stack and confirms it serves traffic. It defaults to `ubuntu-24.04`; callers can pass `runner-os` directly or through a matrix:
 
-Pin the action to a full commit SHA in downstream workflows. The action leaves the stack running so later steps can execute repository-specific tests, and exposes `project-directory`, `context-name`, and `compose-project-name` outputs:
+```yaml
+jobs:
+  fresh-install:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04, windows-2022, windows-2025]
+    uses: Islandora-Devops/isle-site-template/.github/workflows/fresh-install.yml@<full-commit-sha>
+    with:
+      runner-os: ${{ matrix.os }}
+```
+
+For repository-specific test steps, use the composite action at `.github/actions/setup`. It checks out requested `isle-site-template` and `islandora-starter-site` sources, installs pinned sitectl packages, starts the default stack with the requested BuildKit tag, and waits for `sitectl healthcheck` to pass. It supports X64 Ubuntu runners and Windows runners through Ubuntu 24.04 on WSL2.
+
+Pin the action to a full commit SHA in downstream workflows. The action leaves the stack running and exposes `project-directory`, `context-name`, and `compose-project-name` outputs. On Windows, paths are absolute within WSL and follow-up shell steps must use `wsl-bash {0}`:
 
 ```yaml
 - id: isle
@@ -125,12 +139,14 @@ Pin the action to a full commit SHA in downstream workflows. The action leaves t
     buildkit-tag: main
 
 - name: Run tests against Islandora
+  shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
   env:
     SITECTL_CONTEXT: ${{ steps.isle.outputs.context-name }}
   run: sitectl verify --context "$SITECTL_CONTEXT"
 
 - name: Clean up
   if: ${{ always() }}
+  shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
   env:
     SITECTL_CONTEXT: ${{ steps.isle.outputs.context-name }}
   run: sitectl compose --context "$SITECTL_CONTEXT" down --volumes --remove-orphans
