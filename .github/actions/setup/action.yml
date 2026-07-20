@@ -172,6 +172,7 @@ runs:
         apt-get install --yes --no-install-recommends \
           ca-certificates \
           curl \
+          docker-buildx \
           docker-compose-v2 \
           docker.io \
           git \
@@ -200,6 +201,7 @@ runs:
           echo "::error::Docker did not start inside WSL."
           exit 1
         fi
+        docker buildx version
         docker compose version
 
     - name: Validate inputs
