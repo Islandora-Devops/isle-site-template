@@ -166,43 +166,7 @@ runs:
     - name: Install and start Docker in WSL
       if: ${{ runner.os == 'Windows' }}
       shell: wsl-bash {0}
-      run: |
-        export DEBIAN_FRONTEND=noninteractive
-        apt-get update
-        apt-get install --yes --no-install-recommends \
-          ca-certificates \
-          curl \
-          docker-buildx \
-          docker-compose-v2 \
-          docker.io \
-          git \
-          sudo \
-          tar
-
-        daemon_log="${RUNNER_TEMP}/isle-dockerd.log"
-        if ! docker info >/dev/null 2>&1; then
-          service docker start || true
-        fi
-        if ! docker info >/dev/null 2>&1; then
-          nohup dockerd >"$daemon_log" 2>&1 </dev/null &
-        fi
-
-        docker_ready=false
-        for _ in $(seq 1 60); do
-          if docker info >/dev/null 2>&1; then
-            docker_ready=true
-            break
-          fi
-          sleep 2
-        done
-        if [ "$docker_ready" != true ]; then
-          service docker status || true
-          [ ! -f "$daemon_log" ] || tail -200 "$daemon_log"
-          echo "::error::Docker did not start inside WSL."
-          exit 1
-        fi
-        docker buildx version
-        docker compose version
+      run: bash "$GITHUB_ACTION_PATH/../../../scripts/setup-wsl-docker.sh"
 
     - name: Validate inputs
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
@@ -222,61 +186,7 @@ runs:
         HEALTHCHECK_INTERVAL: ${{ inputs.healthcheck-interval }}
         RUNNER_OS: ${{ runner.os }}
         RUNNER_ARCH: ${{ runner.arch }}
-      run: |
-        if { [ "$RUNNER_OS" != "Linux" ] && [ "$RUNNER_OS" != "Windows" ]; } || \
-          [ "$RUNNER_ARCH" != "X64" ]; then
-          echo "::error::Setup ISLE supports Linux or Windows X64 runners."
-          exit 1
-        fi
-
-        regex_docker='^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$'
-        regex_owner='^[a-zA-Z0-9]([a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$'
-        regex_repository='^[a-zA-Z0-9._-]{1,100}$'
-        regex_context='^[a-zA-Z0-9][a-zA-Z0-9._-]*$'
-        regex_duration='^[0-9]+(ms|s|m|h)$'
-
-        validate() {
-          local name=$1
-          local value=$2
-          local regex=$3
-          if [[ ! $value =~ $regex ]]; then
-            echo "::error::Invalid ${name} input."
-            exit 1
-          fi
-        }
-        validate_ref() {
-          local name=$1
-          local value=$2
-          if ! git check-ref-format --branch "$value" >/dev/null 2>&1; then
-            echo "::error::Invalid ${name} input."
-            exit 1
-          fi
-        }
-
-        validate "buildkit-tag" "$BUILDKIT_TAG" "$regex_docker"
-        validate "isle-site-template-owner" "$TEMPLATE_OWNER" "$regex_owner"
-        validate "isle-site-template-repository" "$TEMPLATE_REPOSITORY" "$regex_repository"
-        validate_ref "isle-site-template-ref" "$TEMPLATE_REF"
-        validate "starter-site-owner" "$STARTER_OWNER" "$regex_owner"
-        validate "starter-site-repository" "$STARTER_REPOSITORY" "$regex_repository"
-        validate_ref "starter-site-ref" "$STARTER_REF"
-        validate "context-name" "$SITECTL_CONTEXT" "$regex_context"
-        validate "healthcheck-timeout" "$HEALTHCHECK_TIMEOUT" "$regex_duration"
-        validate "healthcheck-interval" "$HEALTHCHECK_INTERVAL" "$regex_duration"
-
-        module_inputs=0
-        [ -n "$MODULE_OWNER" ] && module_inputs=$((module_inputs + 1))
-        [ -n "$MODULE_REPOSITORY" ] && module_inputs=$((module_inputs + 1))
-        [ -n "$MODULE_REF" ] && module_inputs=$((module_inputs + 1))
-        if [ "$module_inputs" -ne 0 ] && [ "$module_inputs" -ne 3 ]; then
-          echo "::error::Drupal module owner, repository, and ref must be supplied together."
-          exit 1
-        fi
-        if [ "$module_inputs" -eq 3 ]; then
-          validate "drupal-module-owner" "$MODULE_OWNER" "$regex_owner"
-          validate "drupal-module-repository" "$MODULE_REPOSITORY" "$regex_repository"
-          validate_ref "drupal-module-ref" "$MODULE_REF"
-        fi
+      run: bash "$GITHUB_ACTION_PATH/../../../scripts/setup-validate-inputs.sh"
 
     - name: Check out isle-site-template
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -313,115 +223,17 @@ runs:
         MODULE_OWNER: ${{ inputs.drupal-module-owner }}
         RUNNER_OS: ${{ runner.os }}
         SITECTL_CONTEXT: ${{ inputs.context-name }}
-      run: |
-        project_directory="${GITHUB_WORKSPACE}/.isle-site-template"
-        module_directory=
-        if [ -n "$MODULE_OWNER" ]; then
-          module_directory="${GITHUB_WORKSPACE}/.drupal-module-under-test"
-        fi
-
-        if [ "$RUNNER_OS" = "Windows" ]; then
-          project_source=$project_directory
-          # Keep the leaf name aligned with the configured Compose project name.
-          project_parent=$(mktemp --directory --tmpdir=/var/tmp isle-ci.XXXXXX)
-          project_directory="${project_parent}/isle-site-template"
-          mkdir "$project_directory"
-          cp -a "${project_source}/." "${project_directory}/"
-
-          if [ -n "$module_directory" ]; then
-            module_source=$module_directory
-            module_directory="${project_parent}/drupal-module-under-test"
-            mkdir "$module_directory"
-            cp -a "${module_source}/." "${module_directory}/"
-          fi
-        fi
-
-        {
-          echo "project-directory=${project_directory}"
-          echo "context-name=${SITECTL_CONTEXT}"
-          echo "compose-project-name=isle-site-template"
-          echo "drupal-module-directory=${module_directory}"
-        } >> "$GITHUB_OUTPUT"
+      run: bash "$GITHUB_ACTION_PATH/../../../scripts/setup-record-metadata.sh"
 
     - name: Install islandora-starter-site
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
       env:
         PROJECT_DIRECTORY: ${{ steps.metadata.outputs.project-directory }}
-      run: |
-        starter_directory="${GITHUB_WORKSPACE}/.islandora-starter-site"
-        drupal_root="${PROJECT_DIRECTORY}/drupal/rootfs/var/www/drupal"
-        settings_path="${drupal_root}/assets/patches/default_settings.txt"
-        settings_backup="${RUNNER_TEMP}/isle-default-settings.txt"
-
-        if [ ! -d "$drupal_root" ] || [ ! -d "$starter_directory/.git" ]; then
-          echo "::error::The selected repositories do not have the expected ISLE/starter-site layouts."
-          exit 1
-        fi
-        if [ -f "$settings_path" ]; then
-          cp "$settings_path" "$settings_backup"
-        fi
-
-        find "$drupal_root" -mindepth 1 -maxdepth 1 -exec rm -rf -- {} +
-        tar \
-          --directory "$starter_directory" \
-          --exclude .git \
-          --exclude .github \
-          --exclude ci \
-          --exclude renovate.json5 \
-          --create --file - . | tar --directory "$drupal_root" --extract --file -
-
-        mkdir -p \
-          "${drupal_root}/web/modules/custom" \
-          "${drupal_root}/web/themes/custom"
-        touch \
-          "${drupal_root}/web/modules/custom/.gitkeep" \
-          "${drupal_root}/web/themes/custom/.gitkeep"
-        if [ -f "$settings_backup" ]; then
-          mkdir -p "$(dirname "$settings_path")"
-          cp "$settings_backup" "$settings_path"
-        fi
+      run: bash "$GITHUB_ACTION_PATH/../../../scripts/setup-install-starter-site.sh"
 
     - name: Install sitectl
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
-      run: |
-        export DEBIAN_FRONTEND=noninteractive
-        as_root=()
-        if [ "$(id -u)" -ne 0 ]; then
-          as_root=(sudo)
-        fi
-
-        "${as_root[@]}" apt-get update
-        "${as_root[@]}" apt-get install --yes --no-install-recommends \
-          ca-certificates \
-          curl \
-          gnupg
-
-        key_source="${RUNNER_TEMP}/sitectl-archive-keyring.asc"
-        keyring="${RUNNER_TEMP}/sitectl-archive-keyring.gpg"
-        curl --proto '=https' --tlsv1.2 --fail --show-error --silent --location \
-          https://packages.libops.io/sitectl/sitectl-archive-keyring.asc \
-          --output "$key_source"
-        gpg --batch --yes --dearmor --output "$keyring" "$key_source"
-        "${as_root[@]}" install --mode 0644 "$keyring" \
-          /usr/share/keyrings/sitectl-archive-keyring.gpg
-        printf '%s\n' \
-          'deb [signed-by=/usr/share/keyrings/sitectl-archive-keyring.gpg] https://packages.libops.io/sitectl ./' |
-          "${as_root[@]}" tee /etc/apt/sources.list.d/sitectl.list >/dev/null
-
-        "${as_root[@]}" apt-get update
-        "${as_root[@]}" apt-get install --yes --no-install-recommends sitectl-isle
-
-        for package in sitectl sitectl-drupal sitectl-isle; do
-          version=$(dpkg-query --show --showformat='${Version}' "$package")
-          if ! dpkg --compare-versions "$version" ge 1.0.0; then
-            echo "::error::${package} ${version} is older than the required 1.0.0 release line."
-            exit 1
-          fi
-        done
-        sitectl --version
-        sitectl-drupal --version
-        sitectl-isle --version
-        sitectl create list
+      run: bash "$GITHUB_ACTION_PATH/../../../scripts/setup-install-sitectl.sh"
 
     - name: Start the fresh ISLE install
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
@@ -433,61 +245,4 @@ runs:
         PROJECT_DIRECTORY: ${{ steps.metadata.outputs.project-directory }}
         SITECTL_CONTEXT: ${{ inputs.context-name }}
         TERM: xterm-256color
-      run: |
-        create_args=(
-          create isle/default
-          --path "$PROJECT_DIRECTORY"
-          --type local
-          --checkout-source existing
-          --context "$SITECTL_CONTEXT"
-          --site islandora
-          --environment local
-          --project-name isle-site-template
-          --compose-project-name isle-site-template
-          --default-context
-          --yolo
-          --fcrepo on
-          --isle-file-system-uri private
-          --blazegraph on
-          --iiif cantaloupe
-          --iiif-topology disabled
-          --codebase nested
-          --fits on
-          --crayfits on
-          --homarus on
-          --houdini on
-          --hypercube on
-          --mergepdf on
-          --ingress on
-          --mode http
-          --domain islandora.io
-          --max-upload-size 128M
-          --upload-timeout 300s
-          --bot-mitigation off
-          --dev-mode off
-          --image "activemq=islandora/activemq:${BUILDKIT_TAG}"
-          --image "alpaca=islandora/alpaca:${BUILDKIT_TAG}"
-          --image "blazegraph=islandora/blazegraph:${BUILDKIT_TAG}"
-          --image "cantaloupe=islandora/cantaloupe:${BUILDKIT_TAG}"
-          --image "crayfits=islandora/crayfits:${BUILDKIT_TAG}"
-          --image "fcrepo=islandora/fcrepo6:${BUILDKIT_TAG}"
-          --image "fits=islandora/fits:${BUILDKIT_TAG}"
-          --image "homarus=islandora/homarus:${BUILDKIT_TAG}"
-          --image "houdini=islandora/houdini:${BUILDKIT_TAG}"
-          --image "hypercube=islandora/hypercube:${BUILDKIT_TAG}"
-          --image "init=islandora/base:${BUILDKIT_TAG}"
-          --image "mariadb=islandora/mariadb:${BUILDKIT_TAG}"
-          --image "mergepdf=islandora/mergepdf:${BUILDKIT_TAG}"
-          --image "milliner=islandora/milliner:${BUILDKIT_TAG}"
-          --image "solr=islandora/solr:${BUILDKIT_TAG}"
-          --build-arg drupal.REPOSITORY=islandora
-          --build-arg "drupal.TAG=${BUILDKIT_TAG}"
-        )
-
-        sitectl "${create_args[@]}"
-        sitectl healthcheck \
-          --context "$SITECTL_CONTEXT" \
-          --persist \
-          --timeout "$HEALTHCHECK_TIMEOUT" \
-          --interval "$HEALTHCHECK_INTERVAL" \
-          --format table
+      run: bash "$GITHUB_ACTION_PATH/../../../scripts/setup-start-isle.sh"
