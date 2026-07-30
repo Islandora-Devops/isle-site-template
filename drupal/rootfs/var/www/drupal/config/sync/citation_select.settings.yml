@@ -1,3 +1,4 @@
+reference_type_field_map: {  }
 csl_map:
   field_model:
     - type
@@ -29,4 +30,3 @@ typed_relation_map:
   'relators:aut': author
   'relators:ctb': contributor
   'relators:edt': editor
-reference_type_field_map: {  }

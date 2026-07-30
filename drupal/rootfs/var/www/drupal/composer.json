@@ -51,7 +51,7 @@
         "drupal/fpa": "^4.0",
         "drupal/hal": "^1.0||^2.0",
         "drupal/islandora": "^2.12.3",
-        "drupal/islandora_mirador": "^2",
+        "drupal/islandora_mirador": "^3",
         "drupal/openseadragon": "^3",
         "drupal/pathauto": "^1.12",
         "drupal/pdf": "^1.1",
@@ -81,7 +81,8 @@
             "composer/installers": true,
             "cweagans/composer-patches": true,
             "drupal/core-composer-scaffold": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "symfony/runtime": true
         },
         "sort-packages": true
     },
