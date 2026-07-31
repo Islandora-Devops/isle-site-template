@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "96a51ccb16cbca6509d5b82d6e1fe010",
+    "content-hash": "fa12459ec0446b07eaf65c5f3941f81d",
     "packages": [
         {
             "name": "adci/full-name-parser",
@@ -7154,10 +7154,10 @@
         },
         {
             "name": "library/pdf.js",
-            "version": "5",
+            "version": "6",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/mozilla/pdf.js/releases/download/v5.7.284/pdfjs-5.7.284-dist.zip"
+                "url": "https://github.com/mozilla/pdf.js/releases/download/v6.2.108/pdfjs-6.2.108-dist.zip"
             },
             "type": "drupal-library"
         },
