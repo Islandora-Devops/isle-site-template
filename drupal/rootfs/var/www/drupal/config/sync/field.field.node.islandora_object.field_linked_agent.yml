@@ -43,6 +43,7 @@ settings:
     'relators:anl': Analyst
     'relators:anm': Animator
     'relators:ann': Annotator
+    'relators:anc': Announcer
     'relators:apl': Appellant
     'relators:ape': Appellee
     'relators:app': Applicant
@@ -53,18 +54,22 @@ settings:
     'relators:art': Artist
     'relators:ard': 'Artistic director'
     'relators:asg': Assignee
+    'relators:afd': 'Assistant film director'
     'relators:asn': 'Associated name'
     'relators:auc': Auctioneer
+    'relators:aue': 'Audio engineer'
+    'relators:aup': 'Audio producer'
     'relators:aut': Author
     'relators:aqt': 'Author in quotations or text abstracts'
-    'relators:aft': 'Author of afterword, colophon, etc.'
+    'relators:aft': 'Author of afterword, colophon, etc. (deprecated)'
     'relators:aud': 'Author of dialog'
-    'relators:aui': 'Author of introduction, etc.'
+    'relators:aui': 'Author of introduction, etc. (deprecated)'
     'relators:ato': Autographer
     'relators:ant': 'Bibliographic antecedent'
     'relators:bnd': Binder
     'relators:bdd': 'Binding designer'
     'relators:blw': 'Blurb writer'
+    'relators:bka': 'Book artist'
     'relators:bkd': 'Book designer'
     'relators:bkp': 'Book producer'
     'relators:bjd': 'Bookjacket designer'
@@ -73,13 +78,15 @@ settings:
     'relators:brl': 'Braille embosser'
     'relators:brd': Broadcaster
     'relators:cll': Calligrapher
+    'relators:cop': 'Camera operator'
     'relators:ctg': Cartographer
     'relators:cas': Caster
+    'relators:cad': 'Casting director'
     'relators:cns': Censor
     'relators:chr': Choreographer
-    'relators:clb': 'Collaborator (deprecated, use Contributor)'
     'relators:cng': Cinematographer
     'relators:cli': Client
+    'relators:clb': 'Collaborator (deprecated, use Contributor)'
     'relators:cor': 'Collection registrar'
     'relators:col': Collector
     'relators:clt': Collotyper
@@ -123,6 +130,7 @@ settings:
     'relators:dfd': Defendant
     'relators:dft': Defendant-appellant
     'relators:dfe': Defendant-appellee
+    'relators:dgc': 'Degree committee member'
     'relators:dgg': 'Degree granting institution'
     'relators:dgs': 'Degree supervisor'
     'relators:dln': Delineator
@@ -133,12 +141,15 @@ settings:
     'relators:dis': Dissertant
     'relators:dbp': 'Distribution place'
     'relators:dst': Distributor
+    'relators:djo': DJ
     'relators:dnr': Donor
     'relators:drm': Draftsman
+    'relators:dbd': 'Dubbing director'
     'relators:dub': 'Dubious author'
     'relators:edt': Editor
     'relators:edc': 'Editor of compilation'
     'relators:edm': 'Editor of moving image work'
+    'relators:edd': 'Editorial director'
     'relators:elg': Electrician
     'relators:elt': Electrotyper
     'relators:enj': 'Enacting jurisdiction'
@@ -157,14 +168,18 @@ settings:
     'relators:fpy': 'First party'
     'relators:frg': Forger
     'relators:fmo': 'Former owner'
+    'relators:fon': Founder
     'relators:fnd': Funder
+    'relators:gdv': 'Game developer'
     'relators:gis': 'Geographic information specialist'
     'relators:grt': 'Graphic technician (deprecated, use Artist)'
+    'relators:gst': Guest
     'relators:hnr': Honoree
     'relators:hst': Host
     'relators:his': 'Host institution'
     'relators:ilu': Illuminator
     'relators:ill': Illustrator
+    'relators:ink': Inker
     'relators:ins': Inscriber
     'relators:itr': Instrumentalist
     'relators:ive': Interviewee
@@ -178,6 +193,7 @@ settings:
     'relators:lsa': 'Landscape architect'
     'relators:led': Lead
     'relators:len': Lender
+    'relators:ltr': Letterer
     'relators:lil': Libelant
     'relators:lit': Libelant-appellant
     'relators:lie': Libelant-appellee
@@ -190,20 +206,25 @@ settings:
     'relators:lgd': 'Lighting designer'
     'relators:ltg': Lithographer
     'relators:lyr': Lyricist
+    'relators:mka': 'Makeup artist'
     'relators:mfp': 'Manufacture place'
     'relators:mfr': Manufacturer
     'relators:mrb': Marbler
     'relators:mrk': 'Markup editor'
     'relators:med': Medium
     'relators:mdc': 'Metadata contact'
-    'relators:mte': Metal-engraver
+    'relators:mte': 'Metal engraver'
     'relators:mtk': 'Minute taker'
+    'relators:mxe': 'Mixing engineer'
     'relators:mod': Moderator
     'relators:mon': Monitor
     'relators:mcp': 'Music copyist'
+    'relators:mup': 'Music programmer'
     'relators:msd': 'Musical director'
     'relators:mus': Musician
     'relators:nrt': Narrator
+    'relators:nan': 'News anchor'
+    'relators:onp': 'Onscreen participant'
     'relators:osp': 'Onscreen presenter'
     'relators:opn': Opponent
     'relators:orm': Organizer
@@ -215,9 +236,11 @@ settings:
     'relators:pta': 'Patent applicant'
     'relators:pth': 'Patent holder'
     'relators:pat': Patron
+    'relators:pnc': Penciller
     'relators:prf': Performer
     'relators:pma': 'Permitting agency'
     'relators:pht': Photographer
+    'relators:pad': 'Place of address'
     'relators:ptf': Plaintiff
     'relators:ptt': Plaintiff-appellant
     'relators:pte': Plaintiff-appellee
@@ -242,9 +265,11 @@ settings:
     'relators:ppt': Puppeteer
     'relators:rdd': 'Radio director'
     'relators:rpc': 'Radio producer'
+    'relators:rap': Rapporteur
     'relators:rce': 'Recording engineer'
     'relators:rcd': Recordist
     'relators:red': Redaktor
+    'relators:rxa': 'Remix artist'
     'relators:ren': Renderer
     'relators:rpt': Reporter
     'relators:rps': Repository
@@ -271,8 +296,11 @@ settings:
     'relators:stg': Setting
     'relators:sgn': Signer
     'relators:sng': Singer
+    'relators:swd': 'Software developer'
     'relators:sds': 'Sound designer'
+    'relators:sde': 'Sound engineer'
     'relators:spk': Speaker
+    'relators:sfx': 'Special effects provider'
     'relators:spn': Sponsor
     'relators:sgd': 'Stage director'
     'relators:stm': 'Stage manager'
@@ -282,9 +310,13 @@ settings:
     'relators:sht': 'Supporting host'
     'relators:srv': Surveyor
     'relators:tch': Teacher
+    'relators:tad': 'Technical advisor'
     'relators:tcd': 'Technical director'
     'relators:tld': 'Television director'
+    'relators:tlg': 'Television guest'
+    'relators:tlh': 'Television host'
     'relators:tlp': 'Television producer'
+    'relators:tau': 'Television writer'
     'relators:ths': 'Thesis advisor'
     'relators:trc': Transcriber
     'relators:trl': Translator
@@ -292,6 +324,7 @@ settings:
     'relators:tyg': Typographer
     'relators:uvp': 'University place'
     'relators:vdg': Videographer
+    'relators:vfx': 'Visual effects provider'
     'relators:voc': 'Vocalist (deprecated, use Singer)'
     'relators:vac': 'Voice actor'
     'relators:wit': Witness
@@ -301,7 +334,13 @@ settings:
     'relators:wac': 'Writer of added commentary'
     'relators:wal': 'Writer of added lyrics'
     'relators:wat': 'Writer of added text'
+    'relators:waw': 'Writer of afterword'
+    'relators:wap': 'Writer of approbation'
+    'relators:wfs': 'Writer of film story'
+    'relators:wfw': 'Writer of foreword'
+    'relators:wft': 'Writer of intertitles'
     'relators:win': 'Writer of introduction'
     'relators:wpr': 'Writer of preface'
     'relators:wst': 'Writer of supplementary textual content'
+    'relators:wts': 'Writer of television story'
 field_type: typed_relation
