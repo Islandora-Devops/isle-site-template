@@ -2,8 +2,8 @@ name: "Setup ISLE Composite"
 description: "Sets up the ISLE environment"
 inputs:
   buildkit-tag:
-    description: "islandora-devops/isle-buildkit docker tag to pull"
-    default: "main"
+    description: "islandora-devops/isle-buildkit docker tag to pull; when empty, use ISLANDORA_TAG from sample.env"
+    default: ""
   starter-site-owner:
     description: "islandora-starter-site github owner"
     default: "Islandora-Devops"
@@ -23,6 +23,11 @@ runs:
 
     - name: Validate Inputs
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
+      env:
+        BUILDKIT_TAG: ${{ inputs.buildkit-tag }}
+        STARTER_SITE_OWNER: ${{ inputs.starter-site-owner }}
+        STARTER_SITE_REF: ${{ inputs.starter-site-ref }}
+        WSLENV: BUILDKIT_TAG:STARTER_SITE_OWNER:STARTER_SITE_REF
       run: |
         REGEX_DOCKER="^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$"
         REGEX_GITHUB_OWNER="^[a-zA-Z0-9]([a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$"
@@ -37,9 +42,11 @@ runs:
           fi
         }
 
-        validate "buildkit-tag" "${{ inputs.buildkit-tag }}" "$REGEX_DOCKER"
-        validate "starter-site-owner" "${{ inputs.starter-site-owner }}" "$REGEX_GITHUB_OWNER"
-        validate "starter-site-ref" "${{ inputs.starter-site-ref }}" "$REGEX_GIT_REF"
+        if [[ -n ${BUILDKIT_TAG:-} ]]; then
+          validate "buildkit-tag" "$BUILDKIT_TAG" "$REGEX_DOCKER"
+        fi
+        validate "starter-site-owner" "$STARTER_SITE_OWNER" "$REGEX_GITHUB_OWNER"
+        validate "starter-site-ref" "$STARTER_SITE_REF" "$REGEX_GIT_REF"
 
     - name: setup git identity
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
@@ -57,13 +64,23 @@ runs:
 
     - name: Start islandora-starter-site
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
+      env:
+        BUILDKIT_TAG: ${{ inputs.buildkit-tag }}
+        STARTER_SITE_OWNER: ${{ inputs.starter-site-owner }}
+        STARTER_SITE_REF: ${{ inputs.starter-site-ref }}
+        WSLENV: BUILDKIT_TAG:STARTER_SITE_OWNER:STARTER_SITE_REF
       run: |
-        make overwrite-starter-site init up \
-          ISLANDORA_TAG=${{ inputs.buildkit-tag }} \
-          STARTER_SITE_BRANCH=${{ inputs.starter-site-ref }} \
-          STARTER_SITE_OWNER=${{ inputs.starter-site-owner }} \
-          GITHUB_ACTIONS="true" \
-          TERM=xterm-256color
+        make_args=(
+          overwrite-starter-site init up
+          "STARTER_SITE_BRANCH=$STARTER_SITE_REF"
+          "STARTER_SITE_OWNER=$STARTER_SITE_OWNER"
+          'GITHUB_ACTIONS=true'
+          'TERM=xterm-256color'
+        )
+        if [[ -n ${BUILDKIT_TAG:-} ]]; then
+          make_args+=("ISLANDORA_TAG=$BUILDKIT_TAG")
+        fi
+        make "${make_args[@]}"
 
     - name: make sure traefik is serving traffic
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
