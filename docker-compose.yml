@@ -172,7 +172,7 @@ services:
       FCREPO_ALLOW_EXTERNAL_DEFAULT: http://default/
       FCREPO_ALLOW_EXTERNAL_DRUPAL: ${URI_SCHEME}://${DOMAIN}/
       FCREPO_PERSISTENCE_TYPE: mysql
-    image: islandora/fcrepo6:${ISLANDORA_TAG}
+    image: islandora/fcrepo:${ISLANDORA_TAG}
     secrets:
       - source: DB_ROOT_PASSWORD
       - source: FCREPO_DB_PASSWORD
