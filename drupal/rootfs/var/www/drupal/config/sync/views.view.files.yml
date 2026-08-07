@@ -678,7 +678,7 @@ display:
               1:
                 title: Fedora
                 operator: starts
-                value: 'fedora://'
+                value: 'private://'
               2:
                 title: Public
                 operator: starts
