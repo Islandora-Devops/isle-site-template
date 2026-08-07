@@ -264,6 +264,12 @@ services:
     depends_on:
       drupal:
         condition: service_healthy
+    environment:
+      # Loads the ICU analysis library, which provides solr.ICUCollationField.
+      # The collated_* field types in the Drupal-generated schema
+      # (schema_extra_types.xml) reference it, and the core fails to
+      # initialize without it.
+      SOLR_MODULES: analysis-extras
     image: islandora/solr:${ISLANDORA_TAG}
     volumes:
       - solr-data:/data:rw

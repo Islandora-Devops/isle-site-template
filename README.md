@@ -352,4 +352,51 @@ It is highly recommended to use **WSL 2** (Windows Subsystem for Linux) for runn
 **Status Check:**
 Run `make status` to check for common misconfigurations or issues.
 
+**Search returns no results / Solr core fails to load:**
+If searches come back empty, check whether Solr actually loaded its core:
+
+```bash
+docker compose exec drupal curl -s 'http://solr:8983/solr/admin/cores?action=STATUS&wt=json'
+```
+
+An `initFailures` entry like the following means the core never started:
+
+```
+Could not load conf for core default: Can't load schema .../schema.xml:
+Plugin init failure for [schema.xml] fieldType "collated_en":
+Error loading class 'solr.ICUCollationField'
+```
+
+The `collated_*` field types in the Drupal-generated schema
+(`drupal/rootfs/opt/solr/server/solr/default/conf/schema_extra_types.xml`)
+require `solr.ICUCollationField`, which lives in Solr's ICU analysis library.
+That library ships inside the image at `/opt/solr/modules/analysis-extras` but
+is only added to the classpath when it is named in `SOLR_MODULES`, so the
+`solr` service sets:
+
+```yaml
+  solr:
+    environment:
+      SOLR_MODULES: analysis-extras
+```
+
+Apply a change to this setting with `docker compose up -d --force-recreate solr`.
+
+Note that this failure is easy to miss: the `solr` container still reports as
+healthy because Jetty responds, and `drush search-api:status` may report 100%
+indexed because that figure comes from Drupal's own tracker in MariaDB rather
+than from Solr. To confirm search really works, compare a term you expect to
+match against one you do not:
+
+```bash
+docker compose exec drupal drush php:eval '
+$index = \Drupal::entityTypeManager()->getStorage("search_api_index")->load("default_solr_index");
+$q = $index->query(["limit" => 5]); $q->keys("YOUR_TERM");
+printf("%d hits\n", $q->execute()->getResultCount());'
+```
+
+Also note the `/search` page uses Islandora's advanced search form
+(`terms[0][value]=...`), not `?search_api_fulltext=...`; using the wrong
+parameter silently returns unfiltered results.
+
 [Islandora Slack]: https://islandora.slack.com/

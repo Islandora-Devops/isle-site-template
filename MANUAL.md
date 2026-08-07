@@ -167,6 +167,13 @@ targets cannot override targets already defined in `Makefile`.
 - **Port already in use:** in dev mode ports shift automatically; check the URL printed by
   `make up`, or `docker compose port traefik 80`.
 - **Is it live?** `make ping` (retries with backoff, fails after 10 attempts).
+- **Search returns nothing:** check that Solr loaded its core with
+  `docker compose exec drupal curl -s 'http://solr:8983/solr/admin/cores?action=STATUS&wt=json'`.
+  An empty `status` with an `ICUCollationField` `initFailures` entry means the ICU
+  analysis library is not on the classpath; the `solr` service must set
+  `SOLR_MODULES: analysis-extras`. The container reports healthy either way, and
+  `drush search-api:status` reads Drupal's tracker rather than Solr, so neither is
+  proof that search works. See the README's Troubleshooting section for details.
 - **Rootless Docker:** unsupported with `DEVELOPMENT_ENVIRONMENT=true`; set it to `false`.
 - **Windows:** use WSL 2. mkcert and Let's Encrypt targets refuse to run under WSL.
 - **Start over:** `make clean` deletes all volumes, secrets, certs, and `.env`, then
