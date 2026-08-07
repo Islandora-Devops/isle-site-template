@@ -13,12 +13,10 @@ networks:
 volumes:
   acme-data: {}
   activemq-data: {}
-  blazegraph-data: {}
   cantaloupe-data: {}
   drupal-private-files: {}
   drupal-public-files: {}
   drupal-solr-config: {}
-  fcrepo-data: {}
   mariadb-data: {}
   solr-data: {}
 
@@ -47,8 +45,6 @@ secrets:
     file: "./secrets/DRUPAL_DEFAULT_DB_PASSWORD"
   DRUPAL_DEFAULT_SALT:
     file: "./secrets/DRUPAL_DEFAULT_SALT"
-  FCREPO_DB_PASSWORD:
-    file: "./secrets/FCREPO_DB_PASSWORD"
   JWT_ADMIN_TOKEN:
     file: "./secrets/JWT_ADMIN_TOKEN"
   JWT_PUBLIC_KEY:
@@ -76,12 +72,6 @@ services:
       - source: ALPACA_JMS_PASSWORD
       - source: CERT_PUBLIC_KEY
       - source: CERT_AUTHORITY
-
-  blazegraph:
-    <<: *common
-    image: islandora/blazegraph:${ISLANDORA_TAG}
-    volumes:
-      - blazegraph-data:/data:rw
 
   cantaloupe:
     <<: *common
@@ -122,14 +112,15 @@ services:
       DRUPAL_DEFAULT_BROKER_URL: tcp://activemq:61613
       DRUPAL_DEFAULT_CANTALOUPE_URL: ${URI_SCHEME}://${DOMAIN}/cantaloupe/iiif/2
       DRUPAL_DEFAULT_CONFIGDIR: /var/www/drupal/config/sync
-      DRUPAL_DEFAULT_FCREPO_HOST: fcrepo
-      DRUPAL_DEFAULT_FCREPO_PORT: 8080
-      DRUPAL_DEFAULT_FCREPO_URL: ${URI_SCHEME}://fcrepo.${DOMAIN}/fcrepo/rest/
       DRUPAL_DEFAULT_INSTALL_EXISTING_CONFIG: "true"
       DRUPAL_DEFAULT_NAME: Islandora Digital Collections
       DRUPAL_DEFAULT_PROFILE: minimal
       DRUPAL_DEFAULT_SITE_URL: ${DOMAIN}
       DRUPAL_DEFAULT_SOLR_CORE: default
+      # Empty so install.sh skips waiting on the (removed) triplestore service
+      # and skips Blazegraph namespace creation. The base image otherwise
+      # defaults this to "islandora", which would hang a fresh install.
+      DRUPAL_DEFAULT_TRIPLESTORE_NAMESPACE: ""
       DRUPAL_ENABLE_HTTPS: "false"
       DRUSH_OPTIONS_URI: ${URI_SCHEME}://${DOMAIN}
       NGINX_REAL_IP_RECURSIVE: ${REVERSE_PROXY}
@@ -160,26 +151,6 @@ services:
         target: /var/www/drupal/private
         type: volume
       - drupal-solr-config:/opt/solr/server/solr/default:z,rw
-
-  fcrepo:
-    <<: *common
-    depends_on:
-      activemq:
-        condition: service_healthy
-    environment:
-      DB_HOST: mariadb
-      DB_PORT: 3306
-      FCREPO_ALLOW_EXTERNAL_DEFAULT: http://default/
-      FCREPO_ALLOW_EXTERNAL_DRUPAL: ${URI_SCHEME}://${DOMAIN}/
-      FCREPO_PERSISTENCE_TYPE: mysql
-    image: islandora/fcrepo6:${ISLANDORA_TAG}
-    secrets:
-      - source: DB_ROOT_PASSWORD
-      - source: FCREPO_DB_PASSWORD
-      - source: JWT_ADMIN_TOKEN
-      - source: JWT_PUBLIC_KEY
-    volumes:
-      - fcrepo-data:/data:rw
 
   fits:
     <<: *common
@@ -322,8 +293,6 @@ services:
       default:
         aliases:
           - activemq.${DOMAIN}
-          - blazegraph.${DOMAIN}
-          - fcrepo.${DOMAIN}
           - ${DOMAIN}
           - solr.${DOMAIN}
     ports:
