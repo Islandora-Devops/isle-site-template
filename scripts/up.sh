@@ -48,6 +48,11 @@ if [ "$FINAL_PORT" != "$DEFAULT_P" ]; then
     URL="$URL:$FINAL_PORT"
 fi
 
+# ping.sh would otherwise rebuild the URL from DOMAIN alone and omit the port,
+# so a site running on a fallback port could never be reached and the readiness
+# check would fail even though the stack was healthy.
+export SITE_URL="$URL"
+
 export MAX_RETRIES=3
 WAIT_FOR_INSTALL=$(./scripts/ping.sh || echo "yes")
 if [ "$WAIT_FOR_INSTALL" = "yes" ]; then

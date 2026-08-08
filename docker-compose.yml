@@ -121,7 +121,7 @@ services:
       # and skips Blazegraph namespace creation. The base image otherwise
       # defaults this to "islandora", which would hang a fresh install.
       DRUPAL_DEFAULT_TRIPLESTORE_NAMESPACE: ""
-      DRUPAL_ENABLE_HTTPS: "false"
+      DRUPAL_ENABLE_HTTPS: "true"
       DRUSH_OPTIONS_URI: ${URI_SCHEME}://${DOMAIN}
       NGINX_REAL_IP_RECURSIVE: ${REVERSE_PROXY}
       NGINX_SET_REAL_IP_FROM: ${FRONTEND_IP_1}
