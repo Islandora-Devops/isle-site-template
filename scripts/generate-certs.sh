@@ -26,7 +26,16 @@ if [ ! -f "${PROGDIR}/certs/rootCA.pem" ]; then
   cp "${CAROOT}/rootCA.pem" "${PROGDIR}/certs/rootCA.pem"
 fi
 
+# ${DOMAIN} is included so the certificate is valid for sites that do not use
+# the default islandora.io domain. Without it, switching such a site to HTTPS
+# produces a certificate that does not match its own hostname.
+DOMAIN_NAMES=()
+if [ -n "${DOMAIN:-}" ]; then
+  DOMAIN_NAMES=("${DOMAIN}" "*.${DOMAIN}")
+fi
+
 mkcert -cert-file certs/cert.pem -key-file certs/privkey.pem \
+  ${DOMAIN_NAMES[@]+"${DOMAIN_NAMES[@]}"} \
   "*.islandora.io" \
   "islandora.io" \
   "*.islandora.info" \
