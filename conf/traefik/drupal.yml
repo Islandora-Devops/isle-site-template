@@ -6,11 +6,5 @@ http:
           - url: http://drupal:80
   routers:
     drupal:
-      rule: Host(`{{ env "DOMAIN" }}`)
+      rule: Host(`islandora.io`)
       service: drupal
-{{- if (eq (env "TLS_PROVIDER") "letsencrypt") }}
-      tls:
-        certResolver: letsencrypt
-{{- else if (eq (env "URI_SCHEME") "https") }}
-      tls: {}
-{{- end }}

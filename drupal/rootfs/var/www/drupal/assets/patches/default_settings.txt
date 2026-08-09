@@ -53,9 +53,24 @@ $config['key.key.islandora_rsa_key']['key_provider_settings']['file_location'] =
 
 // Some settings are derived from environment variables.
 $settings['hash_salt'] = file_get_contents($path . 'DRUPAL_DEFAULT_SALT');
-$settings['trusted_host_patterns'] = [
-  0 => file_get_contents($path . 'DRUPAL_DEFAULT_SITE_URL'),
-];
+
+// sitectl writes the public and local ingress hosts as a comma-separated list.
+// Fall back to the legacy site URL for older Compose configurations.
+$trusted_hostnames = [];
+if (file_exists($path . 'INGRESS_HOSTNAMES')) {
+  $ingress_hostnames = file_get_contents($path . 'INGRESS_HOSTNAMES');
+  $trusted_hostnames = array_filter(
+    array_map('trim', explode(',', $ingress_hostnames))
+  );
+}
+if (!$trusted_hostnames && file_exists($path . 'DRUPAL_DEFAULT_SITE_URL')) {
+  $legacy_site_url = trim(file_get_contents($path . 'DRUPAL_DEFAULT_SITE_URL'));
+  $legacy_hostname = parse_url($legacy_site_url, PHP_URL_HOST);
+  $trusted_hostnames[] = $legacy_hostname ?: $legacy_site_url;
+}
+$settings['trusted_host_patterns'] = array_map(static function ($hostname) {
+  return '^' . preg_quote(trim($hostname, '[]'), '/') . '$';
+}, $trusted_hostnames);
 
 // Database settings are also derived from environment variables.
 $databases['default']['default'] = [

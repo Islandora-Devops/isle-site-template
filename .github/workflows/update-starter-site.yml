@@ -25,4 +25,8 @@ jobs:
 
       - name: cleanup
         if: ${{ always() }}
-        run: make down
+        run: |
+          if command -v sitectl >/dev/null 2>&1; then
+            sitectl compose --context isle-site-template-local down -v --remove-orphans || true
+          fi
+          docker compose down -v --remove-orphans || true

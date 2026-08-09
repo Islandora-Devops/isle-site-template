@@ -1,4 +1,3 @@
-{{- if (eq (env "DEVELOPMENT_ENVIRONMENT") "true") }}
 http:
   services:
     traefik:
@@ -7,12 +6,5 @@ http:
           - url: http://traefik:8080
   routers:
     traefik:
-      rule: Host(`traefik.{{ env "DOMAIN" }}`)
+      rule: Host(`traefik.islandora.io`)
       service: traefik
-{{- if (eq (env "TLS_PROVIDER") "letsencrypt") }}
-      tls:
-        certResolver: letsencrypt
-{{- else if (eq (env "URI_SCHEME") "https") }}
-      tls: {}
-{{- end }}
-{{- end }}

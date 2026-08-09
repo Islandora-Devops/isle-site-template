@@ -1,72 +1,248 @@
-name: "Setup ISLE Composite"
-description: "Sets up the ISLE environment"
+name: "Setup ISLE"
+description: "Starts a fresh ISLE site with sitectl for downstream integration tests"
+
 inputs:
   buildkit-tag:
-    description: "islandora-devops/isle-buildkit docker tag to pull"
+    description: "islandora-devops/isle-buildkit tag used by the Islandora service images"
+    default: "main"
+  isle-site-template-owner:
+    description: "GitHub owner of the isle-site-template source"
+    default: "Islandora-Devops"
+  isle-site-template-repository:
+    description: "GitHub repository containing the isle-site-template source"
+    default: "isle-site-template"
+  isle-site-template-ref:
+    description: "Branch, tag, pull-request ref, or commit for isle-site-template"
     default: "main"
   starter-site-owner:
-    description: "islandora-starter-site github owner"
+    description: "GitHub owner of the islandora-starter-site source"
     default: "Islandora-Devops"
+  starter-site-repository:
+    description: "GitHub repository containing the islandora-starter-site source"
+    default: "islandora-starter-site"
   starter-site-ref:
-    description: "islandora-starter-site ref to checkout"
-    default: "heads/main"
+    description: "Branch, tag, pull-request ref, or commit for islandora-starter-site"
+    default: "main"
+  drupal-module-owner:
+    description: "Optional GitHub owner for a staged Drupal module under test"
+    default: ""
+  drupal-module-repository:
+    description: "Optional GitHub repository for a staged Drupal module under test"
+    default: ""
+  drupal-module-ref:
+    description: "Optional branch, tag, pull-request ref, or commit for a staged Drupal module"
+    default: ""
+  context-name:
+    description: "sitectl context name"
+    default: "isle-ci"
+  healthcheck-timeout:
+    description: "Maximum time to wait for the fresh install"
+    default: "20m"
+  healthcheck-interval:
+    description: "Interval between health checks"
+    default: "15s"
+
+outputs:
+  project-directory:
+    description: "Absolute Linux/WSL-shell path to the running isle-site-template checkout"
+    value: ${{ steps.metadata.outputs.project-directory }}
+  context-name:
+    description: "sitectl context for the running project"
+    value: ${{ steps.metadata.outputs.context-name }}
+  compose-project-name:
+    description: "Docker Compose project name"
+    value: ${{ steps.metadata.outputs.compose-project-name }}
+  drupal-module-directory:
+    description: "Absolute Linux/WSL-shell path to the staged Drupal module, or an empty string"
+    value: ${{ steps.metadata.outputs.drupal-module-directory }}
 
 runs:
   using: "composite"
   steps:
-    - name: Setup WSL
-      if: runner.os == 'Windows'
-      uses: Vampire/setup-wsl@6a8db447be7ed35f2f499c02c6e60ff77ef11278 # v6
+    - name: Prepare Windows Subsystem for Linux
+      if: ${{ runner.os == 'Windows' }}
+      shell: pwsh
+      run: |
+        $ErrorActionPreference = "Stop"
+
+        $totalMemoryMb = [math]::Floor(
+          (Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1MB
+        )
+        $memoryMb = [math]::Max(4096, [math]::Floor($totalMemoryMb * 0.75))
+        $wslConfig = @"
+        [wsl2]
+        memory=${memoryMb}MB
+        swap=2GB
+        "@
+        $wslConfigPath = Join-Path $env:USERPROFILE ".wslconfig"
+        Set-Content -LiteralPath $wslConfigPath -Value $wslConfig -Encoding ascii
+
+        $pathVariables = @(
+          "GITHUB_ACTION_PATH/pu"
+          "GITHUB_ENV/pu"
+          "GITHUB_EVENT_PATH/pu"
+          "GITHUB_OUTPUT/pu"
+          "GITHUB_PATH/pu"
+          "GITHUB_STATE/pu"
+          "GITHUB_STEP_SUMMARY/pu"
+          "GITHUB_WORKSPACE/pu"
+          "RUNNER_TEMP/pu"
+          "RUNNER_TOOL_CACHE/pu"
+        )
+        $valueVariables = @(
+          "BUILDKIT_TAG/u"
+          "CI/u"
+          "GITHUB_ACTIONS/u"
+          "GITHUB_JOB/u"
+          "GITHUB_RUN_ATTEMPT/u"
+          "GITHUB_RUN_ID/u"
+          "HEALTHCHECK_INTERVAL/u"
+          "HEALTHCHECK_TIMEOUT/u"
+          "ISLANDORA_TAG/u"
+          "MODULE_OWNER/u"
+          "MODULE_REF/u"
+          "MODULE_REPOSITORY/u"
+          "PROJECT_DIRECTORY/u"
+          "RUNNER_ARCH/u"
+          "RUNNER_OS/u"
+          "SITECTL_CONTEXT/u"
+          "STARTER_OWNER/u"
+          "STARTER_REF/u"
+          "STARTER_REPOSITORY/u"
+          "TEMPLATE_OWNER/u"
+          "TEMPLATE_REF/u"
+          "TEMPLATE_REPOSITORY/u"
+          "TERM/u"
+        )
+        $required = $pathVariables + $valueVariables
+        $requiredNames = @($required | ForEach-Object { ($_ -split "/")[0] })
+        $preserved = @(
+          ($env:WSLENV -split ":") |
+            Where-Object { $_ -and (($_ -split "/")[0] -notin $requiredNames) }
+        )
+        "WSLENV=$(($preserved + $required) -join ':')" |
+          Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+    - name: Install Ubuntu for WSL
+      if: ${{ runner.os == 'Windows' }}
+      uses: Vampire/setup-wsl@d1da7f2c0322a5ee4f24975344f67fc0f5baf364 # v7.0.0
       with:
         distribution: Ubuntu-24.04
-        additional-packages: make curl git docker.io docker-compose-v2
+        set-as-default: "true"
+        update: "false"
+        use-cache: "true"
+        wsl-shell-user: root
+        wsl-version: "1"
 
-    - name: Validate Inputs
-      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
+    - name: Upgrade Ubuntu to WSL 2
+      if: ${{ runner.os == 'Windows' }}
+      shell: pwsh
       run: |
-        REGEX_DOCKER="^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$"
-        REGEX_GITHUB_OWNER="^[a-zA-Z0-9]([a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$"
-        REGEX_GIT_REF="^([a-zA-Z0-9._\/-]+)$"
-        validate() {
-          local name=$1
-          local value=$2
-          local regex=$3
-          if [[ ! $value =~ $regex ]]; then
-            echo "::error::Invalid input for $name: '$value'. Potential shell injection or malformed string."
-            exit 1
-          fi
+        $ErrorActionPreference = "Stop"
+        $updated = $false
+        foreach ($attempt in 1..3) {
+          wsl.exe --update --web-download
+          if ($LASTEXITCODE -eq 0) {
+            $updated = $true
+            break
+          }
+          Write-Warning "WSL update attempt $attempt failed."
+          Start-Sleep -Seconds 5
+        }
+        if (-not $updated) {
+          throw "Unable to update WSL through the web download channel."
         }
 
-        validate "buildkit-tag" "${{ inputs.buildkit-tag }}" "$REGEX_DOCKER"
-        validate "starter-site-owner" "${{ inputs.starter-site-owner }}" "$REGEX_GITHUB_OWNER"
-        validate "starter-site-ref" "${{ inputs.starter-site-ref }}" "$REGEX_GIT_REF"
+        wsl.exe --set-default-version 2
+        if ($LASTEXITCODE -ne 0) {
+          throw "Unable to make WSL 2 the default."
+        }
+        wsl.exe --set-version Ubuntu-24.04 2
+        if ($LASTEXITCODE -ne 0) {
+          throw "Unable to convert Ubuntu to WSL 2."
+        }
+        wsl.exe --shutdown
 
-    - name: setup git identity
+    - name: Install and start Docker in WSL
+      if: ${{ runner.os == 'Windows' }}
+      shell: wsl-bash {0}
+      run: bash "$GITHUB_ACTION_PATH/../../../scripts/setup-wsl-docker.sh"
+
+    - name: Validate inputs
       shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
-      run: |
-        git config --global user.email "actions@github.com"
-        git config --global user.name "GitHub Actions"
-
-    - name: Install mkcert on host (Linux)
-      if: runner.os == 'Linux'
-      shell: bash
-      run: |-
-        curl -L "https://dl.filippo.io/mkcert/latest?for=linux/amd64" -o mkcert
-        chmod +x mkcert
-        sudo mv mkcert /usr/local/bin/mkcert
-
-    - name: Start islandora-starter-site
-      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
-      run: |
-        make overwrite-starter-site init up \
-          ISLANDORA_TAG=${{ inputs.buildkit-tag }} \
-          STARTER_SITE_BRANCH=${{ inputs.starter-site-ref }} \
-          STARTER_SITE_OWNER=${{ inputs.starter-site-owner }} \
-          GITHUB_ACTIONS="true" \
-          TERM=xterm-256color
-
-    - name: make sure traefik is serving traffic
-      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
-      run: ./scripts/ping.sh
       env:
+        BUILDKIT_TAG: ${{ inputs.buildkit-tag }}
+        TEMPLATE_OWNER: ${{ inputs.isle-site-template-owner }}
+        TEMPLATE_REPOSITORY: ${{ inputs.isle-site-template-repository }}
+        TEMPLATE_REF: ${{ inputs.isle-site-template-ref }}
+        STARTER_OWNER: ${{ inputs.starter-site-owner }}
+        STARTER_REPOSITORY: ${{ inputs.starter-site-repository }}
+        STARTER_REF: ${{ inputs.starter-site-ref }}
+        MODULE_OWNER: ${{ inputs.drupal-module-owner }}
+        MODULE_REPOSITORY: ${{ inputs.drupal-module-repository }}
+        MODULE_REF: ${{ inputs.drupal-module-ref }}
+        SITECTL_CONTEXT: ${{ inputs.context-name }}
+        HEALTHCHECK_TIMEOUT: ${{ inputs.healthcheck-timeout }}
+        HEALTHCHECK_INTERVAL: ${{ inputs.healthcheck-interval }}
+        RUNNER_OS: ${{ runner.os }}
+        RUNNER_ARCH: ${{ runner.arch }}
+      run: bash "$GITHUB_ACTION_PATH/../../../scripts/setup-validate-inputs.sh"
+
+    - name: Check out isle-site-template
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      with:
+        repository: ${{ inputs.isle-site-template-owner }}/${{ inputs.isle-site-template-repository }}
+        ref: ${{ inputs.isle-site-template-ref }}
+        path: .isle-site-template
+        fetch-depth: 1
+        persist-credentials: false
+
+    - name: Check out islandora-starter-site
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      with:
+        repository: ${{ inputs.starter-site-owner }}/${{ inputs.starter-site-repository }}
+        ref: ${{ inputs.starter-site-ref }}
+        path: .islandora-starter-site
+        fetch-depth: 1
+        persist-credentials: false
+
+    - name: Stage Drupal module source
+      if: ${{ inputs.drupal-module-owner != '' && inputs.drupal-module-repository != '' && inputs.drupal-module-ref != '' }}
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      with:
+        repository: ${{ inputs.drupal-module-owner }}/${{ inputs.drupal-module-repository }}
+        ref: ${{ inputs.drupal-module-ref }}
+        path: .drupal-module-under-test
+        fetch-depth: 1
+        persist-credentials: false
+
+    - name: Record project metadata
+      id: metadata
+      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
+      env:
+        MODULE_OWNER: ${{ inputs.drupal-module-owner }}
+        RUNNER_OS: ${{ runner.os }}
+        SITECTL_CONTEXT: ${{ inputs.context-name }}
+      run: bash "$GITHUB_ACTION_PATH/../../../scripts/setup-record-metadata.sh"
+
+    - name: Install islandora-starter-site
+      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
+      env:
+        PROJECT_DIRECTORY: ${{ steps.metadata.outputs.project-directory }}
+      run: bash "$GITHUB_ACTION_PATH/../../../scripts/setup-install-starter-site.sh"
+
+    - name: Install sitectl
+      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
+      run: bash "$GITHUB_ACTION_PATH/../../../scripts/setup-install-sitectl.sh"
+
+    - name: Start the fresh ISLE install
+      shell: ${{ runner.os == 'Windows' && 'wsl-bash {0}' || 'bash' }}
+      env:
+        BUILDKIT_TAG: ${{ inputs.buildkit-tag }}
+        HEALTHCHECK_INTERVAL: ${{ inputs.healthcheck-interval }}
+        HEALTHCHECK_TIMEOUT: ${{ inputs.healthcheck-timeout }}
+        ISLANDORA_TAG: ${{ inputs.buildkit-tag }}
+        PROJECT_DIRECTORY: ${{ steps.metadata.outputs.project-directory }}
+        SITECTL_CONTEXT: ${{ inputs.context-name }}
         TERM: xterm-256color
+      run: bash "$GITHUB_ACTION_PATH/../../../scripts/setup-start-isle.sh"

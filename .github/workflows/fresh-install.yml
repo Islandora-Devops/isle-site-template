@@ -1,0 +1,209 @@
+name: Reusable fresh ISLE install
+
+on:
+  workflow_call:
+    inputs:
+      runner-os:
+        description: "GitHub-hosted runner image"
+        required: false
+        type: string
+        default: "ubuntu-24.04"
+      buildkit-tag:
+        description: "isle-buildkit tag used by the Islandora service images"
+        required: false
+        type: string
+        default: "main"
+      isle-site-template-owner:
+        description: "GitHub owner of the isle-site-template source"
+        required: false
+        type: string
+        default: "Islandora-Devops"
+      isle-site-template-repository:
+        description: "GitHub repository containing the isle-site-template source"
+        required: false
+        type: string
+        default: "isle-site-template"
+      isle-site-template-ref:
+        description: "Branch, tag, pull-request ref, or commit for isle-site-template"
+        required: false
+        type: string
+        default: "main"
+      starter-site-owner:
+        description: "GitHub owner of the islandora-starter-site source"
+        required: false
+        type: string
+        default: "Islandora-Devops"
+      starter-site-repository:
+        description: "GitHub repository containing the islandora-starter-site source"
+        required: false
+        type: string
+        default: "islandora-starter-site"
+      starter-site-ref:
+        description: "Branch, tag, pull-request ref, or commit for islandora-starter-site"
+        required: false
+        type: string
+        default: "main"
+      drupal-module-owner:
+        description: "Optional GitHub owner for a staged Drupal module under test"
+        required: false
+        type: string
+        default: ""
+      drupal-module-repository:
+        description: "Optional GitHub repository for a staged Drupal module under test"
+        required: false
+        type: string
+        default: ""
+      drupal-module-ref:
+        description: "Optional branch, tag, pull-request ref, or commit for a staged Drupal module"
+        required: false
+        type: string
+        default: ""
+      context-name:
+        description: "sitectl context name"
+        required: false
+        type: string
+        default: "isle-ci"
+      healthcheck-timeout:
+        description: "Maximum time to wait for the fresh install"
+        required: false
+        type: string
+        default: "20m"
+      healthcheck-interval:
+        description: "Interval between health checks"
+        required: false
+        type: string
+        default: "15s"
+
+permissions:
+  contents: read
+
+jobs:
+  fresh-install:
+    name: Fresh install (${{ inputs.runner-os }})
+    runs-on: ${{ inputs.runner-os }}
+    timeout-minutes: 75
+    env:
+      TERM: xterm-256color
+    defaults:
+      run:
+        shell: ${{ startsWith(inputs.runner-os, 'windows-') && 'wsl-bash {0}' || 'bash' }}
+    steps:
+      - name: Check out the CI implementation
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          repository: ${{ inputs.isle-site-template-owner }}/${{ inputs.isle-site-template-repository }}
+          ref: ${{ inputs.isle-site-template-ref }}
+          path: .isle-ci-source
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Set up a fresh ISLE install
+        id: setup
+        uses: ./.isle-ci-source/.github/actions/setup
+        with:
+          buildkit-tag: ${{ inputs.buildkit-tag }}
+          isle-site-template-owner: ${{ inputs.isle-site-template-owner }}
+          isle-site-template-repository: ${{ inputs.isle-site-template-repository }}
+          isle-site-template-ref: ${{ inputs.isle-site-template-ref }}
+          starter-site-owner: ${{ inputs.starter-site-owner }}
+          starter-site-repository: ${{ inputs.starter-site-repository }}
+          starter-site-ref: ${{ inputs.starter-site-ref }}
+          drupal-module-owner: ${{ inputs.drupal-module-owner }}
+          drupal-module-repository: ${{ inputs.drupal-module-repository }}
+          drupal-module-ref: ${{ inputs.drupal-module-ref }}
+          context-name: ${{ inputs.context-name }}
+          healthcheck-timeout: ${{ inputs.healthcheck-timeout }}
+          healthcheck-interval: ${{ inputs.healthcheck-interval }}
+
+      - name: Confirm the default site is serving traffic
+        run: curl --fail --show-error --silent --output /dev/null --retry 5 --retry-delay 3 http://islandora.io
+
+      - name: Collect Linux service logs
+        if: ${{ failure() && !startsWith(inputs.runner-os, 'windows-') }}
+        shell: bash
+        env:
+          SITECTL_CONTEXT: ${{ steps.setup.outputs.context-name || inputs.context-name }}
+        run: |
+          set +e
+          mkdir -p logs
+          docker info > logs/docker-info.txt 2>&1
+          sitectl compose --context "$SITECTL_CONTEXT" ps --all > logs/compose-ps.txt 2>&1
+          services=$(sitectl compose --context "$SITECTL_CONTEXT" config --services 2>/dev/null)
+          for service in $services; do
+            sitectl compose --context "$SITECTL_CONTEXT" logs --tail 200 "$service" \
+              > "logs/${service}.log" 2>&1
+          done
+
+      - name: Collect Windows service logs
+        if: ${{ failure() && startsWith(inputs.runner-os, 'windows-') }}
+        shell: pwsh
+        env:
+          SITECTL_CONTEXT: ${{ steps.setup.outputs.context-name || inputs.context-name }}
+        run: |
+          $logDirectory = Join-Path $env:GITHUB_WORKSPACE "logs"
+          New-Item -ItemType Directory -Path $logDirectory -Force | Out-Null
+          wsl.exe --status 2>&1 |
+            Out-File (Join-Path $logDirectory "wsl-status.txt") -Encoding utf8
+          wsl.exe --list --verbose 2>&1 |
+            Out-File (Join-Path $logDirectory "wsl-distributions.txt") -Encoding utf8
+
+          $wrapper = Get-Command wsl-bash -ErrorAction SilentlyContinue
+          if (-not $wrapper) {
+            return
+          }
+          $scriptPath = Join-Path $env:RUNNER_TEMP "collect-isle-logs.sh"
+          @'
+          set +e
+          mkdir -p logs
+          docker info > logs/docker-info.txt 2>&1
+          if [ -f "${RUNNER_TEMP}/isle-dockerd.log" ]; then
+            cp "${RUNNER_TEMP}/isle-dockerd.log" logs/dockerd.log
+          fi
+          if command -v sitectl >/dev/null 2>&1; then
+            sitectl compose --context "$SITECTL_CONTEXT" ps --all > logs/compose-ps.txt 2>&1
+            services=$(sitectl compose --context "$SITECTL_CONTEXT" config --services 2>/dev/null)
+            for service in $services; do
+              sitectl compose --context "$SITECTL_CONTEXT" logs --tail 200 "$service" \
+                > "logs/${service}.log" 2>&1
+            done
+          fi
+          exit 0
+          '@ | Set-Content -LiteralPath $scriptPath -Encoding utf8
+          & $wrapper.Source $scriptPath
+
+      - name: Upload service logs
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: docker-logs-${{ inputs.runner-os }}
+          path: logs
+          if-no-files-found: ignore
+          retention-days: 3
+
+      - name: Clean up Linux
+        if: ${{ always() && !startsWith(inputs.runner-os, 'windows-') }}
+        shell: bash
+        env:
+          SITECTL_CONTEXT: ${{ steps.setup.outputs.context-name || inputs.context-name }}
+        run: |
+          if command -v sitectl >/dev/null 2>&1; then
+            sitectl compose --context "$SITECTL_CONTEXT" down --volumes --remove-orphans || true
+          fi
+
+      - name: Clean up Windows
+        if: ${{ always() && startsWith(inputs.runner-os, 'windows-') }}
+        shell: pwsh
+        env:
+          SITECTL_CONTEXT: ${{ steps.setup.outputs.context-name || inputs.context-name }}
+        run: |
+          $wrapper = Get-Command wsl-bash -ErrorAction SilentlyContinue
+          if (-not $wrapper) {
+            return
+          }
+          $scriptPath = Join-Path $env:RUNNER_TEMP "clean-up-isle.sh"
+          @'
+          if command -v sitectl >/dev/null 2>&1; then
+            sitectl compose --context "$SITECTL_CONTEXT" down --volumes --remove-orphans || true
+          fi
+          '@ | Set-Content -LiteralPath $scriptPath -Encoding utf8
+          & $wrapper.Source $scriptPath

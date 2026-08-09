@@ -4,13 +4,13 @@ set -eou pipefail
 
 echo "Updating from islandora-starter-site..."
 
-# We want to track the main branch of islandora-starter-site
-# In the future, this could be changed to track latest release tag
-STARTER_SITE_BRANCH="${STARTER_SITE_BRANCH:-main}"
-STARTER_SITE_OWNER="${STARTER_SITE_OWNER:-islandora-devops}"
+# We want to track a branch, tag, or commit from a starter-site repository.
+STARTER_SITE_REF="${STARTER_SITE_REF:-${STARTER_SITE_BRANCH:-${ISLANDORA_STARTER_REF:-main}}}"
+STARTER_SITE_OWNER="${STARTER_SITE_OWNER:-${ISLANDORA_STARTER_OWNER:-islandora-devops}}"
+STARTER_SITE_REPOSITORY="${STARTER_SITE_REPOSITORY:-${ISLANDORA_STARTER_REPOSITORY:-islandora-starter-site}}"
 
-repo="https://github.com/${STARTER_SITE_OWNER}/islandora-starter-site"
-ref="${STARTER_SITE_BRANCH}"
+repo="https://github.com/${STARTER_SITE_OWNER}/${STARTER_SITE_REPOSITORY}"
+ref="${STARTER_SITE_REF}"
 
 # The path to the drupal webroot
 DRUPAL_ROOT="drupal/rootfs/var/www/drupal"
@@ -56,4 +56,4 @@ if [ -f "default_settings.txt" ]; then
   mv default_settings.txt "${DRUPAL_ROOT}/assets/patches/default_settings.txt"
 fi
 
-echo "Update from islandora-starter-site complete."
+echo "Update from ${STARTER_SITE_OWNER}/${STARTER_SITE_REPOSITORY}@${STARTER_SITE_REF} complete."
