@@ -40,7 +40,7 @@ jobs:
       - name: Setup ISLE
         uses: ./.github/actions/setup
         with:
-          buildkit-tag: "${{ github.event.inputs.buildkit-tag || 'main' }}"
+          buildkit-tag: "${{ github.event.inputs.buildkit-tag }}"
           starter-site-owner: "${{ github.event.inputs.starter-site-owner || 'islandora-devops' }}"
           starter-site-ref: "${{ github.event.inputs.starter-site-ref || 'heads/main' }}"
 

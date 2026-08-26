@@ -72,6 +72,8 @@ services:
       activemq:
         condition: service_healthy
     image: islandora/alpaca:${ISLANDORA_TAG}
+    environment:
+      ALPACA_TRIPLESTORE_INDEXER_ENABLED: "true"
     secrets:
       - source: ALPACA_JMS_PASSWORD
       - source: CERT_PUBLIC_KEY
@@ -79,7 +81,7 @@ services:
 
   blazegraph:
     <<: *common
-    image: islandora/blazegraph:${ISLANDORA_TAG}
+    image: islandora/blazegraph:6.4.3@sha256:015e308ae0a296cdb87c83c10da976ed970d2bfa971290aa1147593df8cf445d
     volumes:
       - blazegraph-data:/data:rw
 
@@ -172,7 +174,7 @@ services:
       FCREPO_ALLOW_EXTERNAL_DEFAULT: http://default/
       FCREPO_ALLOW_EXTERNAL_DRUPAL: ${URI_SCHEME}://${DOMAIN}/
       FCREPO_PERSISTENCE_TYPE: mysql
-    image: islandora/fcrepo6:${ISLANDORA_TAG}
+    image: islandora/fcrepo:${ISLANDORA_TAG}
     secrets:
       - source: DB_ROOT_PASSWORD
       - source: FCREPO_DB_PASSWORD
