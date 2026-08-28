@@ -313,7 +313,7 @@ services:
     healthcheck:
       start_period: 10s
       test: traefik healthcheck --ping
-    image: traefik:v3.6.13@sha256:5e113a222e0a43c112bd8caeb0dfb42685be2c2eb190c79176c99c1259e4fa10
+    image: traefik:v3.7.12@sha256:5447d0eaf375d832b8f224f88db0e80c0a2d44554fc973e3ba72c3a52946cfcc
     networks:
       default:
         aliases:
