@@ -2,16 +2,13 @@
 
 set -eou pipefail
 
-if [ -f .env ]; then
-  # Export variables so docker-compose and this script can see them
-  # shellcheck disable=SC1091
-  source .env
-else
-  echo "Error: .env file not found." >&2
+# An existing .env may have been copied from sample.env before initialization.
+if [ ! -f .env ] || [ ! -f secrets/DRUPAL_DEFAULT_ACCOUNT_PASSWORD ]; then
   ./scripts/init.sh
-  # shellcheck disable=SC1091
-  source .env
 fi
+
+# shellcheck disable=SC1091
+source .env
 
 # shellcheck disable=SC1091
 source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"

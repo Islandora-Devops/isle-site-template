@@ -68,7 +68,7 @@ configurations this template is set up for the following:
     ```bash
     make up
     ```
-    This command prepares your host machine, creates the `.env` file from `sample.env` if it doesn't exist, generates necessary secrets and certificates, and builds the Docker images.
+    If `.env` or `secrets/DRUPAL_DEFAULT_ACCOUNT_PASSWORD` is missing, this command runs initialization: it creates `.env` from `sample.env` if needed, generates secrets and certificates, and builds the Docker images. You can copy `sample.env` to `.env` and customize it before running `make up`. To initialize without starting the services, run `make init`.
 
     Then brings up the ISLE stack using smart port allocation. The URL for your site will be displayed in the output and automatically opened in your browser if possible.
 
