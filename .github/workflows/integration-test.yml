@@ -65,7 +65,7 @@ jobs:
           for service in $services; do
             docker compose logs $service --tail 100 2>/dev/null > "logs/${service}.log"
           done
-          docker compose exec mariadb mysqldump drupal_default 2>/dev/null > logs/drupal_default.sql
+          docker compose exec mariadb mariadb-dump drupal_default 2>/dev/null > logs/drupal_default.sql
 
       - name: Upload logs as artifacts
         if: ${{ failure() }}
