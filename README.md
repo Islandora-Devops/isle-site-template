@@ -113,6 +113,21 @@ Key variables:
 - `DOMAIN`: The domain name for your site (default: `islandora.io`).
 - `REPOSITORY`: Docker registry for pushing/pulling images.
 
+Container database settings use the canonical `DB_*` names. Compose mounts
+`secrets/DRUPAL_DEFAULT_DB_PASSWORD` as `/run/secrets/DB_PASSWORD` in Drupal and
+`secrets/FCREPO_DB_PASSWORD` at that same path in fcrepo. The host files remain
+separate; existing secrets do not need to be renamed or regenerated.
+
+Drupal refreshes its database account password during every s6 startup, including
+when the site is already installed. After changing a password secret, recreate
+the corresponding container with `docker compose up -d --force-recreate drupal`
+or `docker compose up -d --force-recreate fcrepo`.
+
+This template targets isle-buildkit `7.1.0`. For existing deployments, update
+`ISLANDORA_TAG=7.1.0` in `.env` and rebuild the Drupal image before recreating
+the containers. Custom settings must use `DB_*`, `NGINX_*`, `PHP_*`, and
+`TOMCAT_*` directly rather than the removed image-prefixed overrides.
+
 ### HTTPS & Certificates
 
 By default, the environment runs over **HTTP** to simplify local development.

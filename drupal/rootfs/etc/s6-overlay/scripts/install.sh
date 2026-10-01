@@ -35,7 +35,6 @@ function install {
         wait_for_service "${SITE}" fcrepo
     fi
 
-    create_database "${SITE}"
     install_site "${SITE}"
 
     # if blazegraph is enabled, create its namespace
@@ -70,7 +69,7 @@ function mysql_count_query {
     cat <<-EOF
 SELECT COUNT(DISTINCT table_name)
 FROM information_schema.columns
-WHERE table_schema = '${DRUPAL_DEFAULT_DB_NAME}';
+WHERE table_schema = '${DB_NAME}';
 EOF
 }
 
@@ -122,6 +121,7 @@ function main() {
     cd /var/www/drupal
     drush_cache_setup
     for_all_sites setup
+    for_all_sites create_database
 
     if installed; then
         echo "Already Installed"

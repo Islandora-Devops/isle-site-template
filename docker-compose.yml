@@ -149,6 +149,7 @@ services:
       - source: DB_ROOT_PASSWORD
       - source: DRUPAL_DEFAULT_ACCOUNT_PASSWORD
       - source: DRUPAL_DEFAULT_DB_PASSWORD
+        target: DB_PASSWORD
       - source: DRUPAL_DEFAULT_SALT
       - source: JWT_PRIVATE_KEY
       - source: JWT_PUBLIC_KEY
@@ -178,6 +179,7 @@ services:
     secrets:
       - source: DB_ROOT_PASSWORD
       - source: FCREPO_DB_PASSWORD
+        target: DB_PASSWORD
       - source: JWT_ADMIN_TOKEN
       - source: JWT_PUBLIC_KEY
     volumes:
