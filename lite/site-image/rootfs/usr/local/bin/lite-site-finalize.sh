@@ -54,6 +54,10 @@ configure_jwt_module "${SITE}" || true
 echo "== 4 Solr core '${CORE}'"
 if curl -fsS "${SOLR}/solr/admin/cores?action=STATUS&core=${CORE}&wt=json" | jq -e --arg c "${CORE}" '.status[$c] != null and (.status[$c] | length > 0)' >/dev/null 2>&1; then
   echo "   core ${CORE} already exists (shared core), left as is"
+  [ -d /opt/lite/solr/conf ] && echo "   (make site-solr-conf SITE=<site> replaces its config with this site's solr/conf)"
+elif [ -d /opt/lite/solr/conf ]; then
+  # The site's production Solr config (lite/sites/<site>/solr/conf, adapted by intake).
+  lite-solr-conf.sh || echo "WARN: Solr core not created, see above"
 else
   create_solr_core_with_default_config "${SITE}" || echo "WARN: Solr core not created, see above"
   # The search_api_solr config.zip carries a core.properties that lands in <core>/conf/;

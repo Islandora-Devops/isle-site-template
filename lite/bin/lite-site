@@ -6,7 +6,7 @@
 #   lite/bin/lite-site <command> <site> [args...]
 #
 # Commands: add render check enable disable build up down intake deploy finalize placeholders
-#           users-from-lite drush shell login db-shell dump reset list
+#           users-from-lite solr-conf drush shell login db-shell dump reset list
 #
 # Design: see LOCALIZE.md and lite/sites/README.md. Everything about a site lives in
 # lite/sites/<site>/ (a local working folder). This script never clones code or themes: it
@@ -117,7 +117,7 @@ require_site_running() {
 cmd_add() {
   [ -e "$SITE_DIR" ] && die "$SITE_DIR already exists (pick another name, or make site-reset SITE=$site and remove the folder)"
   info "Scaffolding $SITE_DIR from $TEMPLATE_DIR"
-  mkdir -p "$SITE_DIR"/{db,themes,site-files,repo}
+  mkdir -p "$SITE_DIR"/{db,themes,site-files,repo,solr}
   S="$site" perl -pe 's/__SITE__/$ENV{S}/g' "$TEMPLATE_DIR/site.env.sample" > "$SITE_DIR/site.env"
   S="$site" perl -pe 's/__SITE__/$ENV{S}/g' "$TEMPLATE_DIR/README.site.md" > "$SITE_DIR/README.md"
   cat > "$SITE_DIR/NOTES.md" <<EOF
@@ -133,8 +133,10 @@ ${GREEN}Created $SITE_DIR${RESET}. Next:
   2. git clone <internal GitHub repo of the site>  $SITE_DIR/repo
   3. put each theme named in SITE_THEMES under     $SITE_DIR/themes/<name>/
   4. copy the database handover (mysqldump file or .tar.gz of .ibd files) into $SITE_DIR/db/
-  5. make site-check SITE=$site     # validates 1-4; repeat until it passes
-  6. make site-intake SITE=$site && make site-build SITE=$site && make site-up SITE=$site
+  5. optional: copy the production Solr core's conf/ folder to  $SITE_DIR/solr/conf
+     optional, once for the stack: production's Cantaloupe folder to lite/cantaloupe/conf/
+  6. make site-check SITE=$site     # validates 1-5; repeat until it passes
+  7. make site-deploy SITE=$site    # site-intake + site-build + site-up
 EOF
 }
 
@@ -250,6 +252,8 @@ cmd_up() {
   # The site's hostname is a network alias on traefik; a running traefik only gets it when
   # recreated. Compose recreates it only if its config changed (no-op otherwise).
   compose up -d --no-deps traefik >/dev/null 2>&1 || true
+  # Same for cantaloupe and the config intake staged in lite/cantaloupe/stage/ (env_file).
+  compose up -d --no-deps cantaloupe >/dev/null 2>&1 || true
   info "Starting db-$site and drupal-$site"
   compose up -d --wait "db-$site" "drupal-$site"
   wait_for_localized
@@ -302,6 +306,16 @@ cmd_users_from_lite() {
   info "Replacing the accounts of $site with the Lite dev site's (production credentials are never used)"
   site_exec 'lite-accounts-from-lite.sh && cd /var/www/drupal && drush cr'
   site_exec 'cd /var/www/drupal && uid1=$(drush sql:query "SELECT name FROM users_field_data WHERE uid = 1" | awk "NF {v=\$0} END {print v}") && drush -y user:password "$uid1" "$(cat /run/secrets/DRUPAL_DEFAULT_ACCOUNT_PASSWORD)" && echo "uid 1 ($uid1) password = secrets/DRUPAL_DEFAULT_ACCOUNT_PASSWORD"' || true
+}
+
+cmd_solr_conf() {
+  require_site_running
+  load_site_env
+  site_exec 'command -v lite-solr-conf.sh >/dev/null' || die "drupal-$site predates lite-solr-conf.sh: make site-build SITE=$site && make site-up SITE=$site"
+  info "Replacing the config of Solr core $SITE_SOLR_CORE with $site's solr/conf (as staged by the last intake and build)"
+  site_exec 'lite-solr-conf.sh --replace'
+  site_exec 'cd /var/www/drupal && drush search-api:reset-tracker'
+  ok "core $SITE_SOLR_CORE reloaded; reindex each site using it: make site-drush SITE=<site> CMD=\"search-api:index\""
 }
 
 cmd_drush() {
@@ -387,6 +401,7 @@ case "$cmd" in
   finalize) cmd_finalize ;;
   placeholders) cmd_placeholders ;;
   users-from-lite) cmd_users_from_lite ;;
+  solr-conf) cmd_solr_conf ;;
   drush) cmd_drush "$@" ;;
   shell) cmd_shell ;;
   login) cmd_login ;;

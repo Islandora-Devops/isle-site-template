@@ -4,7 +4,7 @@
 LITE_SITE_REPO ?= https://github.com/digitalutsc/islandora-lite-site.git
 LITE_SITE_BRANCH ?= drupal-11
 LITE_SITE_DIR := lite/drupal/rootfs/var/www/drupal
-LITE_OWN_FILES := lite custom.Makefile docker-compose.lite.yml README.lite.md LOCALIZE.md QUICKSTART.md
+LITE_OWN_FILES := lite custom.Makefile docker-compose.lite.yml README.lite.md LOCALIZE.md QUICKSTART.md CLAUDE.md
 LITE_EXEC := docker compose exec -T drupal with-contenv bash -lc
 
 # Upstream scripts (ping.sh, up.sh, generate-certs.sh) need GNU `timeout`, which macOS
@@ -14,7 +14,7 @@ ifeq ($(shell command -v timeout 2>/dev/null),)
 export PATH := $(CURDIR)/lite/bin:$(PATH)
 endif
 
-.PHONY: lite-init lite-site lite-up lite-ping lite-hydrate lite-drush lite-shell lite-login lite-status lite-upstream-check lite-upstream-pull
+.PHONY: lite-init lite-site lite-up lite-ping lite-cantaloupe lite-hydrate lite-drush lite-shell lite-login lite-status lite-upstream-check lite-upstream-pull
 
 lite-init: ## Lite: create .env + override symlink, fetch the site, then upstream init (secrets, certs, build)
 	if [ ! -f .env ]; then cp lite/env.sample .env; echo "Created .env from lite/env.sample"; fi
@@ -41,6 +41,14 @@ lite-ping: ## Lite: readiness check without GNU timeout (macOS has none, so upst
 		if curl -fs -m 10 "$$URL/" | grep -q Islandora; then echo "Site available at: $$URL"; exit 0; fi; \
 		echo "Site is not live yet ($$i/10)"; sleep $$((5 * i)); \
 	done; echo "Site failed to come online: $$URL" >&2; exit 1
+
+lite-cantaloupe: ## Lite: translate lite/cantaloupe/conf (production's Cantaloupe config) for this image, test it, apply it
+	if [ -f lite/cantaloupe/conf/cantaloupe.properties ]; then \
+		lite/intake/cantaloupe-conf.sh lite/cantaloupe/conf lite/cantaloupe/stage; \
+	else \
+		echo "No lite/cantaloupe/conf/cantaloupe.properties: cantaloupe uses the image's config"; rm -rf lite/cantaloupe/stage; \
+	fi
+	docker compose up -d --no-deps cantaloupe
 
 lite-hydrate: ## Lite: re-point Solr/Blazegraph/IIIF/ffmpeg config at this stack (re-runnable)
 	$(LITE_EXEC) 'lite-hydrate.sh'
@@ -82,7 +90,7 @@ lite-upstream-pull: ## Lite: merge $(LITE_UPSTREAM_REMOTE)/main, then list mirro
 # lite/sites/README.md. All targets take SITE=<name>; the work is done by lite/bin/lite-site.
 # ---------------------------------------------------------------------------------------
 LITE_SITE := lite/bin/lite-site
-.PHONY: site-add site-render site-check site-enable site-disable site-build site-up site-down site-intake site-deploy site-finalize site-placeholders site-users-from-lite site-drush site-shell site-login site-db-shell site-dump site-reset sites
+.PHONY: site-add site-render site-check site-enable site-disable site-build site-up site-down site-intake site-deploy site-finalize site-placeholders site-users-from-lite site-solr-conf site-drush site-shell site-login site-db-shell site-dump site-reset sites
 
 site-add: ## Site: scaffold lite/sites/$(SITE)/ (site.env, docker-compose.yml, README, NOTES.md) for a new site
 	$(LITE_SITE) add $(SITE)
@@ -122,6 +130,9 @@ site-placeholders: ## Site: (re)generate media placeholders; MODE=relink|per-fil
 
 site-users-from-lite: ## Site: replace the accounts of db-$(SITE) with the Lite site's (production accounts are never used)
 	$(LITE_SITE) users-from-lite $(SITE)
+
+site-solr-conf: ## Site: replace the shared Solr core's config with the vendored production one, RELOAD, mark for reindex
+	$(LITE_SITE) solr-conf $(SITE)
 
 site-drush: ## Site: drush in drupal-$(SITE), e.g. make site-drush SITE=memory CMD="status"
 	$(LITE_SITE) drush $(SITE) $(CMD)

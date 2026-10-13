@@ -11,6 +11,8 @@
 #                            enables is provided
 #   db/, db/incoming/        a database handover (or an existing normalized dump) that looks
 #                            like what its name says
+#   solr/conf/               optional: the production Solr core's conf/ folder
+#   lite/cantaloupe/conf/    optional, for the whole stack: production's Cantaloupe config
 #   host                     docker and the stack's .env (for site-build / site-up)
 set -euo pipefail
 
@@ -62,7 +64,7 @@ tar_count_ibd() {
 }
 
 # ---------------------------------------------------------------------------------------
-info "[1/5] site.env"
+info "[1/7] site.env"
 env_ok=1
 for name in $SITE_THEMES; do
   case "$name" in
@@ -83,7 +85,7 @@ esac
 [ "$env_ok" = 1 ] && ok "site.env (themes: ${SITE_THEMES:-none}, Solr core: $SITE_SOLR_CORE, placeholders: $SITE_PLACEHOLDERS)"
 
 # ---------------------------------------------------------------------------------------
-info "[2/5] code: $CODE"
+info "[2/7] code: $CODE"
 code_ok=0
 if [ ! -d "$CODE" ]; then
   fail "$CODE does not exist"
@@ -111,7 +113,7 @@ else
 fi
 
 # ---------------------------------------------------------------------------------------
-info "[3/5] themes: ${SITE_THEMES:-(none listed in SITE_THEMES)}"
+info "[3/7] themes: ${SITE_THEMES:-(none listed in SITE_THEMES)}"
 if find "$SITE_DIR/themes" -maxdepth 1 -name '*.info.yml' 2>/dev/null | grep -q .; then
   top="$(basename "$(find "$SITE_DIR/themes" -maxdepth 1 -name '*.info.yml' | head -1)")"
   fail "$SITE_DIR/themes/ holds a theme's files directly ($top); each theme needs its own folder"
@@ -164,7 +166,7 @@ if [ "$code_ok" = 1 ]; then
 fi
 
 # ---------------------------------------------------------------------------------------
-info "[4/5] database handover in $DB_DIR"
+info "[4/7] database handover in $DB_DIR"
 shopt -s nullglob
 dumps=(); tarballs=()
 for f in "$DB_DIR"/*.sql "$DB_DIR"/*.sql.gz "$DB_DIR"/*.sql.xz "$DB_DIR"/incoming/*.sql "$DB_DIR"/incoming/*.sql.gz "$DB_DIR"/incoming/*.sql.xz; do
@@ -206,7 +208,42 @@ elif [ "${#dumps[@]}" -eq 0 ] && [ "${#tarballs[@]}" -eq 0 ]; then
 fi
 
 # ---------------------------------------------------------------------------------------
-info "[5/5] host"
+info "[5/7] Solr config in $SITE_DIR/solr/conf (optional)"
+SOLR_CONF="$SITE_DIR/solr/conf"
+if [ ! -d "$SOLR_CONF" ] || [ -z "$(ls -A "$SOLR_CONF" 2>/dev/null)" ]; then
+  warn "no Solr config: if this site creates core $SITE_SOLR_CORE, it gets the config search_api_solr generates"
+  hint "cp -R <production Solr core conf/ folder> $SOLR_CONF"
+elif [ ! -f "$SOLR_CONF/solrconfig.xml" ] || [ ! -f "$SOLR_CONF/schema.xml" ]; then
+  fail "$SOLR_CONF has no solrconfig.xml and schema.xml (expected a Solr core's conf/ folder)"
+  [ -f "$SITE_DIR/solr/conf/conf/solrconfig.xml" ] && hint "it holds conf/ inside conf/: move its content up one level"
+else
+  version="$(sed -n 's/^solr.luceneMatchVersion=//p' "$SOLR_CONF/solrcore.properties" 2>/dev/null | head -1)"
+  ok "Solr core config ($(find "$SOLR_CONF" -type f | wc -l | tr -d ' ') files, luceneMatchVersion ${version:-unknown}); intake adapts it to this stack's Solr and test-loads it"
+fi
+
+# ---------------------------------------------------------------------------------------
+CANTALOUPE_CONF="lite/cantaloupe/conf"
+info "[6/7] Cantaloupe config in $CANTALOUPE_CONF (optional, shared by the whole stack)"
+if [ ! -d "$CANTALOUPE_CONF" ] || [ -z "$(ls -A "$CANTALOUPE_CONF" 2>/dev/null)" ]; then
+  warn "no Cantaloupe config: the cantaloupe service keeps the image's config"
+  hint "cp -R <production Cantaloupe config folder>/. $CANTALOUPE_CONF/   (cantaloupe.properties + delegate *.rb)"
+elif [ ! -f "$CANTALOUPE_CONF/cantaloupe.properties" ]; then
+  fail "$CANTALOUPE_CONF has no cantaloupe.properties"
+else
+  rb_count="$(find "$CANTALOUPE_CONF" -maxdepth 1 -name '*.rb' | wc -l | tr -d ' ')"
+  if grep -Eq '^[[:space:]]*delegate_script\.enabled[[:space:]]*=[[:space:]]*true' "$CANTALOUPE_CONF/cantaloupe.properties"; then
+    if [ "$rb_count" != 1 ]; then
+      fail "cantaloupe.properties enables the delegate script, but $CANTALOUPE_CONF has $rb_count *.rb files (expected one)"
+    else
+      ok "cantaloupe.properties + delegate $(basename "$(find "$CANTALOUPE_CONF" -maxdepth 1 -name '*.rb')"); intake translates it for this image and test-starts it"
+    fi
+  else
+    ok "cantaloupe.properties (delegate script disabled); intake translates it for this image and test-starts it"
+  fi
+fi
+
+# ---------------------------------------------------------------------------------------
+info "[7/7] host"
 if [ ! -f .env ]; then
   fail ".env not found: run make lite-init first"
 fi
@@ -219,6 +256,9 @@ if [ "${#tarballs[@]}" -gt 0 ] && [ ! -s "$NORMALIZED" ] && ! command -v python3
   fail "python3 not found: .ibd recovery runs lite/intake/sdi2ddl.py on the host"
 fi
 command -v xz >/dev/null 2>&1 || fail "xz not found: intake writes db/$site.sql.xz"
+if [ -f "$SITE_DIR/solr/conf/solrconfig.xml" ] && ! command -v jq >/dev/null 2>&1; then
+  fail "jq not found: intake reads Solr's answer when it test-loads solr/conf"
+fi
 
 # ---------------------------------------------------------------------------------------
 echo

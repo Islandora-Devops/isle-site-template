@@ -9,13 +9,14 @@ repo) plus the files below. Production-site replicas on top of it are described 
 | Ours | Purpose |
 | --- | --- |
 | `custom.Makefile` | `lite-*` and `site-*` targets (`make help` lists them) |
-| `docker-compose.lite.yml` | override: disables everything but drupal, mariadb, solr, blazegraph, cantaloupe, fits, traefik; points `drupal` at `lite/drupal`; shared Solr core volume for replicas |
+| `docker-compose.lite.yml` | override: disables everything but drupal, mariadb, solr, blazegraph, cantaloupe, fits, traefik; points `drupal` at `lite/drupal`; shared Solr core volume for replicas; optional Cantaloupe config from `lite/cantaloupe/stage/` |
 | `lite/env.sample` | `.env` defaults (`isle-lite`, `islandora.io`, `ISLANDORA_TAG`) |
 | `lite/drupal/` | Lite drupal image: Dockerfile, env-driven `settings.lite.php`, s6 first-start install, `lite-hydrate.sh`, D11-safe drush settings command |
 | `lite/site/` | the complete `composer.lock` (320 packages) copied over the site clone; the lock committed on `drupal-11` lacks the `composer_site.json` packages |
 | `lite/bin/` | `lite-site` (all `site-*` operations), `timeout` shim for macOS |
 | `lite/site-image/` | generic production-site image (FROM the Lite image) and its localize scripts |
-| `lite/intake/` | handover intake: dump normalization, `.ibd` recovery, assess |
+| `lite/intake/` | handover intake: dump normalization, `.ibd` recovery, Solr and Cantaloupe config adaptation, assess |
+| `lite/cantaloupe/` | the stack's Cantaloupe config: your copy of production's in `conf/`, generated `stage/` (both git-ignored; see its README) |
 | `lite/sites/` | one local working folder per production site, made by `make site-add` (ignored here except `_template/` and `README.md`) |
 | `LOCALIZE.md` | design, runbook and troubleshooting for the production-site replicas |
 
@@ -44,6 +45,7 @@ HTTPS: `make traefik-https-mkcert && make down-traefik up && make lite-hydrate`
 make lite-drush CMD="status"      # any drush command
 make lite-shell                   # shell in the drupal container
 make lite-hydrate                 # re-point Solr/Blazegraph/IIIF/FITS config at this stack
+make lite-cantaloupe              # apply lite/cantaloupe/conf (production's Cantaloupe config) to cantaloupe
 make lite-status                  # upstream status + active/disabled services
 make sites                        # production replicas and their state
 make down / make up               # stop / start (enabled replicas included), data kept

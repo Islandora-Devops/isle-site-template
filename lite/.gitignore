@@ -6,3 +6,7 @@ drupal/rootfs/var/www/drupal/
 sites/*
 !sites/_template/
 !sites/README.md
+
+# Production Cantaloupe config (manual input) and what intake generates from it.
+cantaloupe/conf/
+cantaloupe/stage/

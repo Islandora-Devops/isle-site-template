@@ -8,9 +8,16 @@
 #   themes/<name>/           each theme named in SITE_THEMES (you pull them)
 #   db/                      the database handover: a mysqldump (*.sql, *.sql.gz, *.sql.xz)
 #                            or a .tar.gz / .tgz of raw MySQL 8.0 .ibd files
+#   solr/conf/               optional: the production Solr core's conf/ folder (you copy it)
+#   lite/cantaloupe/conf/    optional, for the whole stack: production's cantaloupe.properties
+#                            and delegate script (you copy them)
 #
 # Output:
-#   stage/                   config/sync, web/themes/<name>, web/modules/custom (COPYd into the image)
+#   stage/                   config/sync, web/themes/<name>, web/modules/custom (COPYd into the image);
+#                            solr/conf adapted to this stack's Solr (solr-conf.sh; the image moves it
+#                            to /opt/lite/solr/conf)
+#   lite/cantaloupe/stage/   cantaloupe.env + delegates.rb for the shared cantaloupe service
+#                            (cantaloupe-conf.sh); applied by make site-up / lite-cantaloupe
 #   db/<site>.sql.xz         normalized dump, the only thing db-<site> loads; raw inputs move to db/incoming/
 #   NOTES.md                 assess report appended
 #
@@ -49,7 +56,7 @@ NORMALIZED="$DB_DIR/$site.sql.xz"
 NOTES="$SITE_DIR/NOTES.md"
 
 # ---------------------------------------------------------------------------------------
-info "[1/5] code: $SITE_CODE_DIR"
+info "[1/7] code: $SITE_CODE_DIR"
 CODE="$SITE_CODE_DIR"
 if [ ! -f "$CODE/config/sync/core.extension.yml" ]; then
   cat >&2 <<EOF
@@ -80,7 +87,7 @@ find "$STAGE" -name .git -prune -exec rm -rf {} + 2>/dev/null || true
 ok "staged config/sync ($(ls "$STAGE/config/sync" | wc -l | tr -d ' ') files) from $CODE ($code_branch @ $code_commit)"
 
 # ---------------------------------------------------------------------------------------
-info "[2/5] themes: ${SITE_THEMES:-(none listed in SITE_THEMES)}"
+info "[2/7] themes: ${SITE_THEMES:-(none listed in SITE_THEMES)}"
 mkdir -p "$STAGE/web/themes"
 for name in $SITE_THEMES; do
   src="$SITE_DIR/themes/$name"
@@ -118,7 +125,36 @@ fi
 ok "theme check passed (enabled: $(echo $wanted | tr '\n' ' '))"
 
 # ---------------------------------------------------------------------------------------
-info "[3/5] database handover in $DB_DIR"
+info "[3/7] Solr config: $SITE_DIR/solr/conf (optional)"
+SOLR_CONF="$SITE_DIR/solr/conf"
+if [ -f "$SOLR_CONF/solrconfig.xml" ]; then
+  "$HERE/solr-conf.sh" "$SOLR_CONF" "$STAGE/solr/conf"
+  solr_source="solr/conf adapted and test-loaded ($(find "$STAGE/solr/conf" -type f | wc -l | tr -d ' ') files)"
+  ok "staged the Solr config for core ${SITE_SOLR_CORE:-dsu_multisite}"
+else
+  solr_source="none (a core this site creates gets the config search_api_solr generates)"
+  warn "no $SOLR_CONF/solrconfig.xml: $solr_source"
+fi
+
+# ---------------------------------------------------------------------------------------
+CANTALOUPE_CONF="lite/cantaloupe/conf"
+CANTALOUPE_STAGE="lite/cantaloupe/stage"
+info "[4/7] Cantaloupe config: $CANTALOUPE_CONF (optional, shared by the whole stack)"
+if [ -f "$CANTALOUPE_CONF/cantaloupe.properties" ]; then
+  "$HERE/cantaloupe-conf.sh" "$CANTALOUPE_CONF" "$CANTALOUPE_STAGE"
+  cantaloupe_source="$CANTALOUPE_CONF translated and test-started"
+  ok "staged the Cantaloupe config in $CANTALOUPE_STAGE (make site-up applies it)"
+else
+  if [ -f "$CANTALOUPE_STAGE/cantaloupe.env" ]; then
+    rm -rf "$CANTALOUPE_STAGE"
+    echo "   removed $CANTALOUPE_STAGE (its source is gone); make site-up returns cantaloupe to the image's config"
+  fi
+  cantaloupe_source="none (the image's config)"
+  warn "no $CANTALOUPE_CONF/cantaloupe.properties: cantaloupe keeps the image's config"
+fi
+
+# ---------------------------------------------------------------------------------------
+info "[5/7] database handover in $DB_DIR"
 mkdir -p "$INCOMING"
 # Raw inputs must not sit next to the normalized dump: db-<site> loads every *.sql* in db/.
 shopt -s nullglob
@@ -158,7 +194,7 @@ EOF
 fi
 
 # ---------------------------------------------------------------------------------------
-info "[4/5] assess"
+info "[6/7] assess"
 report="$("$HERE/assess.sh" "$site" "$CODE" "$STAGE" "$NORMALIZED" 2>&1)" || true
 {
   echo
@@ -166,6 +202,8 @@ report="$("$HERE/assess.sh" "$site" "$CODE" "$STAGE" "$NORMALIZED" 2>&1)" || tru
   echo
   echo "- code: \`$CODE\` ($code_branch @ $code_commit)"
   echo "- themes: ${SITE_THEMES:-none}"
+  echo "- Solr config: $solr_source"
+  echo "- Cantaloupe config: $cantaloupe_source"
   echo "- database: $db_source"
   echo
   echo "$report"
@@ -174,7 +212,7 @@ echo "$report"
 ok "report appended to $NOTES"
 
 # ---------------------------------------------------------------------------------------
-info "[5/5] next"
+info "[7/7] next"
 cat <<EOF
   make site-build SITE=$site     # image FROM the Lite image + staged config/themes/site-files
   make site-up    SITE=$site     # start db-$site (loads db/$site.sql.xz) and drupal-$site (localizes once)

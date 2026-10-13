@@ -51,6 +51,16 @@ services:
       # CoreContainer shuts down on restart.
       DRUPAL_DEFAULT_TRIPLESTORE_NAMESPACE: islandora
 
+  # Production Cantaloupe config (manual input lite/cantaloupe/conf/), translated by intake
+  # (lite/intake/cantaloupe-conf.sh) into CANTALOUPE_* variables for the image's template,
+  # plus the delegate script. Without it the image's own config applies.
+  cantaloupe:
+    env_file:
+      - path: ./lite/cantaloupe/stage/cantaloupe.env
+        required: false
+    volumes:
+      - ./lite/cantaloupe/stage:/opt/lite/cantaloupe:ro
+
   # Production-site replicas (lite/sites/<site>/) share one Solr core like prod does.
   # The core directory lives on this volume; each site's drupal-<site> container mounts
   # it at the same path so search_api_solr can write the core config there.

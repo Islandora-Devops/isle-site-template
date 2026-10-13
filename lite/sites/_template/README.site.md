@@ -17,6 +17,13 @@ Provided by you:
 | `themes/<name>/` | each theme listed in `SITE_THEMES` (private GitHub) |
 | `db/` | the database handover: a `mysqldump` file (`.sql`, `.sql.gz`, `.sql.xz`) or a `.tar.gz` of raw MySQL 8.0 `.ibd` files |
 
+Optional (skip either one: nothing fails, the defaults apply):
+
+| Where | What |
+| --- | --- |
+| `solr/conf/` | the production Solr core's `conf/` folder, copied as is (intake adapts it to this stack's Solr); else the config search_api_solr generates |
+| `lite/cantaloupe/conf/` (whole stack, not this folder) | production's Cantaloupe config (see `lite/cantaloupe/README.md`); else the image's config |
+
 Then, from the isle-site-lite root:
 
 ```bash
