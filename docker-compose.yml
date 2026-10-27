@@ -216,6 +216,10 @@ services:
 
   init:
     entrypoint: /scripts/init-entrypoint.sh
+    environment:
+      DOMAIN: ${DOMAIN}
+      TLS_PROVIDER: ${TLS_PROVIDER:-self-managed}
+      URI_SCHEME: ${URI_SCHEME:-http}
     image: islandora/base:${ISLANDORA_TAG}
     networks:
       default:
