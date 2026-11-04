@@ -18,6 +18,10 @@ sed -i.bak 's/^TLS_PROVIDER=.*/TLS_PROVIDER="self-managed"/' .env && rm -f .env.
 set_https "true"
 set_letsencrypt_config "false"
 
+# Pass the updated configuration to certificate generation, not the HTTP
+# values loaded from .env before the switch.
+export URI_SCHEME=https TLS_PROVIDER=self-managed
+
 PROGDIR=$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")
 readonly PROGDIR
 "${PROGDIR}/scripts/generate-certs.sh"

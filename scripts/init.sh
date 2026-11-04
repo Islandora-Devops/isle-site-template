@@ -2,9 +2,11 @@
 
 set -eou pipefail
 
+need_init=false
 extend_healthcheck=false
 if [ ! -f .env ]; then
   cp sample.env .env
+  need_init=true
   extend_healthcheck=true
 fi
 
@@ -15,6 +17,22 @@ fi
 
 # shellcheck disable=SC1091
 source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
+
+# A copied .env is not proof that the project has been initialized. Check its
+# named volumes too, since users often copy the sample file before first start.
+if ! docker volume ls -q 2>/dev/null | grep -q "^${COMPOSE_PROJECT_NAME}_mariadb-data$"; then
+  need_init=true
+fi
+
+if $need_init && [ -t 0 ] && [ "${ISLE_SITE_TEMPLATE_NONINTERACTIVE:-false}" != "true" ]; then
+  read -r -p "Compose project name [${COMPOSE_PROJECT_NAME}]: " new_project
+  read -r -p "Site domain [${DOMAIN}]: " new_domain
+  [ -n "$new_project" ] && update_env COMPOSE_PROJECT_NAME "$new_project"
+  [ -n "$new_domain" ] && update_env DOMAIN "$new_domain"
+  # Refresh values exported by profile.sh after changing .env.
+  # shellcheck disable=SC1091
+  source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
+fi
 
 if $extend_healthcheck; then
   # we've detected an initial install

@@ -22,7 +22,7 @@ update_env() {
     local var="$1"
     local val="$2"
     if grep -Eq "^${var}=" .env; then
-        sed -i "s/^$var=.*/$var=$val/" .env
+        sed -i.bak "s/^$var=.*/$var=$val/" .env && rm -f .env.bak
     else
         echo "${var}=${val}" | tee -a .env
     fi
@@ -52,6 +52,20 @@ is_port_in_use() {
     return 1
 }
 
+wait_for_port_release() {
+    local port=$1
+    local timeout=$2
+    local waited=0
+    while [ "$waited" -lt "$timeout" ]; do
+        if ! is_port_in_use "$port"; then
+            return 0
+        fi
+        sleep 1
+        waited=$((waited + 1))
+    done
+    return 1
+}
+
 # Function to find the next available port
 # Depends on the COMPOSE_PROJECT_NAME variable being set in the calling script.
 find_port() {
@@ -78,6 +92,10 @@ find_port() {
                 printf "Port %s is already assigned to this project (%s).\n" "$port" "$COMPOSE_PROJECT_NAME" >&2
                 break
             fi
+        fi
+        # A removed container may keep its published port bound during teardown.
+        if wait_for_port_release "$port" "${PORT_RELEASE_TIMEOUT:-45}"; then
+          break
         fi
         echo_e "${RED}Port $port is used by another process.${RESET}" >&2
         if [ "$port" = "80" ]; then
@@ -198,9 +216,9 @@ set_https() {
   local enable=$1
 
   if [ "$enable" = "true" ]; then
-    sed -i.bak 's/^DRUPAL_ENABLE_HTTPS:.*/DRUPAL_ENABLE_HTTPS: "true"/' docker-compose.yml && rm -f docker-compose.yml.bak
+    sed -i.bak 's/^\([[:space:]]*\)DRUPAL_ENABLE_HTTPS:.*/\1DRUPAL_ENABLE_HTTPS: "true"/' docker-compose.yml && rm -f docker-compose.yml.bak
   else
-    sed -i.bak 's/^DRUPAL_ENABLE_HTTPS:.*/DRUPAL_ENABLE_HTTPS: "false"/' docker-compose.yml && rm -f docker-compose.yml.bak
+    sed -i.bak 's/^\([[:space:]]*\)DRUPAL_ENABLE_HTTPS:.*/\1DRUPAL_ENABLE_HTTPS: "false"/' docker-compose.yml && rm -f docker-compose.yml.bak
   fi
 }
 

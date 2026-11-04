@@ -3,6 +3,10 @@
 
 set -euf -o pipefail
 
+if [ "${URI_SCHEME:-http}" != "https" ] || [ "${TLS_PROVIDER:-self-managed}" != "self-managed" ]; then
+  exit 0
+fi
+
 if ! command -v mkcert &> /dev/null; then
   echo "${RED}Error: mkcert is not installed or not in PATH${RESET}"
   exit 1
@@ -26,7 +30,10 @@ if [ ! -f "${PROGDIR}/certs/rootCA.pem" ]; then
   cp "${CAROOT}/rootCA.pem" "${PROGDIR}/certs/rootCA.pem"
 fi
 
+DOMAIN_NAMES=("${DOMAIN:-islandora.io}" "*.${DOMAIN:-islandora.io}")
+
 mkcert -cert-file certs/cert.pem -key-file certs/privkey.pem \
+  "${DOMAIN_NAMES[@]}" \
   "*.islandora.io" \
   "islandora.io" \
   "*.islandora.info" \

@@ -45,6 +45,8 @@ if [ "$FINAL_PORT" != "$DEFAULT_P" ]; then
     URL="$URL:$FINAL_PORT"
 fi
 
+export SITE_URL="$URL"
+
 export MAX_RETRIES=3
 WAIT_FOR_INSTALL=$(./scripts/ping.sh || echo "yes")
 if [ "$WAIT_FOR_INSTALL" = "yes" ]; then
