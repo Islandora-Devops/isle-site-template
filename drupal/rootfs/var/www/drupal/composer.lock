@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "113aeca2b59a2f8e9142e6e412c89be9",
+    "content-hash": "979504659cf29bdda1e2824d73fdb41c",
     "packages": [
         {
             "name": "adci/full-name-parser",
@@ -1256,16 +1256,16 @@
         },
         {
             "name": "discoverygarden/islandora_hocr",
-            "version": "v1.4.2",
+            "version": "v1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/discoverygarden/islandora_hocr.git",
-                "reference": "6d55b301cc4df5b5f3e147b029bc9c28cfd5990a"
+                "reference": "a39e55b002444c1a9daaea598e87bd82036660e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/discoverygarden/islandora_hocr/zipball/6d55b301cc4df5b5f3e147b029bc9c28cfd5990a",
-                "reference": "6d55b301cc4df5b5f3e147b029bc9c28cfd5990a",
+                "url": "https://api.github.com/repos/discoverygarden/islandora_hocr/zipball/a39e55b002444c1a9daaea598e87bd82036660e0",
+                "reference": "a39e55b002444c1a9daaea598e87bd82036660e0",
                 "shasum": ""
             },
             "require": {
@@ -1279,9 +1279,9 @@
             ],
             "support": {
                 "issues": "https://github.com/discoverygarden/islandora_hocr/issues",
-                "source": "https://github.com/discoverygarden/islandora_hocr/tree/v1.4.2"
+                "source": "https://github.com/discoverygarden/islandora_hocr/tree/v1.4.3"
             },
-            "time": "2026-04-15T16:15:06+00:00"
+            "time": "2026-09-04T17:59:59+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -1396,6 +1396,10 @@
                 {
                     "name": "andypost",
                     "homepage": "https://www.drupal.org/user/118908"
+                },
+                {
+                    "name": "vladimiraus",
+                    "homepage": "https://www.drupal.org/user/673120"
                 }
             ],
             "description": "Allows configuration of tasks to be executed in response to events.",
@@ -1496,17 +1500,17 @@
         },
         {
             "name": "drupal/advanced_search",
-            "version": "2.4.2",
+            "version": "2.4.5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/advanced_search.git",
-                "reference": "2.4.2"
+                "reference": "2.4.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/advanced_search-2.4.2.zip",
-                "reference": "2.4.2",
-                "shasum": "c33c86cbbcbaa0ecc97e9feb7137bc760fa2440a"
+                "url": "https://ftp.drupal.org/files/projects/advanced_search-2.4.5.zip",
+                "reference": "2.4.5",
+                "shasum": "4ae5422eddffc354eebac8db39b3d4b5f017342a"
             },
             "require": {
                 "drupal/core": "^8.8 || ^9 || ^10 || ^11",
@@ -1526,8 +1530,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.4.2",
-                    "datestamp": "1774961377",
+                    "version": "2.4.5",
+                    "datestamp": "1788366329",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -1578,10 +1582,6 @@
                 {
                     "name": "rosiel",
                     "homepage": "https://www.drupal.org/user/3263030"
-                },
-                {
-                    "name": "seth.e.shaw",
-                    "homepage": "https://www.drupal.org/user/50620"
                 }
             ],
             "description": "This module creates several blocks to support searching. It also enables the use of Ajax with search blocks, facets, and search results.",
@@ -1597,27 +1597,27 @@
         },
         {
             "name": "drupal/better_exposed_filters",
-            "version": "7.1.3",
+            "version": "7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/better_exposed_filters.git",
-                "reference": "7.1.3"
+                "reference": "7.2.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/better_exposed_filters-7.1.3.zip",
-                "reference": "7.1.3",
-                "shasum": "802c4a2823c5393b78750a540ac4d2e2c95767e5"
+                "url": "https://ftp.drupal.org/files/projects/better_exposed_filters-7.2.0.zip",
+                "reference": "7.2.0",
+                "shasum": "dcb7b5e560fe578ef041cf7e1f6a691dc4d56575"
             },
             "require": {
-                "drupal/core": "^10.3 || ^11",
+                "drupal/core": "^10.3 || ^11 || ^12",
                 "drupal/nouislider_js": "^15.8.1"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "7.1.3",
-                    "datestamp": "1785945788",
+                    "version": "7.2.0",
+                    "datestamp": "1791536367",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -2209,16 +2209,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "11.4.5",
+            "version": "11.4.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "a07143587a57d892a892b8b5a2d0cdc5a98f31c2"
+                "reference": "7dc54b5a0281efaf995a579f02a9b473424a9d09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/a07143587a57d892a892b8b5a2d0cdc5a98f31c2",
-                "reference": "a07143587a57d892a892b8b5a2d0cdc5a98f31c2",
+                "url": "https://api.github.com/repos/drupal/core/zipball/7dc54b5a0281efaf995a579f02a9b473424a9d09",
+                "reference": "7dc54b5a0281efaf995a579f02a9b473424a9d09",
                 "shasum": ""
             },
             "require": {
@@ -2353,7 +2353,8 @@
             },
             "autoload": {
                 "files": [
-                    "includes/bootstrap.inc"
+                    "includes/bootstrap.inc",
+                    "includes/guzzle_file_cookie_jar_shim.php"
                 ],
                 "psr-4": {
                     "Drupal\\Core\\": "lib/Drupal/Core",
@@ -2390,7 +2391,7 @@
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
             "support": {
-                "source": "https://github.com/drupal/core/tree/11.4.5"
+                "source": "https://github.com/drupal/core/tree/11.4.10"
             },
             "funding": [
                 {
@@ -2398,11 +2399,11 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-08-06T09:28:11+00:00"
+            "time": "2026-10-14T10:58:06+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
-            "version": "11.4.5",
+            "version": "11.4.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",
@@ -2446,29 +2447,29 @@
                 "drupal"
             ],
             "support": {
-                "source": "https://github.com/drupal/core-composer-scaffold/tree/11.4.5"
+                "source": "https://github.com/drupal/core-composer-scaffold/tree/11.4.10"
             },
             "time": "2026-07-09T23:23:24+00:00"
         },
         {
             "name": "drupal/core-recommended",
-            "version": "11.4.5",
+            "version": "11.4.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-recommended.git",
-                "reference": "b08738b914bffb9adafc40b7b70d965c3810e750"
+                "reference": "79668dc2db00f10a4d22e80b9005fc8f5042bdfe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core-recommended/zipball/b08738b914bffb9adafc40b7b70d965c3810e750",
-                "reference": "b08738b914bffb9adafc40b7b70d965c3810e750",
+                "url": "https://api.github.com/repos/drupal/core-recommended/zipball/79668dc2db00f10a4d22e80b9005fc8f5042bdfe",
+                "reference": "79668dc2db00f10a4d22e80b9005fc8f5042bdfe",
                 "shasum": ""
             },
             "require": {
                 "asm89/stack-cors": "~v2.4.0",
                 "composer/semver": "~3.4.4",
                 "doctrine/lexer": "~3.0.1",
-                "drupal/core": "11.4.5",
+                "drupal/core": "11.4.10",
                 "egulias/email-validator": "~4.0.4",
                 "justinrainbow/json-schema": "~6.8.2",
                 "marc-mabe/php-enum": "~v4.7.2",
@@ -2516,7 +2517,9 @@
             },
             "type": "metapackage",
             "extra": {
-                "branch-alias": []
+                "branch-alias": {
+                    "dev-main": "11.x-dev"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2524,9 +2527,9 @@
             ],
             "description": "Core and its dependencies with known-compatible minor versions. Require this project INSTEAD OF drupal/core.",
             "support": {
-                "source": "https://github.com/drupal/core-recommended/tree/11.4.5"
+                "source": "https://github.com/drupal/core-recommended/tree/11.4.10"
             },
-            "time": "2026-08-06T09:28:11+00:00"
+            "time": "2026-10-14T10:58:06+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -2803,6 +2806,10 @@
                     "homepage": "https://www.drupal.org/user/205582"
                 },
                 {
+                    "name": "joelpittet",
+                    "homepage": "https://www.drupal.org/user/160302"
+                },
+                {
                     "name": "mkalkbrenner",
                     "homepage": "https://www.drupal.org/user/124705"
                 },
@@ -2856,6 +2863,10 @@
                 {
                     "name": "drunken monkey",
                     "homepage": "https://www.drupal.org/user/205582"
+                },
+                {
+                    "name": "joelpittet",
+                    "homepage": "https://www.drupal.org/user/160302"
                 },
                 {
                     "name": "mkalkbrenner",
@@ -3463,17 +3474,17 @@
         },
         {
             "name": "drupal/islandora",
-            "version": "2.18.5",
+            "version": "2.19.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/islandora.git",
-                "reference": "2.18.5"
+                "reference": "2.19.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/islandora-2.18.5.zip",
-                "reference": "2.18.5",
-                "shasum": "ad54f2c2f541b66a5a8b5c5b8cc1714ca9031cb9"
+                "url": "https://ftp.drupal.org/files/projects/islandora-2.19.0.zip",
+                "reference": "2.19.0",
+                "shasum": "b4d259609acb483ba1dc2ea5b92bb6dad879a89e"
             },
             "require": {
                 "drupal/action": "^0.2",
@@ -3512,8 +3523,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.18.5",
-                    "datestamp": "1784820624",
+                    "version": "2.19.0",
+                    "datestamp": "1788366566",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3653,17 +3664,17 @@
         },
         {
             "name": "drupal/islandora_mirador",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/islandora_mirador.git",
-                "reference": "3.0.0"
+                "reference": "3.0.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/islandora_mirador-3.0.0.zip",
-                "reference": "3.0.0",
-                "shasum": "f2ff0ac78163346754db711c8dfb9e6f0109ca92"
+                "url": "https://ftp.drupal.org/files/projects/islandora_mirador-3.0.1.zip",
+                "reference": "3.0.1",
+                "shasum": "e39c90522450da11438611cdf17dedd4c7a939a1"
             },
             "require": {
                 "drupal/core": "^10 || ^11",
@@ -3681,8 +3692,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "3.0.0",
-                    "datestamp": "1785341340",
+                    "version": "3.0.1",
+                    "datestamp": "1790083325",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5105,27 +5116,27 @@
         },
         {
             "name": "drupal/term_merge",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/term_merge.git",
-                "reference": "2.0.0"
+                "reference": "2.0.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/term_merge-2.0.0.zip",
-                "reference": "2.0.0",
-                "shasum": "44bb8665801826934ade2fca2e191fd5d581b2d1"
+                "url": "https://ftp.drupal.org/files/projects/term_merge-2.0.1.zip",
+                "reference": "2.0.1",
+                "shasum": "9860ee3e52898eafc2e1b3b557ef4a5c1441de6d"
             },
             "require": {
                 "drupal/core": "^9 || ^10 || ^11",
-                "drupal/term_reference_change": "*"
+                "drupal/term_reference_change": "^2.0@beta"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.0",
-                    "datestamp": "1752105248",
+                    "version": "2.0.1",
+                    "datestamp": "1791188397",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5138,38 +5149,53 @@
             ],
             "authors": [
                 {
-                    "name": "legolasbo",
-                    "homepage": "https://www.drupal.org/u/legolasbo"
+                    "name": "Chris Jansen (legolasbo)",
+                    "homepage": "https://www.drupal.org/u/legolasbo",
+                    "role": "Maintainer"
                 },
                 {
-                    "name": "daniel_j",
-                    "homepage": "https://www.drupal.org/u/daniel_j"
+                    "name": "Daniel Johnson (daniel_j)",
+                    "homepage": "https://www.drupal.org/u/daniel_j",
+                    "role": "Maintainer"
                 },
                 {
-                    "name": "daniel_j",
-                    "homepage": "https://www.drupal.org/user/970952"
+                    "name": "bucefal91",
+                    "homepage": "https://www.drupal.org/u/bucefal91",
+                    "role": "Maintainer"
                 },
                 {
                     "name": "eli",
-                    "homepage": "https://www.drupal.org/user/49774"
+                    "homepage": "https://www.drupal.org/u/eli",
+                    "role": "Maintainer"
                 },
                 {
                     "name": "g.i.joe",
-                    "homepage": "https://www.drupal.org/user/111415"
-                },
-                {
-                    "name": "legolasbo",
-                    "homepage": "https://www.drupal.org/user/2480548"
+                    "homepage": "https://www.drupal.org/u/gijoe",
+                    "role": "Maintainer"
                 },
                 {
                     "name": "nylin",
-                    "homepage": "https://www.drupal.org/user/816040"
+                    "homepage": "https://www.drupal.org/user/816040",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Alexander Ross (bleen)",
+                    "homepage": "https://www.drupal.org/user/bleen",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Viktor Holovachek (AstonVictor)",
+                    "homepage": "https://www.drupal.org/u/astonvictor",
+                    "role": "Maintainer"
                 }
             ],
             "description": "Allows users to merge taxonomy terms in the same vocabulary together.",
             "homepage": "https://www.drupal.org/project/term_merge",
+            "keywords": [
+                "Drupal"
+            ],
             "support": {
-                "source": "https://git.drupal.org/project/term_merge.git",
+                "source": "https://git.drupalcode.org/project/term_merge",
                 "issues": "https://www.drupal.org/project/issues/term_merge"
             }
         },
@@ -5563,16 +5589,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "13.7.6",
+            "version": "13.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "051f6b4909728e0d3363aedab19d393f64438de4"
+                "reference": "a5529118232c722c052ad6ae3be587df43c7d6fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/051f6b4909728e0d3363aedab19d393f64438de4",
-                "reference": "051f6b4909728e0d3363aedab19d393f64438de4",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/a5529118232c722c052ad6ae3be587df43c7d6fa",
+                "reference": "a5529118232c722c052ad6ae3be587df43c7d6fa",
                 "shasum": ""
             },
             "require": {
@@ -5700,7 +5726,7 @@
                 "issues": "https://github.com/drush-ops/drush/issues",
                 "security": "https://github.com/drush-ops/drush/security/advisories",
                 "slack": "https://drupal.slack.com/messages/C62H9CWQM",
-                "source": "https://github.com/drush-ops/drush/tree/13.7.6"
+                "source": "https://github.com/drush-ops/drush/tree/13.8.0"
             },
             "funding": [
                 {
@@ -5708,7 +5734,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-08T10:43:20+00:00"
+            "time": "2026-09-08T18:24:55+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -6958,7 +6984,7 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.1.10",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
@@ -7040,7 +7066,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/1.1.10"
+                "source": "https://github.com/thephpleague/flysystem/tree/1.x"
             },
             "funding": [
                 {
@@ -12901,17 +12927,17 @@
         },
         {
             "name": "drupal/config_inspector",
-            "version": "2.1.10",
+            "version": "2.1.12",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/config_inspector.git",
-                "reference": "2.1.10"
+                "reference": "2.1.12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_inspector-2.1.10.zip",
-                "reference": "2.1.10",
-                "shasum": "7297e75be097ba431c810ddee00d30129ed5786d"
+                "url": "https://ftp.drupal.org/files/projects/config_inspector-2.1.12.zip",
+                "reference": "2.1.12",
+                "shasum": "bb6b224d0ffd2af908ce68f20a07889333eabd1f"
             },
             "require": {
                 "drupal/core": "^9.2 || ^10 || ^11 || ^12"
@@ -12919,8 +12945,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.1.10",
-                    "datestamp": "1772643611",
+                    "version": "2.1.12",
+                    "datestamp": "1789648532",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
