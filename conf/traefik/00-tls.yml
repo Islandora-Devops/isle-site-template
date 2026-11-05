@@ -1,7 +1,9 @@
 tls:
+{{- if and (eq (env "URI_SCHEME") "https") (eq (env "TLS_PROVIDER") "self-managed") }}
   certificates:
     - certFile: /run/secrets/CERT_PUBLIC_KEY
       keyFile: /run/secrets/CERT_PRIVATE_KEY
+{{- end }}
   options:
     default:
       minVersion: VersionTLS12

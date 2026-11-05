@@ -46,6 +46,11 @@ done < \
   )
 
 for secret in "${SECRETS[@]}"; do
+  # These are certificate files, not password secrets. They are prepared by
+  # generate-certs.sh.
+  case "$secret" in
+    ./certs/cert.pem|./certs/privkey.pem|./certs/rootCA.pem) continue ;;
+  esac
   if [ ! -f "${secret}" ]; then
     echo "Creating: ${secret}" >&2
     (grep -ao "${CHARACTERS}" </dev/urandom || true) | head "-${LENGTH}" | tr -d '\n' > "${secret}"
