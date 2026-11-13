@@ -7,7 +7,6 @@ RED=$(tput setaf 9)
 GREEN=$(tput setaf 2)
 BLUE=$(tput setaf 6)
 YELLOW=$(tput setaf 3)
-readonly RESET RED GREEN BLUE YELLOW
 # Export color codes for use by sourcing scripts
 export RESET RED GREEN BLUE YELLOW
 
