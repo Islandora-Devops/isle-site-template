@@ -35,7 +35,7 @@
         'composer',
       ],
       enabled: false,
-    }
+    },
   ],
   customManagers: [
     {
@@ -56,7 +56,9 @@
     'dependencies',
   ],
   osvVulnerabilityAlerts: true,
-  dependencyDashboardOSVVulnerabilitySummary: 'unresolved',
+  dependencyDashboard: {
+    osvVulnerabilitySummary: 'unresolved',
+  },
   vulnerabilityAlerts: {
     enabled: true,
   },
