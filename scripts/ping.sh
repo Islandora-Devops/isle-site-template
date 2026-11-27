@@ -5,11 +5,16 @@ set -eou pipefail
 # shellcheck disable=SC1091
 source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
 
+# Drupal core puts this generator tag in the <head> of every full page, whatever
+# the theme, so it shows that Drupal rendered the page without depending on any
+# site's content or theme.
+GENERATOR='<meta name="Generator" content="Drupal '
+
 MAX_RETRIES=${MAX_RETRIES:-10}
 SLEEP_INCREMENT=5
 RETRIES=0
 while true; do
-    timeout 5 curl -fs "${SITE_URL:-${URI_SCHEME}://${DOMAIN}}/" | grep Islandora && break || exit_code=$?
+    timeout 5 curl -fs "${SITE_URL:-${URI_SCHEME}://${DOMAIN}}/" | grep -F "$GENERATOR" && break || exit_code=$?
 
     RETRIES=$((RETRIES + 1))
     if [ "$RETRIES" -ge "$MAX_RETRIES" ]; then
