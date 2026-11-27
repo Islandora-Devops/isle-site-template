@@ -2,11 +2,18 @@
 
 set -euf -o pipefail
 
-RESET=$(tput sgr0)
-RED=$(tput setaf 9)
-GREEN=$(tput setaf 2)
-BLUE=$(tput setaf 6)
-YELLOW=$(tput setaf 3)
+# tput exits non-zero, which ends any script sourcing this one under set -e,
+# when TERM is unset or names a terminal without colors (cron, CI, editor
+# shells, coding agents). Print without colors there.
+if tput setaf 1 >/dev/null 2>&1; then
+    RESET=$(tput sgr0)
+    RED=$(tput setaf 9)
+    GREEN=$(tput setaf 2)
+    BLUE=$(tput setaf 6)
+    YELLOW=$(tput setaf 3)
+else
+    RESET="" RED="" GREEN="" BLUE="" YELLOW=""
+fi
 # Export color codes for use by sourcing scripts
 export RESET RED GREEN BLUE YELLOW
 

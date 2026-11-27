@@ -51,7 +51,12 @@ export MAX_RETRIES=3
 WAIT_FOR_INSTALL=$(./scripts/ping.sh || echo "yes")
 if [ "$WAIT_FOR_INSTALL" = "yes" ]; then
     echo "Site install in progress..."
-    docker compose logs -f --since 20s drupal 2>&1 | { \
+    # Follow the log from when the drupal container started, not for a fixed
+    # window: the failed ping above takes longer than 20s, and on a site that
+    # is already installed the line was printed before it began. A window
+    # misses the line and this waits forever.
+    DRUPAL_STARTED=$(docker inspect -f '{{.State.StartedAt}}' "$(docker compose ps -q drupal)")
+    docker compose logs -f --since "$DRUPAL_STARTED" drupal 2>&1 | { \
         while read -r line; do \
             echo "$line"; \
             if echo "$line" | grep -q "Install Completed"; then \
